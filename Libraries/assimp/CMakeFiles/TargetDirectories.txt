@@ -1,0 +1,15 @@
+D:/assimp-master/lib/CMakeFiles/uninstall.dir
+D:/assimp-master/lib/CMakeFiles/UpdateAssimpLibsDebugSymbolsAndDLLs.dir
+D:/assimp-master/lib/CMakeFiles/INSTALL.dir
+D:/assimp-master/lib/CMakeFiles/ALL_BUILD.dir
+D:/assimp-master/lib/CMakeFiles/ZERO_CHECK.dir
+D:/assimp-master/lib/contrib/zlib/CMakeFiles/zlibstatic.dir
+D:/assimp-master/lib/contrib/zlib/CMakeFiles/INSTALL.dir
+D:/assimp-master/lib/contrib/zlib/CMakeFiles/ALL_BUILD.dir
+D:/assimp-master/lib/code/CMakeFiles/assimp.dir
+D:/assimp-master/lib/code/CMakeFiles/INSTALL.dir
+D:/assimp-master/lib/tools/assimp_cmd/CMakeFiles/assimp_cmd.dir
+D:/assimp-master/lib/tools/assimp_cmd/CMakeFiles/INSTALL.dir
+D:/assimp-master/lib/test/CMakeFiles/unit.dir
+D:/assimp-master/lib/test/CMakeFiles/INSTALL.dir
+D:/assimp-master/lib/test/headercheck/CMakeFiles/INSTALL.dir

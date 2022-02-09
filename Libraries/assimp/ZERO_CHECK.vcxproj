@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{326EB1CA-0B8D-3B83-AAA7-6D88C3FEC96A}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ZERO_CHECK</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\assimp-master\lib\include;D:\assimp-master\lib;D:\assimp-master\include;D:\assimp-master\code;D:\assimp-master\.;D:\assimp-master\contrib\zlib;D:\assimp-master\lib\contrib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\assimp-master\lib\include;D:\assimp-master\lib;D:\assimp-master\include;D:\assimp-master\code;D:\assimp-master\.;D:\assimp-master\contrib\zlib;D:\assimp-master\lib\contrib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\assimp-master\lib\include;D:\assimp-master\lib;D:\assimp-master\include;D:\assimp-master\code;D:\assimp-master\.;D:\assimp-master\contrib\zlib;D:\assimp-master\lib\contrib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\assimp-master\lib\include;D:\assimp-master\lib;D:\assimp-master\include;D:\assimp-master\code;D:\assimp-master\.;D:\assimp-master\contrib\zlib;D:\assimp-master\lib\contrib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\assimp-master\lib\CMakeFiles\012d6f4f0f88839409ef0b1f458a23fa\generate.stamp.rule">
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Checking Build System</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Software\CMake\bin\cmake.exe -SD:/assimp-master -BD:/assimp-master/lib --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/assimp-master/lib/Assimp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Software\CMake\share\cmake-3.22\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCXXInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCommonLanguageInclude.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeGenericSystem.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeInitializeConfigs.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeLanguageInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakePackageConfigHelpers.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeRCInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeSystemSpecificInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeSystemSpecificInitialize.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckCSourceCompiles.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckFunctionExists.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckIncludeFile.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckIncludeFileCXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckTypeSize.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\MSVC-C.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\MSVC-CXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPackageHandleStandardArgs.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPackageMessage.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPkgConfig.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Internal\CheckSourceCompiles.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC-C.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\WindowsPaths.cmake;D:\Software\CMake\share\cmake-3.22\Modules\WriteBasicConfigVersionFile.cmake;D:\assimp-master\CMakeLists.txt;D:\assimp-master\assimp.pc.in;D:\assimp-master\cmake-modules\FindPkgMacros.cmake;D:\assimp-master\cmake-modules\FindRT.cmake;D:\assimp-master\cmake-modules\FindZLIB.cmake;D:\assimp-master\cmake-modules\PrecompiledHeader.cmake;D:\assimp-master\cmake-modules\assimp-plain-config.cmake.in;D:\assimp-master\cmake-modules\cmake_uninstall.cmake.in;D:\assimp-master\code\CMakeLists.txt;D:\assimp-master\contrib\zlib\CMakeLists.txt;D:\assimp-master\contrib\zlib\zconf.h.cmakein;D:\assimp-master\contrib\zlib\zlib.pc.cmakein;D:\assimp-master\include\assimp\config.h.in;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeCCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeCXXCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeRCCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeSystem.cmake;D:\assimp-master\revision.h.in;D:\assimp-master\test\CMakeLists.txt;D:\assimp-master\test\headercheck\CMakeLists.txt;D:\assimp-master\tools\assimp_cmd\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\assimp-master\lib\CMakeFiles\generate.stamp;D:\assimp-master\lib\contrib\zlib\CMakeFiles\generate.stamp;D:\assimp-master\lib\code\CMakeFiles\generate.stamp;D:\assimp-master\lib\tools\assimp_cmd\CMakeFiles\generate.stamp;D:\assimp-master\lib\test\CMakeFiles\generate.stamp;D:\assimp-master\lib\test\headercheck\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Checking Build System</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Software\CMake\bin\cmake.exe -SD:/assimp-master -BD:/assimp-master/lib --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/assimp-master/lib/Assimp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Software\CMake\share\cmake-3.22\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCXXInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCommonLanguageInclude.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeGenericSystem.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeInitializeConfigs.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeLanguageInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakePackageConfigHelpers.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeRCInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeSystemSpecificInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeSystemSpecificInitialize.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckCSourceCompiles.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckFunctionExists.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckIncludeFile.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckIncludeFileCXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckTypeSize.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\MSVC-C.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\MSVC-CXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPackageHandleStandardArgs.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPackageMessage.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPkgConfig.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Internal\CheckSourceCompiles.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC-C.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\WindowsPaths.cmake;D:\Software\CMake\share\cmake-3.22\Modules\WriteBasicConfigVersionFile.cmake;D:\assimp-master\CMakeLists.txt;D:\assimp-master\assimp.pc.in;D:\assimp-master\cmake-modules\FindPkgMacros.cmake;D:\assimp-master\cmake-modules\FindRT.cmake;D:\assimp-master\cmake-modules\FindZLIB.cmake;D:\assimp-master\cmake-modules\PrecompiledHeader.cmake;D:\assimp-master\cmake-modules\assimp-plain-config.cmake.in;D:\assimp-master\cmake-modules\cmake_uninstall.cmake.in;D:\assimp-master\code\CMakeLists.txt;D:\assimp-master\contrib\zlib\CMakeLists.txt;D:\assimp-master\contrib\zlib\zconf.h.cmakein;D:\assimp-master\contrib\zlib\zlib.pc.cmakein;D:\assimp-master\include\assimp\config.h.in;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeCCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeCXXCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeRCCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeSystem.cmake;D:\assimp-master\revision.h.in;D:\assimp-master\test\CMakeLists.txt;D:\assimp-master\test\headercheck\CMakeLists.txt;D:\assimp-master\tools\assimp_cmd\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\assimp-master\lib\CMakeFiles\generate.stamp;D:\assimp-master\lib\contrib\zlib\CMakeFiles\generate.stamp;D:\assimp-master\lib\code\CMakeFiles\generate.stamp;D:\assimp-master\lib\tools\assimp_cmd\CMakeFiles\generate.stamp;D:\assimp-master\lib\test\CMakeFiles\generate.stamp;D:\assimp-master\lib\test\headercheck\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Checking Build System</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Software\CMake\bin\cmake.exe -SD:/assimp-master -BD:/assimp-master/lib --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/assimp-master/lib/Assimp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Software\CMake\share\cmake-3.22\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCXXInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCommonLanguageInclude.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeGenericSystem.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeInitializeConfigs.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeLanguageInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakePackageConfigHelpers.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeRCInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeSystemSpecificInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeSystemSpecificInitialize.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckCSourceCompiles.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckFunctionExists.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckIncludeFile.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckIncludeFileCXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckTypeSize.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\MSVC-C.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\MSVC-CXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPackageHandleStandardArgs.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPackageMessage.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPkgConfig.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Internal\CheckSourceCompiles.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC-C.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\WindowsPaths.cmake;D:\Software\CMake\share\cmake-3.22\Modules\WriteBasicConfigVersionFile.cmake;D:\assimp-master\CMakeLists.txt;D:\assimp-master\assimp.pc.in;D:\assimp-master\cmake-modules\FindPkgMacros.cmake;D:\assimp-master\cmake-modules\FindRT.cmake;D:\assimp-master\cmake-modules\FindZLIB.cmake;D:\assimp-master\cmake-modules\PrecompiledHeader.cmake;D:\assimp-master\cmake-modules\assimp-plain-config.cmake.in;D:\assimp-master\cmake-modules\cmake_uninstall.cmake.in;D:\assimp-master\code\CMakeLists.txt;D:\assimp-master\contrib\zlib\CMakeLists.txt;D:\assimp-master\contrib\zlib\zconf.h.cmakein;D:\assimp-master\contrib\zlib\zlib.pc.cmakein;D:\assimp-master\include\assimp\config.h.in;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeCCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeCXXCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeRCCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeSystem.cmake;D:\assimp-master\revision.h.in;D:\assimp-master\test\CMakeLists.txt;D:\assimp-master\test\headercheck\CMakeLists.txt;D:\assimp-master\tools\assimp_cmd\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\assimp-master\lib\CMakeFiles\generate.stamp;D:\assimp-master\lib\contrib\zlib\CMakeFiles\generate.stamp;D:\assimp-master\lib\code\CMakeFiles\generate.stamp;D:\assimp-master\lib\tools\assimp_cmd\CMakeFiles\generate.stamp;D:\assimp-master\lib\test\CMakeFiles\generate.stamp;D:\assimp-master\lib\test\headercheck\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Checking Build System</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Software\CMake\bin\cmake.exe -SD:/assimp-master -BD:/assimp-master/lib --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/assimp-master/lib/Assimp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Software\CMake\share\cmake-3.22\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCXXInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeCommonLanguageInclude.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeGenericSystem.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeInitializeConfigs.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeLanguageInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakePackageConfigHelpers.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeRCInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeSystemSpecificInformation.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CMakeSystemSpecificInitialize.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckCSourceCompiles.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckFunctionExists.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckIncludeFile.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckIncludeFileCXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\CheckTypeSize.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\MSVC-C.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Compiler\MSVC-CXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPackageHandleStandardArgs.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPackageMessage.cmake;D:\Software\CMake\share\cmake-3.22\Modules\FindPkgConfig.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Internal\CheckSourceCompiles.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC-C.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows-MSVC.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\Windows.cmake;D:\Software\CMake\share\cmake-3.22\Modules\Platform\WindowsPaths.cmake;D:\Software\CMake\share\cmake-3.22\Modules\WriteBasicConfigVersionFile.cmake;D:\assimp-master\CMakeLists.txt;D:\assimp-master\assimp.pc.in;D:\assimp-master\cmake-modules\FindPkgMacros.cmake;D:\assimp-master\cmake-modules\FindRT.cmake;D:\assimp-master\cmake-modules\FindZLIB.cmake;D:\assimp-master\cmake-modules\PrecompiledHeader.cmake;D:\assimp-master\cmake-modules\assimp-plain-config.cmake.in;D:\assimp-master\cmake-modules\cmake_uninstall.cmake.in;D:\assimp-master\code\CMakeLists.txt;D:\assimp-master\contrib\zlib\CMakeLists.txt;D:\assimp-master\contrib\zlib\zconf.h.cmakein;D:\assimp-master\contrib\zlib\zlib.pc.cmakein;D:\assimp-master\include\assimp\config.h.in;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeCCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeCXXCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeRCCompiler.cmake;D:\assimp-master\lib\CMakeFiles\3.22.2\CMakeSystem.cmake;D:\assimp-master\revision.h.in;D:\assimp-master\test\CMakeLists.txt;D:\assimp-master\test\headercheck\CMakeLists.txt;D:\assimp-master\tools\assimp_cmd\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\assimp-master\lib\CMakeFiles\generate.stamp;D:\assimp-master\lib\contrib\zlib\CMakeFiles\generate.stamp;D:\assimp-master\lib\code\CMakeFiles\generate.stamp;D:\assimp-master\lib\tools\assimp_cmd\CMakeFiles\generate.stamp;D:\assimp-master\lib\test\CMakeFiles\generate.stamp;D:\assimp-master\lib\test\headercheck\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
