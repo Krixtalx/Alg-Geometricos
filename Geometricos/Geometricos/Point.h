@@ -6,10 +6,9 @@
 
 /**
 *	@brief This class represents a 2D structure. This will be also the skeleton for other 2D structures such as Vertex or Vector.
-*	@author Lidia 
+*	@author Lidia
 */
-class Point
-{
+class Point {
 protected:
 	const static int DEFAULT_VALUE = INT_MAX;					// Value of X and Y coordinates for an incomplete Point.
 
@@ -72,9 +71,9 @@ public:
 	*/
 	bool equal(Point& pt) { return (BasicGeometry::equal(_x, pt._x) && BasicGeometry::equal(_y, pt._y)); }
 
-	 /**
-	 *	@brief Checks the position of the point respect to other two points (a, b).
-	 */
+	/**
+	*	@brief Checks the position of the point respect to other two points (a, b).
+	*/
 	bool forward(Point& a, Point& b) { return classify(a, b) == PointClassification::FORWARD; }
 
 	/**
@@ -160,6 +159,12 @@ public:
 	/**
 	*	@brief Calculates the double area of the triangle formed by (this, a, b).
 	*/
-	double triangleArea2(Point& a, Point& b) { return 0;  }
+	double triangleArea2(Point& a, Point& b) {
+		Point _a(this->_x - a._x, this->_y - a._y);
+		Point _b(this->_x - b._x, this->_y - b._y);
+		return _a._x * _b._y - _b._x * _a._y;
+	}
+
+	Point minus(const Point& other);
 };
 

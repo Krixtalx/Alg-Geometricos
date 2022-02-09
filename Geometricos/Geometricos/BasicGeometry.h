@@ -1,15 +1,17 @@
+#pragma once
 
+#include <cfloat>
 
-
-namespace BasicGeometry
-{
+namespace BasicGeometry {
 	const double EPSILON = 0.00001;			// Avoids problems with the resolution.
+	const double ZERO = 0.000000f;
+	const double INFINITO = DBL_MAX;
 
 	/**
 	*	@brief Checks if two values are equal.
 	*/
 	bool equal(double a, double b);
-	
+
 	/**
 	*	@brief Determinant 2x2.
 	*/
@@ -29,20 +31,20 @@ namespace BasicGeometry
 	*	@brief Returns the maximum value from the 3 specified values.
 	*/
 	double max3(double a, double b, double c);
-        
-        /**
-	*	@brief Returns the mininum value from the 2 specified values.
-	*/
+
+	/**
+*	@brief Returns the mininum value from the 2 specified values.
+*/
 	double min2(double a, double b);
 
 	/**
 	*	@brief Returns the maximum value from the 3 specified values.
 	*/
 	double max2(double a, double b);
-        
+
 };
 
-inline bool BasicGeometry::equal(double a, double b) 
+inline bool BasicGeometry::equal(double a, double b)
 {
 	return (abs(a - b) < EPSILON);
 }

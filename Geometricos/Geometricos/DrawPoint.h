@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   DrawPoint.h
  * Author: lidia
  *
@@ -14,15 +14,15 @@
 #include "Point.h"
 #include "Draw.h"
 
-class DrawPoint: public Draw {
-    Point dp;
+class DrawPoint : public Draw {
+	Point dp;
 public:
-    
-    DrawPoint(Point &p);
-    DrawPoint (const DrawPoint &ddp): dp (ddp.dp) , Draw() {}
-    void drawIt ();
-    void drawIt (TypeColor c);
-    virtual ~DrawPoint(){};
+
+	DrawPoint(Point& p);
+	DrawPoint(const DrawPoint& ddp) : dp(ddp.dp), Draw() {}
+	void drawIt();
+	void drawIt(TypeColor c);
+	virtual ~DrawPoint() {};
 
 };
 
