@@ -29,10 +29,9 @@ SegmentLine::~SegmentLine()
 }
 
 
-SegmentLine & SegmentLine::operator=(const SegmentLine & segment)
+SegmentLine& SegmentLine::operator=(const SegmentLine& segment)
 {
-	if (this != &segment)
-	{
+	if (this != &segment) {
 		this->_orig = segment._orig;
 		this->_dest = segment._dest;
 	}
@@ -42,35 +41,37 @@ SegmentLine & SegmentLine::operator=(const SegmentLine & segment)
 
 
 
-bool SegmentLine::distinct(SegmentLine & segment)
+bool SegmentLine::distinct(SegmentLine& segment)
 {
 	return !equal(segment);
 }
 
 
 
-bool SegmentLine::equal(SegmentLine & segment)
+bool SegmentLine::equal(SegmentLine& segment)
 {
 	return (_orig.equal(segment._orig) && _dest.equal(segment._dest)) || (_orig.equal(segment._dest) && _dest.equal(segment._orig));
 }
 
 Point SegmentLine::getPoint(double t)
 {
-
-    //XXXX
-	return Point();
+	Point resta(_dest.minus(_orig));
+	Point resultado;
+	resultado.setX(_orig.getX() + resta.getX() * t);
+	resultado.setY(_orig.getY() + resta.getY() * t);
+	return resultado;
 }
 
 
 bool SegmentLine::impSegmentIntersection(SegmentLine& segment)
 {
-//XXXX
-    return true;
+	//XXXX
+	return true;
 }
 
 bool SegmentLine::isHorizontal()
 {
-	return true;
+	return slope() == BasicGeometry::ZERO;
 }
 
 
@@ -78,22 +79,18 @@ bool SegmentLine::isHorizontal()
 
 bool SegmentLine::isVertical()
 {
-    //XXXX
-	return true; 
+	return slope() == BasicGeometry::INFINITO;
 }
 
 
 double SegmentLine::slope()
 {
-	//XXXX
-    
-    return 0;
+	return _orig.slope(_dest);
 }
 
 
 
-
- // PROTECTED METHODS
+// PROTECTED METHODS
 
 
 
@@ -105,5 +102,7 @@ void SegmentLine::out()
 	_dest.out();
 }
 
-
-
+bool SegmentLine::segmentIntersection(SegmentLine& l)
+{
+	return false;
+}

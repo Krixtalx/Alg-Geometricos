@@ -18,7 +18,7 @@ Vertex::Vertex(const Point& point)
 	_polygon = nullptr;
 }
 
-Vertex::Vertex(const Point & point, PolygonGeo* polygon, int pos)
+Vertex::Vertex(const Point& point, PolygonGeo* polygon, int pos)
 	: Point(point)
 {
 	_position = pos;
@@ -38,22 +38,26 @@ bool Vertex::convex()
 
 bool Vertex::concave()
 {
-    //XXXX
+	//XXXX
 	return 0;
 }
 
 
 
+Vertex Vertex::next()
+{
+	return _polygon->next(_position);
+}
+
 SegmentLine Vertex::nextEdge()
 {
-	//XXXX
+	//TODO: como obtener la arista
 	return SegmentLine();
 }
 
-Vertex & Vertex::operator=(const Vertex & vertex)
+Vertex& Vertex::operator=(const Vertex& vertex)
 {
-	if (this != &vertex)
-	{
+	if (this != &vertex) {
 		Point::operator=(vertex);
 		this->_polygon = vertex._polygon;
 		this->_position = vertex._position;
@@ -73,7 +77,12 @@ SegmentLine Vertex::previousEdge()
 void Vertex::out()
 {
 	Point::out();
-	std::cout << "Position: " <<  std::to_string(_position);
+	std::cout << "Position: " << std::to_string(_position);
+}
+
+Vertex Vertex::previous()
+{
+	return _polygon->next(_position);
 }
 
 
