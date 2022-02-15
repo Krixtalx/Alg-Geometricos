@@ -51,8 +51,7 @@ Vertex Vertex::next()
 
 SegmentLine Vertex::nextEdge()
 {
-	//TODO: como obtener la arista
-	return SegmentLine();
+	return this->_polygon->getEdge(_position + 1);
 }
 
 Vertex& Vertex::operator=(const Vertex& vertex)
@@ -69,8 +68,7 @@ Vertex& Vertex::operator=(const Vertex& vertex)
 
 SegmentLine Vertex::previousEdge()
 {
-	//XXXX
-	return SegmentLine();
+	return this->_polygon->getEdge(_position - 1);
 }
 
 

@@ -41,6 +41,11 @@ SegmentLine& SegmentLine::operator=(const SegmentLine& segment)
 
 
 
+double SegmentLine::getEquC()
+{
+	return 0.0;
+}
+
 bool SegmentLine::distinct(SegmentLine& segment)
 {
 	return !equal(segment);
