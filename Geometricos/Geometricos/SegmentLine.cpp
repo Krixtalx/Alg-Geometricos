@@ -43,7 +43,10 @@ SegmentLine& SegmentLine::operator=(const SegmentLine& segment)
 
 double SegmentLine::getEquC()
 {
-	return 0.0;
+	double pendiente = slope();
+	if (BasicGeometry::equal(pendiente, BasicGeometry::INFINITO))
+		return -BasicGeometry::INFINITO;
+	return _orig.getY() - slope() * _orig.getX();
 }
 
 bool SegmentLine::distinct(SegmentLine& segment)
@@ -70,8 +73,9 @@ Point SegmentLine::getPoint(double t)
 
 bool SegmentLine::impSegmentIntersection(SegmentLine& segment)
 {
-	//XXXX
-	return true;
+	Point a = this->_orig, b = this->_dest, c = segment._orig, d = segment._dest;
+
+	return (a.isBetween(c, d) || b.isBetween(c, d) || c.isBetween(a, b) || d.isBetween(a, b));
 }
 
 bool SegmentLine::isHorizontal()
@@ -109,5 +113,9 @@ void SegmentLine::out()
 
 bool SegmentLine::segmentIntersection(SegmentLine& l)
 {
-	return false;
+	Point a = this->_orig, b = this->_dest, c = l._orig, d = l._dest;
+
+	if (a.colinear(c, d) || b.colinear(c, d) || c.colinear(a, b) || d.colinear(a, b))
+		return false;
+	return (a.left(c, d) ^ b.left(c, d) && c.left(a, b) ^ d.left(a, b));
 }

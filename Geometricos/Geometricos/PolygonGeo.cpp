@@ -66,7 +66,10 @@ Vertex PolygonGeo::getVertexAt(int pos)
 
 bool PolygonGeo::convex()
 {
-	//XXXX
+	for (auto& vertice : _vertices) {
+		if (vertice.concave())
+			return false;
+	}
 	return true;
 }
 
@@ -108,7 +111,10 @@ PolygonGeo& PolygonGeo::operator=(const PolygonGeo& polygon)
 
 bool PolygonGeo::pointInConvexPolygonGeo(Point& point)
 {
-	//XXXX
+	for (unsigned i = 0; i < _vertices.size(); i++) {
+		if (!point.left(_vertices[i], _vertices[i % _vertices.size()]))
+			return false;
+	}
 	return true;
 }
 

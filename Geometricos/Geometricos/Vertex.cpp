@@ -31,15 +31,18 @@ Vertex::~Vertex()
 
 bool Vertex::convex()
 {
-	//XXXX
+	Vertex imas(this->next());
+	Vertex imenos(this->previous());
 
-	return false;
+	return imas.left(imenos, *this);
 }
 
 bool Vertex::concave()
 {
-	//XXXX
-	return 0;
+	Vertex imas(this->next());
+	Vertex imenos(this->previous());
+
+	return imas.right(imenos, *this);
 }
 
 
