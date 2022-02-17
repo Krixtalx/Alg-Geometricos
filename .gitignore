@@ -1,2 +1,6 @@
 
 *.ipch
+*.tlog
+*.obj
+*.log
+*.exe

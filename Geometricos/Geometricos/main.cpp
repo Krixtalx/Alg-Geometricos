@@ -246,8 +246,11 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 					ds2 = nullptr;
 
 					PointCloud s3(100, 2.0f, 2.0f);
-					DrawPointCloud* ds3 = new DrawPointCloud(s3);
-					
+					s3.save("test.bin");
+					PointCloud test("test.bin");
+
+					DrawPointCloud* ds3 = new DrawPointCloud(test);
+
 					ds3->drawIt(verde);
 					ds3 = nullptr;
 
