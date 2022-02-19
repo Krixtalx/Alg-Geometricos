@@ -80,7 +80,7 @@ bool SegmentLine::impSegmentIntersection(SegmentLine& segment)
 
 bool SegmentLine::isHorizontal()
 {
-	return slope() == BasicGeometry::ZERO;
+	return BasicGeometry::equal(slope(), BasicGeometry::ZERO);
 }
 
 
@@ -88,7 +88,7 @@ bool SegmentLine::isHorizontal()
 
 bool SegmentLine::isVertical()
 {
-	return slope() == BasicGeometry::INFINITO;
+	return BasicGeometry::equal(slope(), BasicGeometry::INFINITO);
 }
 
 
