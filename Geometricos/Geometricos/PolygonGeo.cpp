@@ -27,7 +27,20 @@ SegmentLine PolygonGeo::getEdge(int i)
 
 PolygonGeo::PolygonGeo(const std::string& filename)
 {
-	//XXXX
+	std::ifstream fin(filename, std::ios::in);
+	if (!fin.is_open()) {
+		throw std::runtime_error("[PolygonGeo::PolygonGeo] -> No se ha podido abrir el filestream para cargar el fichero.");
+	}
+
+	std::string line;
+	while (std::getline(fin, line)) {
+		auto pos = line.find(' ');
+		const float x = std::stof(line.substr(0, pos));
+		const float y = std::stof(line.substr(pos));
+		_vertices.emplace_back(Point(x, y), this, this->getNumVertices() - 1);
+	}
+
+	fin.close();
 
 }
 
@@ -120,7 +133,15 @@ bool PolygonGeo::pointInConvexPolygonGeo(Point& point)
 
 void PolygonGeo::save(const std::string& filename)
 {
-	//XXXX
+	std::ofstream fout(filename, std::ios::out);
+	if (!fout.is_open()) {
+		throw std::runtime_error("[PolygonGeo::save] -> No se ha podido abrir el filestream para guardar el fichero.");
+	}
+	for (auto& point : _vertices) {
+		fout << point.getX() << " " << point.getY() << std::endl;
+	}
+
+	fout.close();
 }
 
 void PolygonGeo::set(Vertex& vertex, int pos)

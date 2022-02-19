@@ -25,23 +25,24 @@ PointCloud::PointCloud(int size, float max_x, float max_y)
 
 PointCloud::PointCloud(const std::string& filename)
 {
-	std::ifstream fin(filename, std::ios::out | std::ios::binary);
+	std::ifstream fin(filename, std::ios::in);
 	if (!fin.is_open()) {
 		throw std::runtime_error("[PointCloud::PointCloud] -> No se ha podido abrir el filestream para cargar el fichero.");
 	}
-	size_t size;
-	fin.read((char*)&size, sizeof(size_t));
-	_points.resize(size);
-	fin.read((char*)&this->_points[0], size * sizeof(Point));
+
+	std::string line;
+	while (std::getline(fin, line)) {
+		auto pos = line.find(' ');
+		float x = std::stof(line.substr(0, pos));
+		float y = std::stof(line.substr(pos));
+		_points.emplace_back(x, y);
+	}
 
 	fin.close();
-	if (!fin.good())
-		throw std::runtime_error("[PointCloud::PointCloud] -> Se ha producido un error inesperado en la carga");
 }
 
 PointCloud::~PointCloud()
 {
-	_points.clear();
 }
 
 void PointCloud::addPoint(Point& p)
@@ -91,13 +92,13 @@ PointCloud& PointCloud::operator=(const PointCloud& pointCloud)
 
 void PointCloud::save(const std::string& filename)
 {
-	std::ofstream fout(filename, std::ios::out | std::ios::binary);
+	std::ofstream fout(filename, std::ios::out);
 	if (!fout.is_open()) {
 		throw std::runtime_error("[PointCloud::Save] -> No se ha podido abrir el filestream para guardar el fichero.");
 	}
-	size_t size = _points.size();
-	fout.write((char*)&size, sizeof(size_t));
-	fout.write((char*)&this->_points[0], size * sizeof(Point));
+	for (auto& point : _points) {
+		fout << point.getX() << " " << point.getY() << std::endl;
+	}
 
 	fout.close();
 }

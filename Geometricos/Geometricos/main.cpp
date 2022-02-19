@@ -19,6 +19,8 @@
 
 #include "InclGeom2D.h"
 #include "InclDraw2D.h"
+#include "Bezier.h"
+#include "DrawBezier.h"
 
 
 Movements movimientoActivo = Movements::NONE;
@@ -32,9 +34,8 @@ void mostrarAyuda()
 {
 	std::cout << "Ayuda" << std::endl
 		<< "================" << std::endl
-		<< "m -> Introduce mi triángulo a la escena" << std::endl
-		<< "p -> Introduce un punto a la escena" << std::endl
-		<< "s -> Introduce una nube de puntos a la escena" << std::endl
+		<< "s -> Apartados 1, 2, 3" << std::endl
+		<< "l -> Apartado 4" << std::endl
 		<< "Cursores y rueda ratón -> Rotación" << std::endl
 		<< "h -> Muestra esta ayuda" << std::endl
 		<< "q -> Cierra la aplicación" << std::endl;
@@ -228,31 +229,49 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 		case GLFW_KEY_S:
 			if (accion == GLFW_PRESS) {
 				try {
-					Vect2d a(2.0, 1.0);
-					Vect2d b(0.0, 1.0);
-					Vect2d c(-2.0, -2.0);
-					Vect2d d(3.0, 0.0);
+					Vect2d a(1.0, -1.0);
+					Vect2d b(2.0, 0.0);
+					Vect2d c(2.0, 1.0);
+					Vect2d d(1.0, 2.0);
+					Vect2d e(0.0, 1.0);
+					Vect2d f(0.0, 0.0);
+					TypeColor rojo(1.0, 0.0, 0.0);
 					TypeColor verde(0.0, 1.0, 0.0);
-
-					SegmentLine s1(a, b);
-					DrawSegment* ds1 = new DrawSegment(s1);
-					ds1->drawIt(verde);
-					ds1 = nullptr;
+					TypeColor azul(0.0, 0.0, 1.0);
+					TypeColor amarillo(1.0, 1.0, 0.0);
 
 					PolygonGeo s2;
-					s2.add(a); s2.add(b); s2.add(c); s2.add(d);
+					s2.add(a); s2.add(b); s2.add(c); s2.add(d); s2.add(e); s2.add(f);
 					DrawPolygon* ds2 = new DrawPolygon(s2);
 					ds2->drawIt(verde);
 					ds2 = nullptr;
 
 					PointCloud s3(100, 2.0f, 2.0f);
-					s3.save("test.bin");
-					PointCloud test("test.bin");
+					s3.save("pointCloud.ascii");
 
-					DrawPointCloud* ds3 = new DrawPointCloud(test);
+					DrawPointCloud* ds3 = new DrawPointCloud(s3);
 
 					ds3->drawIt(verde);
 					ds3 = nullptr;
+
+					a = s3.getPoint(rand() % s3.size());
+					b = s3.getPoint(rand() % s3.size());
+					SegmentLine seg(a, b);
+					DrawSegment* draw0 = new DrawSegment(seg);
+					draw0->drawIt(azul);
+
+					a = s3.getPoint(rand() % s3.size());
+					b = s3.getPoint(rand() % s3.size());
+					Line line(a, b);
+					DrawLine* draw1 = new DrawLine(line);
+					draw1->drawIt(rojo);
+
+					a = s3.getPoint(rand() % s3.size());
+					b = s3.getPoint(rand() % s3.size());
+					RayLine ray(a, b);
+					DrawRay* draw2 = new DrawRay(ray);
+					draw2->drawIt(amarillo);
+
 
 				} catch (std::exception& e) {
 					std::cout << "Exception captured on callbackKey"
@@ -274,6 +293,42 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 					DrawPoint* da = new DrawPoint(a);
 					da->drawIt();
 					da = nullptr;
+				} catch (std::exception& e) {
+					std::cout << "Exception captured on callbackKey"
+						<< std::endl
+						<< "===================================="
+						<< std::endl
+						<< e.what() << std::endl;
+				}
+
+				refresWindow(ventana);
+			}
+			break;
+
+		case GLFW_KEY_L:
+			if (accion == GLFW_PRESS) {
+				try {
+					Vect2d a(0.0, 0.0);
+					Vect2d b(0.42, 0);
+					Vect2d c(0.58, 1);
+					Vect2d d(1.0, 1);
+					TypeColor azul(0.0, 0.0, 1.0);
+
+					Bezier bez;
+					bez.addPunto(a); bez.addPunto(b); bez.addPunto(c); bez.addPunto(d);
+
+					DrawBezier* da = new DrawBezier(bez);
+					da->drawIt(azul);
+					da = nullptr;
+
+					SegmentLine seg(a, b);
+					DrawSegment* draw0 = new DrawSegment(seg);
+					draw0->drawIt();
+
+					SegmentLine seg2(c, d);
+					draw0 = new DrawSegment(seg2);
+					draw0->drawIt();
+
 				} catch (std::exception& e) {
 					std::cout << "Exception captured on callbackKey"
 						<< std::endl
