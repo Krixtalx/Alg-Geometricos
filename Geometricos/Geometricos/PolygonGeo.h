@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   PolygonGeo.h
  * Author: lidia
  *
@@ -18,9 +18,8 @@
 #include "Vect2d.h"
 #include "Vertex.h"
 
-    
-class PolygonGeo
-{
+
+class PolygonGeo {
 protected:
 	std::vector<Vertex> _vertices;
 
@@ -90,19 +89,19 @@ public:
 	*	@brief Checks if a line intersects with the PolygonGeo.
 	*	@param intersection If line and PolygonGeo intersect, then this point is the intersection. Otherwise this point is not valid.
 	*/
-	bool intersects(Line& line, Vect2d& interseccion);
+	bool intersect(Line l, Vect2d& intersec);
 
 	/**
 	*	@brief Checks if a rayline intersects with the PolygonGeo.
 	*	@param intersection If rayline and PolygonGeo intersect, then this point is the intersection. Otherwise this point is not valid.
 	*/
-	bool intersects(RayLine& ray, Vect2d& interseccion);
+	bool intersect(RayLine l, Vect2d& intersec);
 
 	/**
 	*	@brief Checks if a segment intersects with the PolygonGeo.
 	*	@param intersection If PolygonGeo and segment intersect, then this point is the intersection. Otherwise this point is not valid.
 	*/
-	bool intersects(SegmentLine& segment, Vect2d& interseccion);
+	bool intersect(SegmentLine l, Vect2d& intersec);
 
 	/**
 	*	@brief Returns the following vertex based on the specified index.

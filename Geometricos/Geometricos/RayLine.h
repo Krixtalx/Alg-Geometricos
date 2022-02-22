@@ -59,7 +59,11 @@ public:
 	*	@brief Checks if a segment intersects with a segment. 
 	*	@param intersection If rayline and segment intersect, then this point is the intersection. Otherwise this point is not valid.
 	*/
-	//virtual bool intersects(SegmentLine& segment, Vect2d& intersetion);
+	virtual bool intersect(Line l, Vect2d& intersec);
+
+	virtual bool intersect(RayLine l, Vect2d& intersec);
+
+	virtual bool intersect(SegmentLine l, Vect2d& intersec);
 
 	/**
 	*	@brief Checks if the parameter t is valid to get a point of the rayline.

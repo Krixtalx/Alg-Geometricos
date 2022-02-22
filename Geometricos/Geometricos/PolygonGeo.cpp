@@ -6,27 +6,21 @@
 #include "PolygonGeo.h"
 
 
-PolygonGeo::PolygonGeo()
-{
-}
+PolygonGeo::PolygonGeo() {}
 
-PolygonGeo::PolygonGeo(const PolygonGeo& PolygonGeo)
-{
+PolygonGeo::PolygonGeo(const PolygonGeo& PolygonGeo) {
 	_vertices = std::vector<Vertex>(PolygonGeo._vertices);
 }
 
-PolygonGeo::PolygonGeo(std::vector<Vertex>& vertices)
-{
+PolygonGeo::PolygonGeo(std::vector<Vertex>& vertices) {
 	_vertices = std::vector<Vertex>(vertices);
 }
 
-SegmentLine PolygonGeo::getEdge(int i)
-{
+SegmentLine PolygonGeo::getEdge(int i) {
 	return SegmentLine(getVertexAt(i % _vertices.size()), getVertexAt((i + 1) % _vertices.size()));
 }
 
-PolygonGeo::PolygonGeo(const std::string& filename)
-{
+PolygonGeo::PolygonGeo(const std::string& filename) {
 	std::ifstream fin(filename, std::ios::in);
 	if (!fin.is_open()) {
 		throw std::runtime_error("[PolygonGeo::PolygonGeo] -> No se ha podido abrir el filestream para cargar el fichero.");
@@ -44,12 +38,9 @@ PolygonGeo::PolygonGeo(const std::string& filename)
 
 }
 
-PolygonGeo::~PolygonGeo()
-{
-}
+PolygonGeo::~PolygonGeo() {}
 
-bool PolygonGeo::add(Vertex& vertex)
-{
+bool PolygonGeo::add(Vertex& vertex) {
 	int index = _vertices.size();
 
 	//if (intersectsWithAnySegment(vertex)) return false;
@@ -61,15 +52,13 @@ bool PolygonGeo::add(Vertex& vertex)
 	return true;
 }
 
-bool PolygonGeo::add(Point& point)
-{
+bool PolygonGeo::add(Point& point) {
 	Vertex vertex(point);
 
 	return this->add(vertex);
 }
 
-Vertex PolygonGeo::getVertexAt(int pos)
-{
+Vertex PolygonGeo::getVertexAt(int pos) {
 	if (pos >= 0 && pos < _vertices.size()) {
 		return _vertices[pos];
 	} else {
@@ -77,8 +66,23 @@ Vertex PolygonGeo::getVertexAt(int pos)
 	}
 }
 
-bool PolygonGeo::convex()
-{
+bool PolygonGeo::intersect(Line l, Vect2d& intersec) {
+	for (size_t i = 0; i < _vertices.size(); i++) {
+		if (getEdge(i).intersect(l, intersec))
+			return true;
+	}
+	return false;
+}
+
+bool PolygonGeo::intersect(RayLine l, Vect2d& intersec) {
+	for (size_t i = 0; i < _vertices.size(); i++) {
+		if (getEdge(i).intersect(l, intersec))
+			return true;
+	}
+	return false;
+}
+
+bool PolygonGeo::convex() {
 	for (auto& vertice : _vertices) {
 		if (vertice.concave())
 			return false;
@@ -88,8 +92,15 @@ bool PolygonGeo::convex()
 
 
 
-Vertex PolygonGeo::next(int index)
-{
+bool PolygonGeo::intersect(SegmentLine l, Vect2d& intersec) {
+	for (size_t i = 0; i < _vertices.size(); i++) {
+		if (getEdge(i).intersect(l, intersec))
+			return true;
+	}
+	return false;
+}
+
+Vertex PolygonGeo::next(int index) {
 	if (index >= 0 && index < _vertices.size()) {
 		return _vertices[(index + 1) % _vertices.size()];
 	}
@@ -97,15 +108,13 @@ Vertex PolygonGeo::next(int index)
 	return Vertex();
 }
 
-void PolygonGeo::out()
-{
+void PolygonGeo::out() {
 	for (int i = 0; i < _vertices.size(); i++) {
 		_vertices[i].out();
 	}
 }
 
-Vertex PolygonGeo::previous(int index)
-{
+Vertex PolygonGeo::previous(int index) {
 	if (index >= 0 && index < _vertices.size()) {
 		return _vertices[(index - 1 + _vertices.size()) % _vertices.size()];
 	}
@@ -113,8 +122,7 @@ Vertex PolygonGeo::previous(int index)
 	return Vertex();
 }
 
-PolygonGeo& PolygonGeo::operator=(const PolygonGeo& polygon)
-{
+PolygonGeo& PolygonGeo::operator=(const PolygonGeo& polygon) {
 	if (this != &polygon) {
 		this->_vertices = polygon._vertices;
 	}
@@ -122,8 +130,7 @@ PolygonGeo& PolygonGeo::operator=(const PolygonGeo& polygon)
 	return *this;
 }
 
-bool PolygonGeo::pointInConvexPolygonGeo(Point& point)
-{
+bool PolygonGeo::pointInConvexPolygonGeo(Point& point) {
 	for (unsigned i = 0; i < _vertices.size(); i++) {
 		if (!point.left(_vertices[i], _vertices[i % _vertices.size()]))
 			return false;
@@ -131,8 +138,7 @@ bool PolygonGeo::pointInConvexPolygonGeo(Point& point)
 	return true;
 }
 
-void PolygonGeo::save(const std::string& filename)
-{
+void PolygonGeo::save(const std::string& filename) {
 	std::ofstream fout(filename, std::ios::out);
 	if (!fout.is_open()) {
 		throw std::runtime_error("[PolygonGeo::save] -> No se ha podido abrir el filestream para guardar el fichero.");
@@ -144,8 +150,7 @@ void PolygonGeo::save(const std::string& filename)
 	fout.close();
 }
 
-void PolygonGeo::set(Vertex& vertex, int pos)
-{
+void PolygonGeo::set(Vertex& vertex, int pos) {
 	if (pos >= 0 && pos < _vertices.size()) {
 		_vertices[pos] = vertex;
 		vertex.setPolygon(this);

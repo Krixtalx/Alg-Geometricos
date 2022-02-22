@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   Line.h
  * Author: lidia
  *
@@ -12,8 +12,7 @@
 #include "SegmentLine.h"
 
 
-class Line : public SegmentLine
-{
+class Line : public SegmentLine {
 public:
 	/**
 	*	@brief Constructor.
@@ -39,19 +38,22 @@ public:
 	*	@brief Checks if the specified line intersects with this one.
 	*	@param intersection If both lines intersect, then this point is the intersection. Otherwise this point is not valid.
 	*/
-	//virtual bool intersects(Line& line, Vect2d& intersection);
+
+	virtual bool intersect(Line l, Vect2d& intersec);
+
 
 	/**
 	*	@brief Checks if the specified rayline intersects with this line.
 	*	@param intersection If rayline and line intersect, then this point is the intersection. Otherwise this point is not valid.
 	*/
-	//virtual bool intersects(RayLine& rayline, Vect2d& intersection);
+	virtual bool intersect(RayLine l, Vect2d& intersec);
 
 	/**
 	*	@brief Checks if the specified segment intersects with this line.
 	*	@param intersection If line and segment intersect, then this point is the intersection. Otherwise this point is not valid.
 	*/
-	//virtual bool intersects(SegmentLine& segment, Vect2d& intersection);
+
+	virtual bool intersect(SegmentLine l, Vect2d& intersec);
 
 	/**
 	*	@brief Checks if a segment line generates a non-proper intersection.

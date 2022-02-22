@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   SegmentLIne.h
  * Author: lidia
  *
@@ -13,48 +13,45 @@
 #include "Vect2d.h"
 
 class Line;
-class RayLine; 
+class RayLine;
 
 
 class SegmentLine {
-    
-friend class DrawSegment;      
-    
-protected:    
-    
-    Point _orig, _dest; 
 
-    /**
-    *	@brief Returns the parametric value T0 to calculate the distance between a point and any geometric object like lines, segments or raylines.
-    */
-    float getDistanceT0(Vect2d& point);
-    
-/**
- *	@brief Obstaints the parameters t and s where both lines intersects, if they do.
-	*/
-    //virtual bool intersects(Vect2d& p1, Vect2d& p2, float& t, float& s);
-        
-    
+	friend class DrawSegment;
 
-    
-public:    
-        /**
-    	@brief Default constructor.
+protected:
+
+	Point _orig, _dest;
+
+	/**
+	*	@brief Returns the parametric value T0 to calculate the distance between a point and any geometric object like lines, segments or raylines.
 	*/
+	float getDistanceT0(Vect2d& point);
+
+	/**
+	 *	@brief Obstaints the parameters t and s where both lines intersects, if they do.
+	*/
+	virtual bool intersects(Vect2d& p1, Vect2d& p2, float& t, float& s);
+
+public:
+	/**
+	@brief Default constructor.
+*/
 	SegmentLine();
 
 	/**
 	*	@brief Constructor.
 	*/
 	SegmentLine(const Point& a, const Point& b);
-      
-        
-        /**
-	*	@brief Copy constructor.
-	*/
+
+
+	/**
+*	@brief Copy constructor.
+*/
 	SegmentLine(const SegmentLine& segment);
-        
-        
+
+
 	/**
 	*	@brief Constructor.
 	*/
@@ -65,7 +62,7 @@ public:
 	*/
 	virtual ~SegmentLine();
 
-  
+
 	/**
 	*	@brief Returns the origin of the segment.
 	*/
@@ -80,14 +77,12 @@ public:
 	*	@brief Returns the constant of the equation of the implied line: c = y-mx.
 	*/
 	double getEquC();
-        
-        /**
-	*	@brief Checks if a segment is different to this one.
-	*/
+
+	/**
+*	@brief Checks if a segment is different to this one.
+*/
 	bool distinct(SegmentLine& segment);
 
-        
-        
 	/**
 	*	@brief Distance from a point defined by 'vector' to this segment.
 	*/
@@ -112,9 +107,9 @@ public:
 	*	@brief Determines whether a segment is horizontal or not (using EPSILON).
 	*/
 	bool isHorizontal();
-        
-        
-	
+
+
+
 	/**
 	*	@brief Determines whether or not a segment is vertical (using EPSILON).
 	*/
@@ -150,6 +145,12 @@ public:
 	*/
 	bool segmentIntersection(SegmentLine& l);
 
+	virtual bool intersect(Line l, Vect2d& intersec);
+
+	virtual bool intersect(RayLine l, Vect2d& intersec);
+
+	virtual bool intersect(SegmentLine l, Vect2d& intersec);
+
 	/**
 	*	@brief Modifies the origin of the segment.
 	*/
@@ -165,7 +166,7 @@ public:
 	*/
 	double triangleArea2(Point& p) { return p.triangleArea2(_orig, _dest); }
 
-        
+
 };
 
 
