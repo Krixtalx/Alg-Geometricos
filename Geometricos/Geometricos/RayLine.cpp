@@ -12,6 +12,17 @@ RayLine::RayLine(const RayLine& ray)
 
 RayLine::~RayLine() {}
 
+float RayLine::distPointRayline(Vect2d& v)
+{
+	Vect2d d = _dest.minus(_orig);
+	Vect2d aMinusP = v.minus(_orig);
+	float t0 = (d.dot(aMinusP)) / d.dot(d);
+	Vect2d aux(_orig.add(d.scalarMult(t0)));
+	if (t0 <= 0)
+		return aMinusP.getModule();
+	return v.sub(aux).getModule();
+}
+
 
 bool RayLine::intersect(Line l, Vect2d& intersec) {
 	float s, t;

@@ -55,8 +55,17 @@ bool SegmentLine::distinct(SegmentLine& segment) {
 
 
 
-float SegmentLine::distPointSegment(Vect2d& vector) {
-	return 0.0f;
+float SegmentLine::distPointSegment(Vect2d& v) {
+	Vect2d d = _dest.minus(_orig);
+	Vect2d aMinusP = v.minus(_orig);
+	float t0 = (d.dot(aMinusP)) / d.dot(d);
+	Vect2d aux(_orig.add(d.scalarMult(t0)));
+	Vect2d aux2(_orig.add(d));
+	if (t0 <= 0)
+		return aMinusP.getModule();
+	if (t0 >= 1)
+		return v.sub(aux2).getModule();
+	return v.sub(aux).getModule();
 }
 
 bool SegmentLine::equal(SegmentLine& segment) {

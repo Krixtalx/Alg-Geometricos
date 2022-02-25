@@ -165,6 +165,8 @@ public:
 		return _a._x * _b._y - _b._x * _a._y;
 	}
 
+	Point add(const Point& other);
+
 	Point minus(const Point& other);
 };
 

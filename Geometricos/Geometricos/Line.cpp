@@ -13,6 +13,15 @@ Line::Line(const Line& s)
 
 Line::~Line() {}
 
+double Line::distPointLine(Vect2d& v)
+{
+	Vect2d d = _dest.minus(_orig);
+	Vect2d aMinusP = v.minus(_orig);
+	float t0 = (d.dot(aMinusP))/d.dot(d);
+	Vect2d aux(_orig.add(d.scalarMult(t0)));
+	return v.sub(aux).getModule();
+}
+
 bool Line::intersect(Line l, Vect2d& intersec) {
 	float s, t;
 	Vect2d c = l.getA();

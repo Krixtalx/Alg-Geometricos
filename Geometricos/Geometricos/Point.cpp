@@ -96,6 +96,11 @@ double Point::slope(Point& p)
 	return (p._y - this->_y) / (p._x - this->_x);
 }
 
+Point Point::add(const Point& other)
+{
+	return Point(this->_x + other._x, this->_y + other._y);
+}
+
 Point Point::minus(const Point& other)
 {
 	return Point(this->_x - other._x, this->_y - other._y);

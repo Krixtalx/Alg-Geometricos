@@ -4,3 +4,9 @@
 *.obj
 *.log
 *.exe
+*.obj
+*.idb
+*.exe
+*.pdb
+*.db
+*.ascii
