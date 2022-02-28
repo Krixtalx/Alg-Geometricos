@@ -242,6 +242,14 @@ void Scene::deleteModel(int cual)
 	_models.erase(_models.begin() + cual);
 }
 
+void Scene::clearScene()
+{
+	for (auto model : _models) {
+		delete model;
+	}
+	_models.clear();
+}
+
 
 
 /**

@@ -50,6 +50,7 @@
          void initScene ( GLint widthViewport, GLint heightViewport );
          void addModel ( Draw* m );
          void deleteModel ( int cual );
+         void clearScene();
          Draw* getModel ( int cual );
          int getNumModels ();
          void setView ( TypeView v );

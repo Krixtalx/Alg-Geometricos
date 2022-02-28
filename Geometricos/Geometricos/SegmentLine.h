@@ -145,11 +145,11 @@ public:
 	*/
 	bool segmentIntersection(SegmentLine& l);
 
-	bool intersect(Line l, Vect2d& intersec);
+	virtual bool intersect(Line l, Vect2d& intersec);
 
-	bool intersect(RayLine l, Vect2d& intersec);
+	virtual bool intersect(RayLine l, Vect2d& intersec);
 
-	bool intersect(SegmentLine l, Vect2d& intersec);
+	virtual bool intersect(SegmentLine l, Vect2d& intersec);
 
 	/**
 	*	@brief Modifies the origin of the segment.

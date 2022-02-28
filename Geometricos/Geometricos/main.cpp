@@ -30,24 +30,22 @@ double ratonY = 0;
 int modeloActivo = -1;
 
 
-void mostrarAyuda()
-{
+void mostrarAyuda() {
 	std::cout << "Ayuda" << std::endl
 		<< "================" << std::endl
 		<< "s -> Apartados 1, 2, 3 de la parte A (Nube de puntos, segmentos y poligono) y parte B (Intersecciones)" << std::endl
 		<< "l -> Apartado 4 de la parte A (Bezier)" << std::endl
+		<< "r -> Resetea la escena" << std::endl
 		<< "Cursores y rueda ratón -> Rotación" << std::endl
 		<< "h -> Muestra esta ayuda" << std::endl
 		<< "q -> Cierra la aplicación" << std::endl;
 }
 
 
-void refresWindow(GLFWwindow* ventana)
-{
+void refresWindow(GLFWwindow* ventana) {
 	try {
 		Scene::getInstance()->refresh();
-	}
-	catch (std::runtime_error& e) {
+	} catch (std::runtime_error& e) {
 		std::cout << "Exception on refeshWindow"
 			<< std::endl
 			<< "=============================================="
@@ -59,8 +57,7 @@ void refresWindow(GLFWwindow* ventana)
 }
 
 
-void callbackTamFB(GLFWwindow* ventana, int ancho, int alto)
-{
+void callbackTamFB(GLFWwindow* ventana, int ancho, int alto) {
 	Scene::getInstance()->changeTamViewport(ancho, alto);
 }
 
@@ -71,8 +68,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 
 void callbackMouseButton(GLFWwindow* ventana, int boton, int accion,
-	int modificadores)
-{
+	int modificadores) {
 	if (boton == 0) {
 		if (accion == GLFW_PRESS) {
 			botonPulsado = true;
@@ -88,20 +84,17 @@ void callbackMouseButton(GLFWwindow* ventana, int boton, int accion,
 }
 
 
-void callbackMouseMovevent(GLFWwindow* ventana, double posX, double posY)
-{
+void callbackMouseMovevent(GLFWwindow* ventana, double posX, double posY) {
 	static clock_t ultimaEjecucion = clock();   // Se inicializa una única vez
 
 	movimientoActivo = Movements::ORBIT;
 
 	if (botonPulsado)
-
 		if ((clock() - ultimaEjecucion) > 10) {
 			double incX = posX - ratonX;
 			double incY = posY - ratonY;
 
 			Scene::getInstance()->moveCamera(movimientoActivo, incY, incX);
-
 
 			ratonX = posX;
 			ratonY = posY;
@@ -112,21 +105,15 @@ void callbackMouseMovevent(GLFWwindow* ventana, double posX, double posY)
 }
 
 
-void callbackMouseWheel(GLFWwindow* ventana, double incX, double incY)
-{
-
+void callbackMouseWheel(GLFWwindow* ventana, double incX, double incY) {
 	movimientoActivo = Movements::ZOOM;
 	Scene::getInstance()->moveCamera(movimientoActivo, -incY);
 	refresWindow(ventana);
 	movimientoActivo = Movements::NONE;
-
-
-
 }
 
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 	std::cout << "Prácticas de algoritmos Geométricos" << std::endl;
 
 	if (glfwInit() != GLFW_TRUE) {
@@ -179,8 +166,7 @@ int main(int argc, char** argv)
 		while (!glfwWindowShouldClose(miVentana)) {
 			glfwPollEvents();
 		}
-	}
-	catch (std::runtime_error& e) {
+	} catch (std::runtime_error& e) {
 		std::cout << "Excepction captured: " << e.what() << std::endl;
 		glfwWindowShouldClose(miVentana);
 	}
@@ -193,8 +179,7 @@ int main(int argc, char** argv)
 
 
 void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
-	int modificadores)
-{
+	int modificadores) {
 	GLfloat f = 0;
 
 	switch (tecla) {
@@ -216,8 +201,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				TypeColor magenta(1.0, 0.0, 1.0);
 				dt1->drawIt(magenta);
 				dt1 = nullptr;
-			}
-			catch (std::exception& e) {
+			} catch (std::exception& e) {
 				std::cout << "Exception captured in callbackKey"
 					<< std::endl
 					<< "===================================="
@@ -306,8 +290,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 					da = new DrawPoint(p);
 					da->drawIt();
 				}
-			}
-			catch (std::exception& e) {
+			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
 					<< std::endl
 					<< "===================================="
@@ -327,8 +310,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				DrawPoint* da = new DrawPoint(a);
 				da->drawIt();
 				da = nullptr;
-			}
-			catch (std::exception& e) {
+			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
 					<< std::endl
 					<< "===================================="
@@ -364,8 +346,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				draw0 = new DrawSegment(seg2);
 				draw0->drawIt();
 
-			}
-			catch (std::exception& e) {
+			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
 					<< std::endl
 					<< "===================================="
@@ -377,6 +358,10 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 		}
 		break;
 
+	case GLFW_KEY_R:
+		Scene::getInstance()->clearScene();
+		refresWindow(ventana);
+		break;
 
 	case GLFW_KEY_1:
 		if (accion == GLFW_PRESS) {
