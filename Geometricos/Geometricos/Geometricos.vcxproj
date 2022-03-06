@@ -19,6 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="3d\AABB.h" />
+    <ClInclude Include="3d\DrawAABB.h" />
+    <ClInclude Include="3d\DrawCloud3d.h" />
+    <ClInclude Include="3d\DrawLine3d.h" />
+    <ClInclude Include="3d\DrawPlane.h" />
+    <ClInclude Include="3d\DrawRay3d.h" />
+    <ClInclude Include="3d\DrawSegment3d.h" />
+    <ClInclude Include="3d\DrawTriangle3d.h" />
+    <ClInclude Include="3d\DrawTriangleModel.h" />
+    <ClInclude Include="3d\DrawVect3d.h" />
+    <ClInclude Include="3d\Edge3d.h" />
+    <ClInclude Include="3d\InclDraw3D.h" />
+    <ClInclude Include="3d\InclGeom3D.h" />
+    <ClInclude Include="3d\Line3d.h" />
+    <ClInclude Include="3d\Plane.h" />
+    <ClInclude Include="3d\PointCloud3d.h" />
+    <ClInclude Include="3d\Ray3d.h" />
+    <ClInclude Include="3d\Segment3d.h" />
+    <ClInclude Include="3d\Triangle3d.h" />
+    <ClInclude Include="3d\TriangleModel.h" />
+    <ClInclude Include="3d\Vect3d.h" />
     <ClInclude Include="BasicGeometry.h" />
     <ClInclude Include="Bezier.h" />
     <ClInclude Include="Circle.h" />
@@ -47,6 +68,25 @@
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="3d\AABB.cpp" />
+    <ClCompile Include="3d\DrawAABB.cpp" />
+    <ClCompile Include="3d\DrawCloud3d.cpp" />
+    <ClCompile Include="3d\DrawLine3d.cpp" />
+    <ClCompile Include="3d\DrawPlane.cpp" />
+    <ClCompile Include="3d\DrawRay3d.cpp" />
+    <ClCompile Include="3d\DrawSegment3d.cpp" />
+    <ClCompile Include="3d\DrawTriangle3d.cpp" />
+    <ClCompile Include="3d\DrawTriangleModel.cpp" />
+    <ClCompile Include="3d\DrawVect3d.cpp" />
+    <ClCompile Include="3d\Edge3d.cpp" />
+    <ClCompile Include="3d\Line3d.cpp" />
+    <ClCompile Include="3d\Plane.cpp" />
+    <ClCompile Include="3d\PointCloud3d.cpp" />
+    <ClCompile Include="3d\Ray3d.cpp" />
+    <ClCompile Include="3d\Segment3d.cpp" />
+    <ClCompile Include="3d\Triangle3d.cpp" />
+    <ClCompile Include="3d\TriangleModel.cpp" />
+    <ClCompile Include="3d\Vect3d.cpp" />
     <ClCompile Include="Bezier.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Draw.cpp" />
@@ -161,7 +201,7 @@
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>Source;Source/PrecompiledHeaders;../../Libraries/glew/include;../../Libraries/glm;../../Libraries/glfw/include;../../Libraries/assimp/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
