@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   Vect3d.h
  * Author: lidia
  *
@@ -13,6 +13,8 @@
 #include <limits.h>
 #include <vector>
 
+#include <glm/ext/vector_float3.hpp>
+
 
 class Triangle3d;
 
@@ -20,8 +22,7 @@ class Triangle3d;
 *	@brief Base class for any structure which needs 3 coordinates (point, vector...).
 *	@author Lidia Mª Ortega Alvarado.
 */
-class Vect3d
-{
+class Vect3d {
 protected:
 	const static int DEFAULT_VALUE = INT_MAX;	// Value of X and Y coordinates for an incomplete vector.
 
@@ -160,6 +161,8 @@ public:
 	*	@brief Shows some information of the vector at the debug window.
 	*/
 	virtual void out();
+
+	glm::vec3 toGLM();
 };
 
 

@@ -17,8 +17,6 @@
 #include "DrawSegment3d.h"
 
 
-
-
 class DrawAABB : public Draw {
 
 	AABB _aabb;

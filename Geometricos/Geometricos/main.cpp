@@ -21,6 +21,8 @@
 #include "InclDraw2D.h"
 #include "Bezier.h"
 #include "DrawBezier.h"
+#include "3d/Plane.h"
+#include "3d/DrawPlane.h"
 
 
 Movements movimientoActivo = Movements::NONE;
@@ -33,8 +35,8 @@ int modeloActivo = -1;
 void mostrarAyuda() {
 	std::cout << "Ayuda" << std::endl
 		<< "================" << std::endl
-		<< "s -> Apartados 1, 2, 3 de la parte A (Nube de puntos, segmentos y poligono) y parte B (Intersecciones)" << std::endl
-		<< "l -> Apartado 4 de la parte A (Bezier)" << std::endl
+		<< "s -> Apartado a" << std::endl
+		<< "l -> Apartado b" << std::endl
 		<< "r -> Resetea la escena" << std::endl
 		<< "Cursores y rueda ratón -> Rotación" << std::endl
 		<< "h -> Muestra esta ayuda" << std::endl
@@ -216,80 +218,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_S:
 		if (accion == GLFW_PRESS) {
 			try {
-				Vect2d a(1.0, -1.0);
-				Vect2d b(2.0, 0.0);
-				Vect2d c(2.0, 1.0);
-				Vect2d d(1.0, 2.0);
-				Vect2d e(0.0, 1.0);
-				Vect2d f(0.0, 0.0);
-				TypeColor rojo(1.0, 0.0, 0.0);
-				TypeColor verde(0.0, 1.0, 0.0);
-				TypeColor azul(0.0, 0.0, 1.0);
-				TypeColor amarillo(1.0, 1.0, 0.0);
 
-				PolygonGeo s2;
-				s2.add(a); s2.add(b); s2.add(c); s2.add(d); s2.add(e); s2.add(f);
-				DrawPolygon* ds2 = new DrawPolygon(s2);
-				ds2->drawIt(verde);
-				ds2 = nullptr;
-
-				PointCloud s3(100, 2.0f, 2.0f);
-				s3.save("pointCloud.ascii");
-				DrawPointCloud* ds3 = new DrawPointCloud(s3);
-				ds3->drawIt(verde);
-				ds3 = nullptr;
-
-				a = s3.getPoint(rand() % s3.size());
-				b = s3.getPoint(rand() % s3.size());
-				SegmentLine seg(a, b);
-				DrawSegment* draw0 = new DrawSegment(seg);
-				draw0->drawIt(azul);
-
-				a = s3.getPoint(rand() % s3.size());
-				b = s3.getPoint(rand() % s3.size());
-				Line line(a, b);
-				DrawLine* draw1 = new DrawLine(line);
-				draw1->drawIt(rojo);
-
-				a = s3.getPoint(rand() % s3.size());
-				b = s3.getPoint(rand() % s3.size());
-				RayLine ray(a, b);
-				DrawRay* draw2 = new DrawRay(ray);
-				draw2->drawIt(amarillo);
-
-				Vect2d p(0.0, 0.0);
-
-				std::cout << "Distance P-A: " << line.distPointLine(p) << std::endl;
-				std::cout << "Distance P-B: " << ray.distPointRayline(p) << std::endl;
-				std::cout << "Distance P-D: " << seg.distPointSegment(p) << std::endl;
-
-				DrawPoint* da;
-				if (line.intersect(ray, p)) {
-					da = new DrawPoint(p);
-					da->drawIt();
-				}
-
-				if (line.intersect(seg, p)) {
-					da = new DrawPoint(p);
-					da->drawIt();
-				}
-				if (ray.intersect(seg, p)) {
-					da = new DrawPoint(p);
-					da->drawIt();
-				}
-				//Intersecciones poligono
-				if (s2.intersect(seg, p)) {
-					da = new DrawPoint(p);
-					da->drawIt();
-				}
-				if (s2.intersect(ray, p)) {
-					da = new DrawPoint(p);
-					da->drawIt();
-				}
-				if (s2.intersect(line, p)) {
-					da = new DrawPoint(p);
-					da->drawIt();
-				}
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
 					<< std::endl
@@ -325,26 +254,20 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_L:
 		if (accion == GLFW_PRESS) {
 			try {
-				Vect2d a(0.0, 0.0);
-				Vect2d b(0.42, 0);
-				Vect2d c(0.58, 1);
-				Vect2d d(1.0, 1);
-				TypeColor azul(0.0, 0.0, 1.0);
-
-				Bezier bez;
-				bez.addPunto(a); bez.addPunto(b); bez.addPunto(c); bez.addPunto(d);
-
-				DrawBezier* da = new DrawBezier(bez);
-				da->drawIt(azul);
-				da = nullptr;
-
-				SegmentLine seg(a, b);
-				DrawSegment* draw0 = new DrawSegment(seg);
-				draw0->drawIt();
-
-				SegmentLine seg2(c, d);
-				draw0 = new DrawSegment(seg2);
-				draw0->drawIt();
+				Vect3d a, b, c, d, e, f, g;
+				a = { 0, 0, 0 };
+				b = { 1, 0, 0 };
+				c = { 0, 1, 0 };
+				d = { 0, 1, 0 };
+				e = { 0, 0, 1 };
+				f = { 1, 0, 0 };
+				g = { 0, 0, 1 };
+				Plane planoA(a, b, c, true);
+				Plane planoB(a, b, c, true);
+				Plane planoC(a, b, c, true);
+				DrawPlane* draw;
+				draw = new DrawPlane(planoA);
+				draw->drawIt({255, 0, 0});
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"

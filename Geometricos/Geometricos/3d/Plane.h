@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   Plane.h
  * Author: lidia
  *
@@ -14,27 +14,25 @@
 #include "Segment3d.h"
 #include "Vect3d.h"
 
-/**
-*	@brief This class a represents a 3D plane represented by three points.
-*	@author Lidia Mª Ortega Alvarado.
-*/
-class Plane
-{
+ /**
+ *	@brief This class a represents a 3D plane represented by three points.
+ *	@author Lidia Mª Ortega Alvarado.
+ */
+class Plane {
+	friend class DrawPlane;
 public:
-	enum IntersectionType 
-	{
+	enum IntersectionType {
 		POINT, SEGMENT, COPLANAR
 	};
 
 public:
-	class IntersectionLine 
-	{
+	class IntersectionLine {
 		Vect3d _point;
 		IntersectionType _type;
 	};
 
 protected:
-	Vect3d _a, _b, _c;  
+	Vect3d _a, _b, _c;
 
 public:
 	/**
@@ -58,7 +56,7 @@ public:
 
 	/**
 	*	@brief Returns true if p is in the plane.
-	*/	
+	*/
 	bool coplanar(Vect3d& point);
 
 	/**
@@ -91,22 +89,22 @@ public:
 	*/
 	Vect3d getNormal();
 
-        /**
-	*	@brief Calculates the intersection point of a line and this plane, if exists.
-	*/
+	/**
+*	@brief Calculates the intersection point of a line and this plane, if exists.
+*/
 	bool intersect(Line3d& line, Vect3d& point);
-        
-        /**
-	*	@brief Calculates the intersection point of three planes.
-	*/
+
+	/**
+*	@brief Calculates the intersection point of three planes.
+*/
 	bool intersect(Plane& pa, Plane& pb, Vect3d& pinter);
-        
+
 	/**
 	*	@brief Calculates the intersection line of a plane with this plane.
 	*/
 	bool intersect(Plane& plane, Line3d& line);
 
-	
+
 	/**
 	*	@brief Assignment operator.
 	*/

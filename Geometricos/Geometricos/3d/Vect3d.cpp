@@ -113,3 +113,7 @@ void Vect3d::out() {
 	std::cout << "Coordinate x: " << std::to_string(getX()) << ", Coordinate y: ";
 	std::cout << std::to_string(getY()) << ", Coordinate z: " << std::to_string(getZ());
 }
+
+glm::vec3 Vect3d::toGLM() {
+	return glm::vec3(X, Y, Z);
+}
