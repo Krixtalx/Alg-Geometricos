@@ -49,7 +49,7 @@ void DrawPlane::drawIt(TypeColor c) {
 }
 
 void DrawPlane::drawIt(glm::vec4 c) {
-	setColorActivo({ c });
+	setColorActivo(c);
 	setAmbient(c);
 	drawIt();
 }
