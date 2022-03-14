@@ -57,8 +57,12 @@ inline bool BasicGeometry::equal(double a, double b) {
 	return (abs(a - b) < EPSILON);
 }
 
+/*
+* |a c|
+* |b d|
+*/
 inline double BasicGeometry::determinant2x2(double a, double b, double c, double d) {
-	return (a * c - b * d);
+	return (a * d - b * c);
 }
 
 inline double BasicGeometry::determinant3x3(Vect3d a, Vect3d b, Vect3d c) {

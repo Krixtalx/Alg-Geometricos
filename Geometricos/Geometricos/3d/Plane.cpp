@@ -35,15 +35,15 @@ double Plane::distance(Vect3d& point) {
 }
 
 double Plane::getA() {
-	return (BasicGeometry::determinant2x2(_c.getZ() - _a.getZ(), _c.getY() - _a.getY(), _b.getY() - _a.getY(), _b.getZ() - _a.getZ()));
+	return (BasicGeometry::determinant2x2(_c.getZ() - _a.getZ(), _c.getY() - _a.getY(), _b.getZ() - _a.getZ(), _b.getY() - _a.getY()));
 }
 
 double Plane::getB() {
-	return (BasicGeometry::determinant2x2(_c.getX() - _a.getX(), _c.getZ() - _a.getZ(), _b.getZ() - _a.getZ(), _b.getX() - _a.getX()));
+	return (BasicGeometry::determinant2x2(_c.getX() - _a.getX(), _c.getZ() - _a.getZ(), _b.getX() - _a.getX(), _b.getZ() - _a.getZ()));
 }
 
 double Plane::getC() {
-	return (BasicGeometry::determinant2x2(_c.getY() - _a.getY(), _c.getX() - _a.getX(), _b.getX() - _a.getX(), _b.getY() - _a.getY()));
+	return (BasicGeometry::determinant2x2(_c.getY() - _a.getY(), _c.getX() - _a.getX(), _b.getY() - _a.getY(), _b.getX() - _a.getX()));
 }
 
 Vect3d Plane::getNormal() {
@@ -62,12 +62,12 @@ bool Plane::intersect(Plane& plane, Line3d& line) {
 
 	float d1 = this->getD();
 	float d2 = plane.getD();
-	double x0 = (d2 * BasicGeometry::determinant2x2(n1.getY(), n3.getY(), n3.getZ(), n1.getZ()) - d1 * BasicGeometry::determinant2x2(n2.getY(), n3.getY(), n3.getZ(), n2.getZ())) / det;
-	double y0 = (d2 * BasicGeometry::determinant2x2(n3.getX(), n1.getX(), n1.getZ(), n3.getZ()) - d1 * BasicGeometry::determinant2x2(n3.getX(), n2.getX(), n2.getZ(), n3.getZ())) / det;
-	double z0 = (d2 * BasicGeometry::determinant2x2(n1.getX(), n3.getX(), n3.getY(), n1.getY()) - d1 * BasicGeometry::determinant2x2(n2.getX(), n3.getX(), n3.getY(), n2.getY())) / det;
+	double x = (d2 * BasicGeometry::determinant2x2(n1.getY(), n3.getY(), n1.getZ(), n3.getZ()) - d1 * BasicGeometry::determinant2x2(n2.getY(), n3.getY(), n2.getZ(), n3.getZ())) / det;
+	double y = (d2 * BasicGeometry::determinant2x2(n3.getX(), n1.getX(), n3.getZ(), n1.getZ()) - d1 * BasicGeometry::determinant2x2(n3.getX(), n2.getX(), n3.getZ(), n2.getZ())) / det;
+	double z = (d2 * BasicGeometry::determinant2x2(n1.getX(), n3.getX(), n1.getY(), n3.getY()) - d1 * BasicGeometry::determinant2x2(n2.getX(), n3.getX(), n2.getY(), n3.getY())) / det;
 
-	Vect3d orig(x0, y0, z0);
-	Vect3d dest(x0 + n3.getX(), y0 + n3.getY(), z0 + n3.getZ());
+	Vect3d orig(x, y, z);
+	Vect3d dest(x + n3.getX(), y + n3.getY(), z + n3.getZ());
 	line.setOrigin(orig);
 	line.setDestination(dest);
 	return true;

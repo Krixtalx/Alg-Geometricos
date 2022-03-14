@@ -336,14 +336,37 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				draw = new DrawPlane(planoC);
 				draw->drawIt({ 0, 0, 1, 0.5 });
 
+				//Vect3d ptA(0, 0, 0), ptB(1, 0, 0), ptC(0, 0, 1);
+				//Plane planoA(ptA, ptB, ptC, true);
+				//DrawPlane* dpA = new DrawPlane(planoA);
+				//dpA->drawIt({ 1, 0, 0, 0.5 });
+
+				//ptA = Vect3d(-4, 0, 0);
+				//ptB = Vect3d(0, 0, 3);
+				//ptC = Vect3d(0, 4, 0);
+				//Plane planoB(ptA, ptB, ptC, true);
+				//DrawPlane* dpB = new DrawPlane(planoB);
+				//dpB->drawIt({ 0, 1, 0, 0.5 });
+
+				//ptA = Vect3d(0, -2, 0);
+				//ptB = Vect3d(0, 0, -2);
+				//ptC = Vect3d(1, 1, 0);
+				//Plane planoC(ptA, ptB, ptC, true);
+				//DrawPlane* dpC = new DrawPlane(planoC);
+				//dpC->drawIt({ 0, 0, 1, 0.5 });
+
 				Line3d line3d;
 				if (planoA.intersect(planoB, line3d)) {
+					std::cout << "Hay interseccion planoA-planoB" << std::endl;
 					DrawLine3d* drawLine = new DrawLine3d(line3d);
 					drawLine->drawIt();
 				}
 
 				Vect3d point;
 				if (planoA.intersect(planoB, planoC, point)) {
+					std::cout << "Hay interseccion planoA-planoB-planoC en ";
+					point.out();
+					std::cout << std::endl;
 					DrawVect3d* dVect = new DrawVect3d(point);
 					dVect->drawIt({ 1, 0, 1 });
 				}

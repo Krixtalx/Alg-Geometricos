@@ -114,8 +114,8 @@ Vect3d Vect3d::xProduct(const Vect3d& b) {
 }
 
 void Vect3d::out() {
-	std::cout << "Coordinate x: " << std::to_string(getX()) << ", Coordinate y: ";
-	std::cout << std::to_string(getY()) << ", Coordinate z: " << std::to_string(getZ());
+	std::cout << "x: " << std::to_string(getX()) << ", y: ";
+	std::cout << std::to_string(getY()) << ", z: " << std::to_string(getZ());
 }
 
 glm::vec3 Vect3d::toGLM() {
