@@ -3,7 +3,7 @@
 #include "Segment3d.h"
 
 
-Segment3d::Segment3d(Vect3d & orig, Vect3d & dest)
+Segment3d::Segment3d(const Vect3d & orig, const Vect3d & dest)
 	: Edge3d(orig, dest)
 {
 }

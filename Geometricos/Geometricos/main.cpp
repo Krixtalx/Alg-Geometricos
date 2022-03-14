@@ -23,6 +23,15 @@
 #include "DrawBezier.h"
 #include "3d/Plane.h"
 #include "3d/DrawPlane.h"
+#include "3d/DrawLine3d.h"
+#include "3d/DrawVect3d.h"
+#include "3d/PointCloud3d.h"
+#include "3d/DrawSegment3d.h"
+#include "3d/DrawCloud3d.h"
+#include "3d/DrawAABB.h"
+#include "3d/TriangleModel.h"
+#include "3d/DrawTriangleModel.h"
+#include "3d/DrawTriangle3d.h"
 
 
 Movements movimientoActivo = Movements::NONE;
@@ -37,6 +46,7 @@ void mostrarAyuda() {
 		<< "================" << std::endl
 		<< "s -> Apartado a" << std::endl
 		<< "l -> Apartado b" << std::endl
+		<< "y -> Apartado c" << std::endl
 		<< "r -> Resetea la escena" << std::endl
 		<< "Cursores y rueda ratón -> Rotación" << std::endl
 		<< "h -> Muestra esta ayuda" << std::endl
@@ -218,6 +228,59 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_S:
 		if (accion == GLFW_PRESS) {
 			try {
+				//Crear una nube de puntos aleatoria de tamaño 50
+				PointCloud3d cloud(50, 5.0f, 5.0f, 5.0f);
+				DrawCloud3d* drawCloud = new DrawCloud3d(cloud);
+				drawCloud->drawIt({ 0, 255, 0 });
+
+				//Encontrar los puntos más alejados (getMostDistanced), crear el segmento asociado y pintarlo.
+				int a, b;
+				cloud.getMostDistanced(a, b);
+				Segment3d segment(cloud.getPoint(a), cloud.getPoint(b));
+				DrawSegment3d* drawSegment = new DrawSegment3d(segment);
+				drawSegment->drawIt({ 255, 0, 0 });
+
+				//Calcular el punto más distanciado a la recta que contiene al segmento anterior y pintarla.
+				Line3d line(segment.getOrigin(), segment.getDestination());
+				auto points = cloud.getPoints();
+				float maxDist = -FLT_MAX;
+				Vect3d p;
+				for (auto point : points) {
+					float dist = line.distance(point);
+					if (dist > maxDist) {
+						maxDist = dist;
+						p = point;
+					}
+				}
+				line = line.normalLine(p);
+				DrawLine3d* drawLine = new DrawLine3d(line);
+				drawLine->drawIt({ 255, 0, 255 });
+
+				//Calcular y dibujar la caja envolvente de la nube de puntos.
+				AABB aabb(cloud.getAABB());
+				DrawAABB* drawAABB = new DrawAABB(aabb);
+				drawAABB->drawIt({ 0, 0, 255 });
+				Vect3d v1(aabb.getMin().getX(), aabb.getMin().getY(), aabb.getMin().getZ());
+				Vect3d v2(aabb.getMax().getX(), aabb.getMin().getY(), aabb.getMin().getZ());
+				Vect3d v3(aabb.getMin().getX(), aabb.getMin().getY(), aabb.getMax().getZ());
+				Plane plano(v1, v2, v3, true);
+				DrawPlane* drawPlane = new DrawPlane(plano);
+				drawPlane->drawIt({ 255, 255, 0 });
+
+				bool found = false;
+				while (!found) {
+					int a = rand() % points.size();
+					int b = rand() % points.size();
+					Line3d l(points[a], points[b]);
+					found = plano.intersect(l, p);
+					if (found) {
+						drawLine = new DrawLine3d(l);
+						drawLine->drawIt({ 255, 0, 0 });
+					}
+
+				}
+				DrawVect3d* drawPoint = new DrawVect3d(p);
+				drawPoint->drawIt({ 255, 0, 0 });
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
@@ -263,11 +326,62 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				f = { 1, 0, 0 };
 				g = { 0, 0, 1 };
 				Plane planoA(a, b, c, true);
-				Plane planoB(a, b, c, true);
-				Plane planoC(a, b, c, true);
+				Plane planoB(a, d, e, true);
+				Plane planoC(a, f, g, true);
 				DrawPlane* draw;
 				draw = new DrawPlane(planoA);
-				draw->drawIt({255, 0, 0});
+				draw->drawIt({ 255, 0, 0, 100 });
+				draw = new DrawPlane(planoB);
+				draw->drawIt({ 0, 255, 0, 100 });
+				draw = new DrawPlane(planoC);
+				draw->drawIt({ 0, 0, 255, 100 });
+
+				Line3d line3d;
+				if (planoA.intersect(planoB, line3d)) {
+					DrawLine3d* drawLine = new DrawLine3d(line3d);
+					drawLine->drawIt();
+				}
+
+				Vect3d point;
+				if (planoA.intersect(planoB, planoC, point)) {
+					DrawVect3d* dVect = new DrawVect3d(point);
+					dVect->drawIt({ 255, 0, 255 });
+				}
+
+
+			} catch (std::exception& e) {
+				std::cout << "Exception captured on callbackKey"
+					<< std::endl
+					<< "===================================="
+					<< std::endl
+					<< e.what() << std::endl;
+			}
+
+			refresWindow(ventana);
+		}
+		break;
+
+	case GLFW_KEY_Y:
+		if (accion == GLFW_PRESS) {
+			try {
+				TriangleModel model("vacaSinNormales.obj");
+				DrawTriangleModel* drawModel = new DrawTriangleModel(model);
+				drawModel->drawIt();
+
+				AABB aabb(model.getAABB());
+				DrawAABB* drawAABB = new DrawAABB(aabb);
+				drawAABB->drawIt({ 0, 0, 255 });
+				DrawTriangle3d* drawTriangle;
+				auto triangles(model.getFaces());
+				for (auto& triangle : triangles) {
+					for (size_t i = 0; i < 3; i++) {
+						if (BasicGeometry::anyEqual(triangle[i], aabb.getMin()) || BasicGeometry::anyEqual(triangle[i], aabb.getMax())) {
+							i = 3;
+							drawTriangle = new DrawTriangle3d(triangle);
+							drawTriangle->drawIt({ 255, 0, 0 });
+						}
+					}
+				}
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"

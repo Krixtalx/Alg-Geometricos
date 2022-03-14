@@ -37,7 +37,7 @@ public:
 	/**
 	*	@brief Constructor.
 	*/
-	Edge3d(Vect3d& orig, Vect3d& dest);
+	Edge3d(const Vect3d& orig, const Vect3d& dest);
 
 	/**
 	*	@brief Copy constructor.
@@ -58,6 +58,10 @@ public:
 	*	@brief Returns the initial point.
 	*/
 	Vect3d getOrigin();
+
+	void setOrigin(const Vect3d& orig);
+
+	void setDestination(const Vect3d& dest);
 
 	/**
 	*	@brief Returns a point given the parametric value. It may be wrong if the t value is not valid for the specific subclass.

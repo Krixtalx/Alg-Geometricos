@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   Line3d.h
  * Author: lidia
  *
@@ -13,8 +13,7 @@
 #include "Line3d.h"
 
 
-class Line3d : public Edge3d
-{
+class Line3d : public Edge3d {
 public:
 	enum classifyLines { NON_INTERSECT, PARALLEL, INTERSECT, THESAME };
 
@@ -33,7 +32,7 @@ public:
 	/**
 	*	@brief Constructor.
 	*/
-	Line3d(Vect3d& orig, Vect3d& dest);
+	Line3d(const Vect3d& orig, const Vect3d& dest);
 
 	/**
 	*	@brief Copy constructor.
@@ -49,12 +48,12 @@ public:
 	*	@brief Distance between two lines.
 	*/
 	double distance(Line3d& line);
-    
-    
-    /**
-    *    @brief Distance between point p and this.
-    */
-    double distance(Vect3d& p);
+
+
+	/**
+	*    @brief Distance between point p and this.
+	*/
+	double distance(Vect3d& p);
 
 	/**
 	*	@brief Returns the normal to this line that passes through p.
@@ -71,7 +70,7 @@ public:
 	*/
 	virtual void out();
 
-	
+
 };
 
 

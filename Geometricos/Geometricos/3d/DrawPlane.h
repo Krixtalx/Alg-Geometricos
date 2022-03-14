@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   DrawPlane.h
  * Author: lidia
  *
@@ -14,20 +14,21 @@
 #include "../Draw.h"
 
 
-class DrawPlane: public Draw {
-    
-    Plane dt;
-    
-    public:
-        
-    DrawPlane (Plane &t); 
-    
-    DrawPlane (const DrawPlane &ddt): dt (ddt.dt) , Draw() {}
-    
-    void drawIt ();
-    void drawIt (TypeColor c);
-    
-    virtual ~DrawPlane(){};
+class DrawPlane : public Draw {
+
+	Plane dt;
+
+public:
+
+	DrawPlane(Plane& t);
+
+	DrawPlane(const DrawPlane& ddt) : dt(ddt.dt), Draw() {}
+
+	void drawIt();
+	void drawIt(TypeColor c);
+	void drawIt(glm::vec4 c);
+
+	virtual ~DrawPlane() {};
 };
 
 #endif /* DRAWPLANE_H */

@@ -6,6 +6,7 @@
 #include "../BasicGeometry.h"
 #include "PointCloud3d.h"
 #include <corecrt_math_defines.h>
+#include <iostream>
 
 
 PointCloud3d::PointCloud3d()
@@ -150,13 +151,14 @@ void PointCloud3d::updateMaxMin(int index) {
 
 void PointCloud3d::getMostDistanced(int& a, int& b) {
 	a = -1; b = -1;
-	float currentMaxDistance = FLT_MAX;
+	float currentMaxDistance = -FLT_MAX;
 	float dist = 0;
 	for (size_t i = 0; i < _points.size(); i++) {
 		for (size_t j = i + 1; j < _points.size(); j++) {
 			dist = _points[i].distance(_points[j]);
 			if (dist > currentMaxDistance) {
 				a = i; b = j;
+				currentMaxDistance = dist;
 			}
 		}
 	}

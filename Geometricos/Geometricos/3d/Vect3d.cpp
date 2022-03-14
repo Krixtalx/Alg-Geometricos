@@ -25,7 +25,7 @@ Vect3d::Vect3d(const Vect3d& vector) {
 Vect3d::~Vect3d() {
 }
 
-Vect3d Vect3d::add(Vect3d& b) {
+Vect3d Vect3d::add(const Vect3d& b) {
 	return Vect3d(getX() + b.getX(), getY() + b.getY(), getZ() + b.getZ());
 }
 
@@ -36,10 +36,10 @@ bool Vect3d::collinear(Vect3d& a, Vect3d& b) {
 }
 
 double Vect3d::distance(Vect3d& p) {
-	return std::sqrt(std::pow(p.X - X, 2) + std::pow(p.Y - Y, 2) + std::pow(p.Z - Z, 2));
+	return std::sqrt(std::pow(p._value[X] - _value[X], 2) + std::pow(p._value[Y] - _value[Y], 2) + std::pow(p._value[Z] - _value[Z], 2));
 }
 
-double Vect3d::dot(Vect3d& v) {
+double Vect3d::dot(const Vect3d& v) {
 	return (getX() * v.getX() + getY() * v.getY() + getZ() * v.getZ());
 }
 
@@ -47,15 +47,15 @@ std::vector<double> Vect3d::getVert() {
 	return std::vector<double> {getX(), getY(), getZ()};
 }
 
-double Vect3d::getX() {
+double Vect3d::getX() const {
 	return _value[X];
 }
 
-double Vect3d::getY() {
+double Vect3d::getY() const {
 	return _value[Y];
 }
 
-double Vect3d::getZ() {
+double Vect3d::getZ() const {
 	return _value[Z];
 }
 
@@ -77,6 +77,10 @@ bool Vect3d::operator==(const Vect3d& vector) {
 
 bool Vect3d::operator!=(const Vect3d& vector) {
 	return !(this->operator==(vector));
+}
+
+float Vect3d::operator[](const int& pos) {
+	return _value[pos];
 }
 
 Vect3d Vect3d::scalarMul(double value) {
@@ -101,11 +105,11 @@ void Vect3d::setVert(double x, double y, double z) {
 	this->_value[Z] = z;
 }
 
-Vect3d Vect3d::sub(Vect3d& b) {
+Vect3d Vect3d::sub(const Vect3d& b) {
 	return Vect3d(getX() - b.getX(), getY() - b.getY(), getZ() - b.getZ());
 }
 
-Vect3d Vect3d::xProduct(Vect3d& b) {
+Vect3d Vect3d::xProduct(const Vect3d& b) {
 	return Vect3d(getY() * b.getZ() - getZ() * b.getY(), getZ() * b.getX() - getX() * b.getZ(), getX() * b.getY() - getY() * b.getX());
 }
 
@@ -115,5 +119,5 @@ void Vect3d::out() {
 }
 
 glm::vec3 Vect3d::toGLM() {
-	return glm::vec3(X, Y, Z);
+	return glm::vec3(_value[X], _value[Y], _value[Z]);
 }

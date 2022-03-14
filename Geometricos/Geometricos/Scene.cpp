@@ -205,6 +205,8 @@ void Scene::initScene(GLint anchoViewport, GLint altoViewport)
 	activateZBuffer();
 	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_BLEND);
+	glEnable(GL_PRIMITIVE_RESTART);
+	glPrimitiveRestartIndex(0xFFFF);
 	changeTamViewport(anchoViewport, altoViewport);
 }
 

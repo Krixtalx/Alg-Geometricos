@@ -13,17 +13,28 @@
 
 
 DrawPlane::DrawPlane(Plane& t) : dt(t), Draw() {
-	Line3d line(t._a, t._b);
-	Line3d line2(t._a, t._c);
-	Line3d line3(t._b, t._c);
-	Vect3d normal = t.getNormal();
-	this->_vertices.push_back(line.getPoint(-5).toGLM());
-	this->_vertices.push_back(line.getPoint(5).toGLM());
-	this->_vertices.push_back(line2.getPoint(5).toGLM());
-	this->_vertices.push_back(line3.getPoint(5).toGLM());
+	/*Vect3d aux(t._b.add(t._c.sub(t._a)));
+	this->_vertices.push_back(t._a.toGLM());
+	this->_vertices.push_back(t._b.toGLM());
+	this->_vertices.push_back(t._c.toGLM());
+	this->_vertices.push_back(aux.toGLM());*/
+	Line3d lineA(t._a, t._b);
+	Line3d lineB(t._a, t._c);
+	this->_vertices.push_back(lineA.getPoint(-5).toGLM());
+	this->_vertices.push_back(lineA.getPoint(5).toGLM());
+	this->_vertices.push_back(lineB.getPoint(-5).toGLM());
+	this->_vertices.push_back(lineB.getPoint(5).toGLM());
 
+	_indices.push_back(0);
+	_indices.push_back(2);
+	_indices.push_back(1);
+	_indices.push_back(0);
+	_indices.push_back(1);
+	_indices.push_back(3);
+
+	Vect3d normal = t.getNormal();
 	for (size_t i = 0; i < 4; i++) {
-		_indices.push_back(i);
+		//_indices.push_back(i);
 		_normals.push_back(normal.toGLM());
 	}
 	buildVAO();
@@ -33,13 +44,21 @@ DrawPlane::DrawPlane(Plane& t) : dt(t), Draw() {
 
 void DrawPlane::drawIt(TypeColor c) {
 	setColorActivo(c);
+	setAmbient(glm::vec3(c.R, c.G, c.B));
+	drawIt();
+}
+
+void DrawPlane::drawIt(glm::vec4 c) {
+	setColorActivo({ c });
+	setAmbient(c);
 	drawIt();
 }
 
 
+
 void DrawPlane::drawIt() {
 	setShaderProgram("algeom");
-	setDrawMode(TypeDraw::PolygonGeo);
+	setDrawMode(TypeDraw::PLAIN);
 	Scene::getInstance()->addModel(this);
 
 }

@@ -42,9 +42,14 @@ namespace BasicGeometry {
 	double min2(double a, double b);
 
 	/**
-	*	@brief Returns the maximum value from the 3 specified values.
+	*	@brief Returns the maximum value from the 2 specified values.
 	*/
 	double max2(double a, double b);
+
+	/**
+	*  @brief Returns if any of the vector's value is the same as the corresponding one in the other vector
+	*/
+	bool anyEqual(const Vect3d& a, const Vect3d& b);
 
 };
 
@@ -78,4 +83,8 @@ inline double BasicGeometry::min2(double a, double b) {
 
 inline double BasicGeometry::max2(double a, double b) {
 	return (a > b ? a : b);
+}
+
+inline bool BasicGeometry::anyEqual(const Vect3d& a, const Vect3d& b) {
+	return BasicGeometry::equal(a.getX(), b.getX()) || BasicGeometry::equal(a.getY(), b.getY()) || BasicGeometry::equal(a.getZ(), b.getZ());
 }

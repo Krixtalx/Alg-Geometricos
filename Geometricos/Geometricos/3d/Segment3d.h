@@ -33,7 +33,7 @@ public:
 	/**
 	*	@brief Constructor.
 	*/
-	Segment3d(Vect3d& orig, Vect3d& dest);
+	Segment3d(const Vect3d& orig, const Vect3d& dest);
 
 	/**
 	*	@brief Copy constructor.

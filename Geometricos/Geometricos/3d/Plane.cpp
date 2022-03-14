@@ -56,14 +56,20 @@ bool Plane::intersect(Plane& plane, Line3d& line) {
 	Vect3d n2 = plane.getNormal();
 	Vect3d n3 = n1.xProduct(n2);
 
-	Vect3d a(n1.getX(), n2.getX(), n3.getX());
-	Vect3d b(n1.getY(), n2.getY(), n3.getY());
-	Vect3d c(n1.getZ(), n2.getZ(), n3.getZ());
-	float det = BasicGeometry::determinant3x3(a, b, c);
+	const float det = BasicGeometry::determinant3x3(n1.getX(), n1.getY(), n1.getZ(), n2.getX(), n2.getY(), n2.getZ(), n3.getX(), n3.getY(), n3.getZ());
 	if (BasicGeometry::equal(BasicGeometry::ZERO, det))
 		return false;
-	Vect3d orig;
 
+	float d1 = this->getD();
+	float d2 = plane.getD();
+	double x0 = (d2 * BasicGeometry::determinant2x2(n1.getY(), n3.getY(), n3.getZ(), n1.getZ()) - d1 * BasicGeometry::determinant2x2(n2.getY(), n3.getY(), n3.getZ(), n2.getZ())) / det;
+	double y0 = (d2 * BasicGeometry::determinant2x2(n3.getX(), n1.getX(), n1.getZ(), n3.getZ()) - d1 * BasicGeometry::determinant2x2(n3.getX(), n2.getX(), n2.getZ(), n3.getZ())) / det;
+	double z0 = (d2 * BasicGeometry::determinant2x2(n1.getX(), n3.getX(), n3.getY(), n1.getY()) - d1 * BasicGeometry::determinant2x2(n2.getX(), n3.getX(), n3.getY(), n2.getY())) / det;
+
+	Vect3d orig(x0, y0, z0);
+	Vect3d dest(x0 + n3.getX(), y0 + n3.getY(), z0 + n3.getZ());
+	line.setOrigin(orig);
+	line.setDestination(dest);
 	return true;
 }
 

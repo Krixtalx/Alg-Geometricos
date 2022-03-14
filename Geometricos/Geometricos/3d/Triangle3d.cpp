@@ -69,6 +69,14 @@ Triangle3d& Triangle3d::operator=(const Triangle3d& triangle) {
 	return *this;
 }
 
+Vect3d Triangle3d::operator[](const int& pos) {
+	if (pos == 0)
+		return _a;
+	if (pos == 1)
+		return _b;
+	return _c;
+}
+
 void Triangle3d::out() {
 	std::cout << "Triangle 3D: ";
 	_a.out();

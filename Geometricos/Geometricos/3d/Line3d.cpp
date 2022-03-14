@@ -7,7 +7,7 @@
 Line3d::Line3d() {
 }
 
-Line3d::Line3d(Vect3d& orig, Vect3d& dest)
+Line3d::Line3d(const Vect3d& orig, const Vect3d& dest)
 	: Edge3d(orig, dest) {
 }
 
@@ -44,8 +44,7 @@ double Line3d::distance(Vect3d& p) {
 	Vect3d v = this->_dest.sub(this->_orig);
 	float lamda = v.dot(pMinusT) / v.dot(v);
 	Vect3d vLamda(v.scalarMul(lamda));
-	Vect3d tMinusVLamda(_orig.sub(vLamda));
-	return p.sub(tMinusVLamda).module();
+	return pMinusT.sub(vLamda).module();
 }
 
 Line3d& Line3d::operator=(const Line3d& line) {

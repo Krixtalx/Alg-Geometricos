@@ -55,7 +55,7 @@ public:
 	/**
 	*	@brief Vector sum. a + b.
 	*/
-	Vect3d add(Vect3d& b);
+	Vect3d add(const Vect3d& b);
 
 	/**
 	*	@brief Checks if a, b and this vector are on a same line.
@@ -70,7 +70,7 @@ public:
 	/**
 	*	@brief Dot product.
 	*/
-	double dot(Vect3d& v);
+	double dot(const Vect3d& v);
 
 	/**
 	*	@brief Returns the coordinates of this vector as an array.
@@ -85,17 +85,17 @@ public:
 	/**
 	*	@brief Returns the X coordinate.
 	*/
-	double getX();
+	double getX() const;
 
 	/**
 	*	@brief Returns the Y coordinate.
 	*/
-	double getY();
+	double getY() const;
 
 	/**
 	*	@brief Returns the Z coordinate.
 	*/
-	double getZ();
+	double getZ() const;
 
 	/**
 	*	@brief Returns the module of the vector.
@@ -116,6 +116,8 @@ public:
 	*	@brief Checks if two vectors are distinct.
 	*/
 	virtual bool operator!=(const Vect3d& vector);
+
+	virtual float operator[](const int& pos);
 
 	/**
 	*	@brief Multiplication of this vector by an scalar value.
@@ -150,12 +152,12 @@ public:
 	/**
 	*	@brief Vector subtraction.
 	*/
-	Vect3d sub(Vect3d& b);
+	Vect3d sub(const Vect3d& b);
 
 	/**
 	*	@brief Vectorial product.
 	*/
-	Vect3d xProduct(Vect3d& b);
+	Vect3d xProduct(const Vect3d& b);
 
 	/**
 	*	@brief Shows some information of the vector at the debug window.

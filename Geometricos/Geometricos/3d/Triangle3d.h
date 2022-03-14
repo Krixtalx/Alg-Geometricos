@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   Triangle3D.h
  * Author: lidia
  *
@@ -16,29 +16,25 @@
 #include "Segment3d.h"
 #include "Vect3d.h"
 
-/**
-*	@brief This class represents a triangle defined by 3 points.
-*	@author Lidia Mª Ortega Alvarado.
-*/
-class Triangle3d
-{
+ /**
+ *	@brief This class represents a triangle defined by 3 points.
+ *	@author Lidia Mª Ortega Alvarado.
+ */
+class Triangle3d {
 public:
-    
-    friend class DrawTriangle3d;  
-    
-	enum PointPosition 
-	{
+
+	friend class DrawTriangle3d;
+
+	enum PointPosition {
 		POSITIVE, NEGATIVE, COPLANAR
 	};
 
-	enum PointTrianglePosition 
-	{
+	enum PointTrianglePosition {
 		PARALELL, COLLINEAR, INTERSECTS, NO_INTERSECTS
 	};
 
 	// Contains all those attributes necessary for resolving the intersection between a triangle and an AABB.
-	struct TriangleAABBIntersData
-	{
+	struct TriangleAABBIntersData {
 		Vect3d _v0, _v1, _v2;
 		float _min, _max, _rad;
 		Vect3d _normal, _edge0, _edge1, _edge2, _p, _fedge;
@@ -91,7 +87,7 @@ public:
 	*/
 	Triangle3d copy() { return Triangle3d(_a, _b, _c); }
 
-	
+
 
 	/**
 	*	@brief Returns the first point.
@@ -102,13 +98,13 @@ public:
 	*	@brief Returns the second point.
 	*/
 	Vect3d getB() { return _b; }
-	
+
 	/**
 	*	@brief Returns the third point.
 	*/
 	Vect3d getC() { return _c; }
 
-	
+
 	/**
 	*	@brief Returns the normal of the triangle.
 	*/
@@ -119,12 +115,14 @@ public:
 	*/
 	virtual Triangle3d& operator=(const Triangle3d& triangle);
 
+	virtual Vect3d operator[](const int& pos);
+
 	/**
 	*	@brief Shows some information about the triangle at the debug window.
 	*/
 	virtual void out();
 
-	
+
 	/**
 	*	@brief Modifies the first point.
 	*/
@@ -145,7 +143,7 @@ public:
 	*/
 	void set(Vect3d& va, Vect3d& vb, Vect3d& vc);
 
-	
+
 };
 
 

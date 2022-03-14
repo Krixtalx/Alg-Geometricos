@@ -7,7 +7,7 @@ Edge3d::Edge3d()
 {
 }
 
-Edge3d::Edge3d(Vect3d & orig, Vect3d & dest)
+Edge3d::Edge3d(const Vect3d & orig, const Vect3d & dest)
 	: _orig(orig), _dest(dest)
 {
 }
@@ -30,6 +30,14 @@ Vect3d Edge3d::getDestination()
 Vect3d Edge3d::getOrigin()
 {
 	return _orig;
+}
+
+void Edge3d::setOrigin(const Vect3d& orig) {
+	this->_orig = orig;
+}
+
+void Edge3d::setDestination(const Vect3d& dest) {
+	this->_dest = dest;
 }
 
 Vect3d Edge3d::getPoint(double t)

@@ -10,9 +10,15 @@
 
 
 DrawCloud3d::DrawCloud3d (PointCloud3d &t): dt (t), Draw(){
+    auto v = t.getPoints();
+    for (auto el : v) {
+        _vertices.push_back(el.toGLM());
+    }
     
-    //XXXX
-    
+    for (size_t i = 0; i < _vertices.size(); i++) {
+        _indices.push_back(i);
+        _normals.push_back({ 1, 0, 0 });
+    }
 
     buildVAO ();
     
