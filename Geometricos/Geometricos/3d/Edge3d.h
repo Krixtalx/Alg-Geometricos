@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   Edge3d.h
  * Author: lidia
  *
@@ -13,12 +13,11 @@
 
 #include "Vect3d.h"
 
-/**
-*	@brief Represents any line of the geometry module. 
-*
-*/
-class Edge3d
-{
+ /**
+ *	@brief Represents any line of the geometry module.
+ *
+ */
+class Edge3d {
 protected:
 	Vect3d _orig, _dest;
 
@@ -57,7 +56,9 @@ public:
 	/**
 	*	@brief Returns the initial point.
 	*/
-	Vect3d getOrigin();
+	Vect3d getOrigin() const;
+
+	Vect3d getEdgeVector() const;
 
 	void setOrigin(const Vect3d& orig);
 

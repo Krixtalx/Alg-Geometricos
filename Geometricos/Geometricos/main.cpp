@@ -387,7 +387,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_Y:
 		if (accion == GLFW_PRESS) {
 			try {
-				TriangleModel model("vacaSinNormales.obj");
+				TriangleModel model("vaca.obj");
 				DrawTriangleModel* drawModel = new DrawTriangleModel(model);
 				drawModel->drawIt();
 

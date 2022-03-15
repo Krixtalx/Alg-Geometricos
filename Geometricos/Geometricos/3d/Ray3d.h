@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   Ray3d.h
  * Author: lidia
  *
@@ -11,12 +11,11 @@
 
 #include "Edge3d.h"
 
-/**
-*	@brief This class represents a ray that goes from an origin to the infinite.
-*	@author Lidia Mª Ortega Alvarado.
-*/
-class Ray3d : public Edge3d
-{
+ /**
+ *	@brief This class represents a ray that goes from an origin to the infinite.
+ *	@author Lidia Mª Ortega Alvarado.
+ */
+class Ray3d : public Edge3d {
 protected:
 	/**
 	*	@brief Checks if the parametric value t is valid. It is only invalid if t is smaller than 0.

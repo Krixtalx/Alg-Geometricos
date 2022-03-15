@@ -122,7 +122,7 @@ public:
 	/**
 	*	@brief Multiplication of this vector by an scalar value.
 	*/
-	Vect3d scalarMul(double value);
+	Vect3d scalarMul(double value) const;
 
 	/**
 	*	@brief Modifies the value of a certain coordinate.
@@ -152,12 +152,12 @@ public:
 	/**
 	*	@brief Vector subtraction.
 	*/
-	Vect3d sub(const Vect3d& b);
+	Vect3d sub(const Vect3d& b) const;
 
 	/**
 	*	@brief Vectorial product.
 	*/
-	Vect3d xProduct(const Vect3d& b);
+	Vect3d xProduct(const Vect3d& b) const;
 
 	/**
 	*	@brief Shows some information of the vector at the debug window.

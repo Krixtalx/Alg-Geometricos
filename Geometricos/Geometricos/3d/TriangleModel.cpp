@@ -204,7 +204,6 @@ unsigned TriangleModel::numTriangulos() {
 
 
 PointCloud3d TriangleModel::getCloud() {
-
 	PointCloud3d pc(vv);
 	return pc;
 }
@@ -217,4 +216,36 @@ AABB TriangleModel::getAABB() {
 		max = { BasicGeometry::max2(max.getX(), p.getX()), BasicGeometry::max2(max.getY(), p.getY()) , BasicGeometry::max2(max.getZ(), p.getZ()) };
 	}
 	return AABB(min, max);
+}
+
+bool TriangleModel::rayTraversalExh(const Ray3d& r, Vect3d& point, Triangle3d& triangle) {
+	float distance = FLT_MAX;
+	Vect3d orig = r.getOrigin();
+	Vect3d intersectPoint;
+	auto triangles = this->getFaces();
+	for (auto& t : triangles) {
+		if (t.rayTri(r, intersectPoint)) {
+			float newDistance = orig.distance(intersectPoint);
+			if (newDistance < distance) {
+				distance = newDistance;
+				point = intersectPoint;
+				triangle = t;
+			}
+		}
+	}
+}
+
+bool TriangleModel::rayTraversalExh(const Ray3d& r, std::vector<Vect3d&> points, std::vector<Triangle3d>& triangle) {
+	Vect3d intersectPoint;
+	auto triangles = this->getFaces();
+	for (auto& t : triangles) {
+		if (t.rayTri(r, intersectPoint)) {
+			points.push_back(intersectPoint);
+			triangle.push_back(t);
+		}
+	}
+}
+
+bool TriangleModel::pointIntoMesh(const Vect3d& point) {
+	return false;
 }

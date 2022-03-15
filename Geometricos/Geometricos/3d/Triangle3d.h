@@ -143,6 +143,7 @@ public:
 	*/
 	void set(Vect3d& va, Vect3d& vb, Vect3d& vc);
 
+	bool rayTri(const Ray3d& ray, Vect3d& point);
 
 };
 

@@ -4,6 +4,7 @@
 #include "../BasicGeometry.h"
 #include "Triangle3d.h"
 #include "Edge3d.h"
+#include "Ray3d.h"
 
 
 Triangle3d::Triangle3d() {
@@ -90,5 +91,39 @@ void Triangle3d::set(Vect3d& va, Vect3d& vb, Vect3d& vc) {
 	_a = va;
 	_b = vb;
 	_c = vc;
+}
+
+bool Triangle3d::rayTri(const Ray3d& ray, Vect3d& point) {
+	const float EPSILON = 0.0000001;
+	Vect3d vertex0 = this->_a;
+	Vect3d vertex1 = this->_b;
+	Vect3d vertex2 = this->_c;
+	Vect3d edge1, edge2, h, s, q;
+	Vect3d rayVector = ray.getEdgeVector();
+	Vect3d rayOrigin = ray.getOrigin();
+	float a, f, u, v;
+	edge1 = vertex1.sub(vertex0);
+	edge2 = vertex2.sub(vertex0);
+	h = rayVector.xProduct(edge2);
+	a = edge1.dot(h);
+	if (a > -EPSILON && a < EPSILON)
+		return false;    // This ray is parallel to this triangle.
+	f = 1.0 / a;
+	s = rayOrigin.sub(vertex0);
+	u = f * s.dot(h);
+	if (u < 0.0 || u > 1.0)
+		return false;
+	q = s.xProduct(edge1);
+	v = f * rayVector.dot(q);
+	if (v < 0.0 || u + v > 1.0)
+		return false;
+	// At this stage we can compute t to find out where the intersection point is on the line.
+	float t = f * edge2.dot(q);
+	if (t > EPSILON) // ray intersection
+	{
+		point = rayOrigin.add(rayVector.scalarMul(t));
+		return true;
+	} else // This means that there is a line intersection but not a ray intersection.
+		return false;
 }
 

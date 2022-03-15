@@ -83,7 +83,7 @@ float Vect3d::operator[](const int& pos) {
 	return _value[pos];
 }
 
-Vect3d Vect3d::scalarMul(double value) {
+Vect3d Vect3d::scalarMul(double value) const {
 	return Vect3d(getX() * value, getY() * value, getZ() * value);
 }
 
@@ -105,11 +105,11 @@ void Vect3d::setVert(double x, double y, double z) {
 	this->_value[Z] = z;
 }
 
-Vect3d Vect3d::sub(const Vect3d& b) {
+Vect3d Vect3d::sub(const Vect3d& b) const {
 	return Vect3d(getX() - b.getX(), getY() - b.getY(), getZ() - b.getZ());
 }
 
-Vect3d Vect3d::xProduct(const Vect3d& b) {
+Vect3d Vect3d::xProduct(const Vect3d& b) const {
 	return Vect3d(getY() * b.getZ() - getZ() * b.getY(), getZ() * b.getX() - getX() * b.getZ(), getX() * b.getY() - getY() * b.getX());
 }
 

@@ -13,6 +13,7 @@
 #include "Line3d.h"
 #include "Segment3d.h"
 #include "Vect3d.h"
+#include "PointCloud3d.h"
 
  /**
  *	@brief This class a represents a 3D plane represented by three points.
@@ -62,7 +63,7 @@ public:
 	/**
 	*	@brief Distance between the plane and the point.
 	*/
-	double distance(Vect3d& point);
+	double distance(const Vect3d& point);
 
 	/**
 	*	@brief Returns A in AX + BY + CZ + D = 0.
@@ -104,6 +105,9 @@ public:
 	*/
 	bool intersect(Plane& plane, Line3d& line);
 
+	Vect3d projectedPoint(const Vect3d& point);
+
+	PointCloud3d projectedCloud(PointCloud3d& point);
 
 	/**
 	*	@brief Assignment operator.
