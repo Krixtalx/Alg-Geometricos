@@ -43,7 +43,7 @@ public:
 	AABB getAABB();
 
 	bool rayTraversalExh(const Ray3d& r, Vect3d& point, Triangle3d& triangle);
-	bool rayTraversalExh(const Ray3d& r, std::vector<Vect3d&> points, std::vector <Triangle3d>& triangle);
+	bool rayTraversalExh(const Ray3d& r, std::vector<Vect3d>& points, std::vector <Triangle3d>& triangle);
 	bool pointIntoMesh(const Vect3d& point);
 };
 

@@ -68,6 +68,18 @@ PointCloud3d::PointCloud3d(int size, float max_x, float max_y, float max_z)
 	}
 }
 
+PointCloud3d::PointCloud3d(int size, Vect3d min, Vect3d max) : _maxPoint(max), _minPoint(min) {
+	while (size > 0) {
+		float x = min.getX() + fmod(rand(), (max.getX() - min.getX()));
+		float y = min.getY() + fmod(rand(), (max.getY() - min.getY()));
+		float z = min.getZ() + fmod(rand(), (max.getZ() - min.getZ()));
+		Vect3d val(x, y, z);
+		this->addPoint(val);
+
+		--size;
+	}
+}
+
 PointCloud3d::PointCloud3d(int size, float radius)
 	: _maxPoint(-INFINITY, -INFINITY, -INFINITY), _minPoint(INFINITY, INFINITY, INFINITY) {
 	_points = std::vector<Vect3d>();

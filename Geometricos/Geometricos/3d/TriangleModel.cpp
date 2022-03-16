@@ -222,6 +222,7 @@ bool TriangleModel::rayTraversalExh(const Ray3d& r, Vect3d& point, Triangle3d& t
 	float distance = FLT_MAX;
 	Vect3d orig = r.getOrigin();
 	Vect3d intersectPoint;
+	bool result = false;
 	auto triangles = this->getFaces();
 	for (auto& t : triangles) {
 		if (t.rayTri(r, intersectPoint)) {
@@ -230,22 +231,50 @@ bool TriangleModel::rayTraversalExh(const Ray3d& r, Vect3d& point, Triangle3d& t
 				distance = newDistance;
 				point = intersectPoint;
 				triangle = t;
+				result = true;
 			}
 		}
 	}
+	return result;
 }
 
-bool TriangleModel::rayTraversalExh(const Ray3d& r, std::vector<Vect3d&> points, std::vector<Triangle3d>& triangle) {
+bool TriangleModel::rayTraversalExh(const Ray3d& r, std::vector<Vect3d>& points, std::vector<Triangle3d>& triangle) {
 	Vect3d intersectPoint;
+	bool result = false;
 	auto triangles = this->getFaces();
 	for (auto& t : triangles) {
 		if (t.rayTri(r, intersectPoint)) {
 			points.push_back(intersectPoint);
 			triangle.push_back(t);
+			result = true;
 		}
 	}
+	return result;
 }
 
 bool TriangleModel::pointIntoMesh(const Vect3d& point) {
-	return false;
+	int resultA, resultB, resultC;
+	std::vector<Vect3d> points;
+	std::vector<Triangle3d> triangles;
+	Vect3d p(point);
+	Vect3d newPoint(point.add(BasicGeometry::randomVector()));
+	Ray3d ray(p, newPoint);
+	rayTraversalExh(ray, points, triangles);
+	resultA = points.size();
+	points.clear();
+	newPoint = (point.add(BasicGeometry::randomVector()));
+	ray.setDestination(newPoint);
+	rayTraversalExh(ray, points, triangles);
+	resultB = points.size();
+
+	if (resultA % 2 == resultB % 2)
+		return resultA % 2;
+
+	newPoint = (point.add(BasicGeometry::randomVector()));
+	ray.setDestination(newPoint);
+	points.clear();
+	rayTraversalExh(ray, points, triangles);
+	resultC = points.size();
+
+	return resultC % 2;
 }

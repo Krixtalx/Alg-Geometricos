@@ -25,7 +25,7 @@ Vect3d::Vect3d(const Vect3d& vector) {
 Vect3d::~Vect3d() {
 }
 
-Vect3d Vect3d::add(const Vect3d& b) {
+Vect3d Vect3d::add(const Vect3d& b) const {
 	return Vect3d(getX() + b.getX(), getY() + b.getY(), getZ() + b.getZ());
 }
 
@@ -111,6 +111,11 @@ Vect3d Vect3d::sub(const Vect3d& b) const {
 
 Vect3d Vect3d::xProduct(const Vect3d& b) const {
 	return Vect3d(getY() * b.getZ() - getZ() * b.getY(), getZ() * b.getX() - getX() * b.getZ(), getX() * b.getY() - getY() * b.getX());
+}
+
+Vect3d Vect3d::normalize() {
+	float mod = this->module();
+	return Vect3d(_value[0] / mod, _value[1] / mod, _value[2] / mod);
 }
 
 void Vect3d::out() {

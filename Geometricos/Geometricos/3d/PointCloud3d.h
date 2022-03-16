@@ -55,6 +55,11 @@ public:
 	PointCloud3d(int size, float max_x, float max_y, float max_z);
 
 	/**
+	*	@brief Constructor.
+	*/
+	PointCloud3d(int size, Vect3d min, Vect3d max);
+
+	/**
 	*	@brief Alternative constructor with an uniform sphere distribution.
 	*/
 	PointCloud3d(int size, float radius);

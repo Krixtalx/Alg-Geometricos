@@ -75,10 +75,9 @@ bool Plane::intersect(Plane& plane, Line3d& line) {
 
 Vect3d Plane::projectedPoint(const Vect3d& point) {
 	float r = this->distance(point);
-	Vect3d normal = this->getNormal();
-	float modulo = normal.module();
+	Vect3d normal = this->getNormal().normalize();
 
-	return point.sub(normal.scalarMul(r).scalarMul(1 / modulo));
+	return point.sub(normal.scalarMul(r));
 }
 
 PointCloud3d Plane::projectedCloud(PointCloud3d& cloud) {

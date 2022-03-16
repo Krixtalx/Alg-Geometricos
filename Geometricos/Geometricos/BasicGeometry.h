@@ -51,6 +51,8 @@ namespace BasicGeometry {
 	*/
 	bool anyEqual(const Vect3d& a, const Vect3d& b);
 
+	Vect3d randomVector();
+
 };
 
 inline bool BasicGeometry::equal(double a, double b) {
@@ -91,4 +93,9 @@ inline double BasicGeometry::max2(double a, double b) {
 
 inline bool BasicGeometry::anyEqual(const Vect3d& a, const Vect3d& b) {
 	return BasicGeometry::equal(a.getX(), b.getX()) || BasicGeometry::equal(a.getY(), b.getY()) || BasicGeometry::equal(a.getZ(), b.getZ());
+}
+
+inline Vect3d BasicGeometry::randomVector() {
+	Vect3d vect(rand() % 10, rand() % 10, rand() % 10);
+	return vect.normalize();
 }

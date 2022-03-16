@@ -55,7 +55,7 @@ public:
 	/**
 	*	@brief Vector sum. a + b.
 	*/
-	Vect3d add(const Vect3d& b);
+	Vect3d add(const Vect3d& b) const;
 
 	/**
 	*	@brief Checks if a, b and this vector are on a same line.
@@ -158,6 +158,8 @@ public:
 	*	@brief Vectorial product.
 	*/
 	Vect3d xProduct(const Vect3d& b) const;
+
+	Vect3d normalize();
 
 	/**
 	*	@brief Shows some information of the vector at the debug window.
