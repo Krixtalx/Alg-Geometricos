@@ -83,7 +83,10 @@ public:
 	/**
 	*	@return D in AX + BY + CZ + D = 0.
 	*/
-	double getD() { return (-1.0) * (getA() * _a.getX() + getB() * _a.getY() + getC() * _a.getZ()); }
+	double getD() {
+		Vect3d n = getNormal();
+		return (-1.0) * (n.getX() * _a.getX() + n.getY() * _a.getY() + n.getZ() * _a.getZ());
+	}
 
 	/**
 	*	@brief Returns the normal vector of (A, B, C) in Ax + By + Cz + D = 0.

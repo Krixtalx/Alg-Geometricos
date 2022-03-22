@@ -29,9 +29,8 @@ bool Plane::coplanar(Vect3d& point) {
 }
 
 double Plane::distance(const Vect3d& point) {
-	Vect3d normal = getNormal();
-
-	return -(normal.dot(point) + getD()) / (normal.dot(normal));
+	Vect3d n = getNormal();
+	return n.scalarMul(-(n.dot(point) + getD())).module();
 }
 
 double Plane::getA() {
@@ -47,7 +46,7 @@ double Plane::getC() {
 }
 
 Vect3d Plane::getNormal() {
-	return Vect3d(getA(), getB(), getC());
+	return Vect3d(getA(), getB(), getC()).normalize();
 }
 
 
@@ -74,10 +73,8 @@ bool Plane::intersect(Plane& plane, Line3d& line) {
 }
 
 Vect3d Plane::projectedPoint(const Vect3d& point) {
-	float r = this->distance(point);
-	Vect3d normal = this->getNormal().normalize();
-
-	return point.sub(normal.scalarMul(r));
+	Vect3d n = this->getNormal();
+	return point.sub(n.scalarMul(n.dot(point) + getD()));
 }
 
 PointCloud3d Plane::projectedCloud(PointCloud3d& cloud) {

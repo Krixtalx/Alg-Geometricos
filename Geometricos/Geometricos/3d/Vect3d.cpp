@@ -60,7 +60,7 @@ double Vect3d::getZ() const {
 }
 
 double Vect3d::module() {
-	return sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
+	return sqrt(_value[X] * _value[X] + _value[Y] * _value[Y] + _value[Z] * _value[Z]);
 }
 
 Vect3d& Vect3d::operator=(const Vect3d& vector) {

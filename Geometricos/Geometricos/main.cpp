@@ -237,8 +237,9 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 				//Crear una nube de puntos aleatoria de tamaño 50
 				PointCloud3d cloud(50, aabb.getMin(), aabb.getMax());
-				DrawCloud3d* drawCloud = new DrawCloud3d(cloud);
-				drawCloud->drawIt({ 0, 1, 0 });
+				DrawCloud3d* drawCloud;
+				/* drawCloud = new DrawCloud3d(cloud);
+				drawCloud->drawIt({ 0, 0, 1 });*/
 
 				auto points = cloud.getPoints();
 				PointCloud3d newCloud;
@@ -251,11 +252,11 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 				auto end = std::chrono::high_resolution_clock::now();
 				drawCloud = new DrawCloud3d(newCloud);
-				drawCloud->drawIt({ 1, 0, 0 });
+				drawCloud->drawIt({ 0, 1, 0 });
 
 				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-				std::cout << "Elapsed time is " << int_s.count() << " ms" << std::endl;
+				std::cout << std::endl << "Elapsed time is " << int_s.count() << " ms" << std::endl;
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
@@ -320,6 +321,13 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				PointCloud3d newCloud(planoA.projectedCloud(cloud));
 				auto drawCloud = new DrawCloud3d(newCloud);
 				drawCloud->drawIt({ 1, 0, 0 });
+
+				a[0] = { 0, 0, 0 };
+				a[1] = { 1, 0, 0 };
+				a[2] = { 0, 1, 0 };
+				Plane planoTest(a[0], a[1], a[2], true);
+
+				//std::cout << "Distance: " << planoTest.distance({ 0,0,-1 }) << std::endl;
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
