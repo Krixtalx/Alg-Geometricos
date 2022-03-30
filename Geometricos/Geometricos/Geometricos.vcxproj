@@ -66,6 +66,7 @@
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vect2d.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="Voxel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3d\AABB.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Vect2d.cpp" />
     <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="Voxel.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

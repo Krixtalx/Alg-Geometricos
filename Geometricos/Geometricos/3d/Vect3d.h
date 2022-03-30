@@ -117,7 +117,7 @@ public:
 	*/
 	virtual bool operator!=(const Vect3d& vector);
 
-	virtual float operator[](const int& pos);
+	virtual double& operator[](const int& pos);
 
 	/**
 	*	@brief Multiplication of this vector by an scalar value.

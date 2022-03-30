@@ -79,7 +79,7 @@ bool Vect3d::operator!=(const Vect3d& vector) {
 	return !(this->operator==(vector));
 }
 
-float Vect3d::operator[](const int& pos) {
+double& Vect3d::operator[](const int& pos) {
 	return _value[pos];
 }
 

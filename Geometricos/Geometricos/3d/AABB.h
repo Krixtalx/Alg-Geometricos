@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   AABB.h
  * Author: lidia
  *
@@ -13,10 +13,9 @@
 
 class Triangle3d;
 
-class AABB
-{
-    
-friend class DrawAABB;    
+class AABB {
+
+	friend class DrawAABB;
 protected:
 	Vect3d _min, _max;								// Edge points of the cube.
 
@@ -41,9 +40,9 @@ public:
 	*/
 	virtual ~AABB();
 
-	
 
-	
+
+
 	/**
 	*	@brief Returns the central point of the cube.
 	*/
@@ -57,12 +56,16 @@ public:
 	/**
 	*	@brief Returns the lowest corner of the cube.
 	*/
-	Vect3d getMin() { return _min; }
+	Vect3d getMin() {
+		return _min;
+	}
 
 	/**
 	*	@brief Returns the maximum points of the cube.
 	*/
-	Vect3d getMax() { return _max; }
+	Vect3d getMax() {
+		return _max;
+	}
 
 	/**
 	*	@brief Assignment operator.
@@ -72,12 +75,18 @@ public:
 	/**
 	*	@brief Modifies the minimum point.
 	*/
-	void setMin(Vect3d& min) { min = min; }
+	void setMin(Vect3d& min) {
+		min = min;
+	}
 
 	/**
 	*	@brief Modifies the maximum point.
 	*/
-	void setMax(Vect3d& max) { max = max; }
+	void setMax(Vect3d& max) {
+		max = max;
+	}
+
+	bool aabbTri(Triangle3d& t);
 };
 
 

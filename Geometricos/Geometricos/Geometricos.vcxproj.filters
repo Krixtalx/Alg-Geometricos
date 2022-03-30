@@ -156,6 +156,9 @@
     <ClInclude Include="3d\Vect3d.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Voxel.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Triangle.cpp">
@@ -285,6 +288,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="3d\Vect3d.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Voxel.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
