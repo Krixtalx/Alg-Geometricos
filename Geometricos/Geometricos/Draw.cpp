@@ -188,9 +188,8 @@ void Draw::render(glm::mat4 matrizV, glm::mat4 matrizVP, Light& l) {
 		glm::mat4 mModVisIT = glm::transpose(glm::inverse(mModVis));
 		glm::mat4 mVisIT = glm::transpose(glm::inverse(matrizV));
 		_program->activate();
-		_program->setUniform("matrizMVP", mModVisP)
-			.setUniform("matrizMV", mModVis)
-			.setUniform("matrizMVit", mModVisIT);
+		_program->setUniform("matrizMVP", mModVisP);
+
 		glBindVertexArray(_idVAO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idIBO);
 
@@ -198,6 +197,8 @@ void Draw::render(glm::mat4 matrizV, glm::mat4 matrizVP, Light& l) {
 		switch (_mode) {
 		case TypeDraw::WIREFRAME:
 			color = colorAct.getVec4();
+			_program->setUniform("matrizMV", mModVis)
+				.setUniform("matrizMVit", mModVisIT);
 			_program->setUniform("micolor", color);
 			_program->selectRoutine(GL_FRAGMENT_SHADER, "colorElegido",
 				"colorMaterial");
@@ -211,6 +212,8 @@ void Draw::render(glm::mat4 matrizV, glm::mat4 matrizVP, Light& l) {
 
 		case TypeDraw::LINE:
 			color = colorAct.getVec4();
+			_program->setUniform("matrizMV", mModVis)
+				.setUniform("matrizMVit", mModVisIT);
 			_program->setUniform("micolor", color);
 			_program->selectRoutine(GL_FRAGMENT_SHADER, "colorElegido",
 				"colorMaterial");
@@ -224,6 +227,8 @@ void Draw::render(glm::mat4 matrizV, glm::mat4 matrizVP, Light& l) {
 
 		case TypeDraw::PolygonGeo:
 			color = colorAct.getVec4();
+			_program->setUniform("matrizMV", mModVis)
+				.setUniform("matrizMVit", mModVisIT);
 			_program->setUniform("micolor", color);
 			_program->selectRoutine(GL_FRAGMENT_SHADER, "colorElegido",
 				"colorMaterial");
@@ -238,6 +243,8 @@ void Draw::render(glm::mat4 matrizV, glm::mat4 matrizVP, Light& l) {
 
 		case TypeDraw::POINT:
 			color = colorAct.getVec4();
+			_program->setUniform("matrizMV", mModVis)
+				.setUniform("matrizMVit", mModVisIT);
 			_program->setUniform("micolor", color);
 			_program->selectRoutine(GL_FRAGMENT_SHADER, "colorElegido",
 				"colorMaterial");
@@ -253,14 +260,27 @@ void Draw::render(glm::mat4 matrizV, glm::mat4 matrizVP, Light& l) {
 
 
 		case TypeDraw::PLAIN:
+			color = colorAct.getVec4();
+			_program->setUniform("matrizMV", mModVis)
+				.setUniform("matrizMVit", mModVisIT);
+			_program->setUniform("micolor", color);
 			_program->selectRoutine(GL_FRAGMENT_SHADER, "colorElegido",
 				"colorMaterial");
+			_program->selectRoutine(GL_FRAGMENT_SHADER, "colorCalculado",
+				"colorMio");
 			setShader(l, matrizV, mVisIT);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, nullptr);
 			break;
-		}
 
+
+		case TypeDraw::CUSTOM:
+			color = colorAct.getVec4();
+			_program->setUniform("micolor", color);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, nullptr);
+			break;
+		}
 
 	} catch (std::runtime_error& e) {
 		std::string mensaje = "Draw::render -> ";
@@ -360,6 +380,7 @@ Draw& Draw::setDrawMode(TypeDraw m) {
 	case TypeDraw::PLAIN:
 	case TypeDraw::LINE:
 	case TypeDraw::PolygonGeo:
+	case TypeDraw::CUSTOM:
 
 		_mode = m;
 	}

@@ -26,7 +26,6 @@ public:
 
 	void drawIt();
 	void drawIt(TypeColor c);
-	void drawIt(glm::vec4 c);
 
 	virtual ~DrawPlane() {};
 };

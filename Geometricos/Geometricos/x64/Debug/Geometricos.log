@@ -1,2 +1,8 @@
-﻿  main.cpp
+﻿  VoxelModel.cpp
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(18,59): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(52,48): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(106,8): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(107,8): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(108,8): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(121): warning C4715: 'VoxelModel::pointIntoMesh': no todas las rutas de acceso de control devuelven un valor
   Geometricos.vcxproj -> C:\Github\Alg-Geometricos\Geometricos\x64\Debug\Geometricos.exe

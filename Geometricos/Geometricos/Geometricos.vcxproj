@@ -52,6 +52,7 @@
     <ClInclude Include="DrawRay.h" />
     <ClInclude Include="DrawSegment.h" />
     <ClInclude Include="DrawTriangle.h" />
+    <ClInclude Include="DrawVoxelModel.h" />
     <ClInclude Include="InclDraw2D.h" />
     <ClInclude Include="InclGeom2D.h" />
     <ClInclude Include="Line.h" />
@@ -67,6 +68,7 @@
     <ClInclude Include="Vect2d.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Voxel.h" />
+    <ClInclude Include="VoxelModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3d\AABB.cpp" />
@@ -99,6 +101,7 @@
     <ClCompile Include="DrawRay.cpp" />
     <ClCompile Include="DrawSegment.cpp" />
     <ClCompile Include="DrawTriangle.cpp" />
+    <ClCompile Include="DrawVoxelModel.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Point.cpp" />
@@ -113,6 +116,13 @@
     <ClCompile Include="Vect2d.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Voxel.cpp" />
+    <ClCompile Include="VoxelModel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="algeom-fs.glsl" />
+    <None Include="algeom-vs.glsl" />
+    <None Include="custom-fs.glsl" />
+    <None Include="custom-vs.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -176,7 +186,7 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -242,14 +252,16 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level2</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>Source;Source/PrecompiledHeaders;../../Libraries/glew/include;../../Libraries/glm;../../Libraries/glfw/include;../../Libraries/assimp/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

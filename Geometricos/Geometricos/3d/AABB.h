@@ -18,7 +18,7 @@ class AABB {
 	friend class DrawAABB;
 protected:
 	Vect3d _min, _max;								// Edge points of the cube.
-
+	
 public:
 	/**
 	*	@brief Default constructor.
@@ -56,14 +56,14 @@ public:
 	/**
 	*	@brief Returns the lowest corner of the cube.
 	*/
-	Vect3d getMin() {
+	Vect3d getMin() const{
 		return _min;
 	}
 
 	/**
 	*	@brief Returns the maximum points of the cube.
 	*/
-	Vect3d getMax() {
+	Vect3d getMax() const{
 		return _max;
 	}
 
@@ -76,14 +76,14 @@ public:
 	*	@brief Modifies the minimum point.
 	*/
 	void setMin(Vect3d& min) {
-		min = min;
+		_min = min;
 	}
 
 	/**
 	*	@brief Modifies the maximum point.
 	*/
 	void setMax(Vect3d& max) {
-		max = max;
+		_max = max;
 	}
 
 	bool aabbTri(Triangle3d& t);

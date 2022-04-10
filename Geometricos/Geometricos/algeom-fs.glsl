@@ -137,5 +137,4 @@ void main ()
 {
    vec4 color = colorElegido ();
    colorFragmento = vec4 ( colorCalculado ( color ).rgba);
-   
 }

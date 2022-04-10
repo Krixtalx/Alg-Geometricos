@@ -32,6 +32,8 @@
 #include "3d/TriangleModel.h"
 #include "3d/DrawTriangleModel.h"
 #include "3d/DrawTriangle3d.h"
+#include "VoxelModel.h"
+#include "DrawVoxelModel.h"
 
 
 Movements movimientoActivo = Movements::NONE;
@@ -44,8 +46,8 @@ int modeloActivo = -1;
 void mostrarAyuda() {
 	std::cout << "Ayuda" << std::endl
 		<< "================" << std::endl
-		<< "s -> Apartado a" << std::endl
-		<< "l -> Apartado b" << std::endl
+		<< "P -> Modelo voxelizado solo gris" << std::endl
+		<< "L -> Modelo voxelizado gris+negro y apartado 2, 3, 4" << std::endl
 		<< "r -> Resetea la escena" << std::endl
 		<< "Cursores y rueda ratón -> Rotación" << std::endl
 		<< "h -> Muestra esta ayuda" << std::endl
@@ -209,7 +211,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 				Triangle t1(a, b, c);
 				DrawTriangle* dt1 = new DrawTriangle(t1);
-				TypeColor magenta(1.0, 0.0, 1.0);
+				TypeColor magenta(1.0, 0.0, 1.0, 1.0);
 				dt1->drawIt(magenta);
 				dt1 = nullptr;
 			} catch (std::exception& e) {
@@ -233,7 +235,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 				AABB aabb(model.getAABB());
 				DrawAABB* drawAABB = new DrawAABB(aabb);
-				drawAABB->drawIt({ 0, 0, 1 });
+				drawAABB->drawIt({ 0, 0, 1 , 1.0 });
 
 				//Crear una nube de puntos aleatoria de tamaño 50
 				PointCloud3d cloud(50, aabb.getMin(), aabb.getMax());
@@ -252,7 +254,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 				auto end = std::chrono::high_resolution_clock::now();
 				drawCloud = new DrawCloud3d(newCloud);
-				drawCloud->drawIt({ 0, 1, 0 });
+				drawCloud->drawIt({ 0, 1, 0, 1.0 });
 
 				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
@@ -274,10 +276,14 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_P:
 		if (accion == GLFW_PRESS) {
 			try {
-				Point a(0.0, 0.0);
-				DrawPoint* da = new DrawPoint(a);
-				da->drawIt();
-				da = nullptr;
+				Scene::getInstance()->clearScene();
+				TriangleModel model("vaca.obj");
+				VoxelModel voxelModel(model, 30);
+				DrawVoxelModel* drawVoxelModel;
+
+				drawVoxelModel = new DrawVoxelModel(voxelModel, type_voxel::grey);
+				drawVoxelModel->drawIt();
+
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
 					<< std::endl
@@ -294,40 +300,61 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 		if (accion == GLFW_PRESS) {
 			try {
 				Vect3d a[3];
-
+				Scene::getInstance()->clearScene();
 				TriangleModel model("vaca.obj");
-				DrawTriangleModel* drawModel = new DrawTriangleModel(model);
-				drawModel->drawIt();
+				VoxelModel voxelModel(model, 30);
+				DrawVoxelModel* drawVoxelModel;
+
+				drawVoxelModel = new DrawVoxelModel(voxelModel, type_voxel::black);
+				drawVoxelModel->drawIt();
+
+				drawVoxelModel = new DrawVoxelModel(voxelModel, type_voxel::grey);
+				drawVoxelModel->drawIt();
 
 				AABB aabb(model.getAABB());
-				DrawAABB* drawAABB = new DrawAABB(aabb);
-				drawAABB->drawIt({ 0, 0, 1 });
+				//Crear una nube de puntos aleatoria de tamaño 1000
+				PointCloud3d cloud(1000, aabb.getMin(), aabb.getMax());
 
-				int cantidad = 0;
-				while (cantidad < 3) {
-					PointCloud3d cloud(50, aabb.getMin(), aabb.getMax());
-					auto points = cloud.getPoints();
-					for (auto& point : points) {
-						if (model.pointIntoMesh(point) && cantidad < 3)
-							a[cantidad++] = point;
-					}
+				auto points = cloud.getPoints();
+				std::vector<Vect3d> pointsIntoMesh(points.size());
+				//-------------------------------TEST 1---------------------------------------------------
+				auto start = std::chrono::high_resolution_clock::now();
+				for (auto& point : points) {
+					if (model.pointIntoMesh(point))
+						pointsIntoMesh.push_back(point);
 				}
 
-				Plane planoA(a[0], a[1], a[2], true);
-				DrawPlane* draw = new DrawPlane(planoA);
-				draw->drawIt({ 1, 0, 0, 0.5 });
+				auto end = std::chrono::high_resolution_clock::now();
 
-				PointCloud3d cloud(model.getCloud());
-				PointCloud3d newCloud(planoA.projectedCloud(cloud));
-				auto drawCloud = new DrawCloud3d(newCloud);
-				drawCloud->drawIt({ 1, 0, 0 });
+				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-				a[0] = { 0, 0, 0 };
-				a[1] = { 1, 0, 0 };
-				a[2] = { 0, 1, 0 };
-				Plane planoTest(a[0], a[1], a[2], true);
+				std::cout << std::endl << "Triangle::pointIntoMesh: " << int_s.count() << " ms" << std::endl;
 
-				//std::cout << "Distance: " << planoTest.distance({ 0,0,-1 }) << std::endl;
+				//-------------------------------TEST 2---------------------------------------------------
+				std::vector<Vect3d> pointsIntoMeshOptimized(points.size());
+
+				start = std::chrono::high_resolution_clock::now();
+				for (auto& point : points) {
+					if (voxelModel.pointIntoMesh(point))
+						pointsIntoMeshOptimized.push_back(point);
+				}
+
+				end = std::chrono::high_resolution_clock::now();
+
+				int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+				std::cout << std::endl << "VoxelModel::pointIntoMesh: " << int_s.count() << " ms" << std::endl;
+
+				//-------------------------------Check---------------------------------------------------
+
+				if (pointsIntoMesh.size() == pointsIntoMeshOptimized.size()) {
+					unsigned equals = 0;
+					for (size_t i = 0; i < pointsIntoMesh.size(); i++) {
+						if (pointsIntoMesh[i] == pointsIntoMeshOptimized[i])
+							equals++;
+					}
+					std::cout << "Result: " << (float)equals / pointsIntoMesh.size() * 100<< "% equal" << std::endl;
+				}
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
