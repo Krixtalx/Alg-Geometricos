@@ -229,37 +229,48 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_S:
 		if (accion == GLFW_PRESS) {
 			try {
-				TriangleModel model("vaca.obj");
-				DrawTriangleModel* drawModel = new DrawTriangleModel(model);
-				drawModel->drawIt();
-
-				AABB aabb(model.getAABB());
-				DrawAABB* drawAABB = new DrawAABB(aabb);
-				drawAABB->drawIt({ 0, 0, 1 , 1.0 });
-
 				//Crear una nube de puntos aleatoria de tamaño 50
-				PointCloud3d cloud(50, aabb.getMin(), aabb.getMax());
+				PointCloud3d cloud(1200000, 10);
 				DrawCloud3d* drawCloud;
-				/* drawCloud = new DrawCloud3d(cloud);
-				drawCloud->drawIt({ 0, 0, 1 });*/
-
-				auto points = cloud.getPoints();
-				PointCloud3d newCloud;
-
-				auto start = std::chrono::high_resolution_clock::now();
-				for (auto& point : points) {
-					if (model.pointIntoMesh(point))
-						newCloud.addPoint(point);
+				drawCloud = new DrawCloud3d(cloud);
+				drawCloud->drawIt({ 0, 0, 1 , 1 });
+				int k = 87;
+				auto clusters(cloud.kmeans_naive(k, 40));
+				float increment = 1;
+				if (k > 7)
+					increment = (float)7 / k;
+				float r, g, b, offset, mod;
+				int id = 0;
+				Scene::getInstance()->clearScene();
+				for (auto& cluster : clusters) {
+					r = 0, g = 0, b = 0;
+					PointCloud3d c(cluster);
+					drawCloud = new DrawCloud3d(c);
+					offset = increment * id;
+					if (offset <= 1.0f) {
+						r = offset;
+					} else if (offset <= 2.0f) {
+						g = offset - 1.0f;
+					} else if (offset <= 3.0f) {
+						b = offset - 2.0f;
+					} else if (offset <= 4.0f) {
+						r = 1;
+						b = offset - 3.0f;
+					} else if (offset <= 5.0f) {
+						b = 1;
+						g = offset - 4.0f;
+					} else if (offset <= 6.0f) {
+						r = 1;
+						g = offset - 5.0f;
+					} else if (offset <= 7.0f) {
+						r = 1;
+						b = 1;
+						g = offset - 6.0f;
+					}
+					drawCloud->drawIt({ r, g, b , 1 });
+					std::cout << "Color " + std::to_string(id) + ": " << std::to_string(r) + " - " << std::to_string(g) + " - " << std::to_string(b) + " - " << std::endl;
+					id++;
 				}
-
-				auto end = std::chrono::high_resolution_clock::now();
-				drawCloud = new DrawCloud3d(newCloud);
-				drawCloud->drawIt({ 0, 1, 0, 1.0 });
-
-				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
-				std::cout << std::endl << "Elapsed time is " << int_s.count() << " ms" << std::endl;
-
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
 					<< std::endl
@@ -353,7 +364,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 						if (pointsIntoMesh[i] == pointsIntoMeshOptimized[i])
 							equals++;
 					}
-					std::cout << "Result: " << (float)equals / pointsIntoMesh.size() * 100<< "% equal" << std::endl;
+					std::cout << "Result: " << (float)equals / pointsIntoMesh.size() * 100 << "% equal" << std::endl;
 				}
 
 			} catch (std::exception& e) {

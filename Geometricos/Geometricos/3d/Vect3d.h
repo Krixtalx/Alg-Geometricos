@@ -24,9 +24,11 @@ class Triangle3d;
 */
 class Vect3d {
 protected:
-	const static int DEFAULT_VALUE = INT_MAX;	// Value of X and Y coordinates for an incomplete vector.
+	const static int DEFAULT_VALUE = 0;	// Value of X and Y coordinates for an incomplete vector.
 
-	enum Axes { X, Y, Z };
+	enum Axes {
+		X, Y, Z
+	};
 
 private:
 	double _value[3];
@@ -68,6 +70,11 @@ public:
 	double distance(Vect3d& p);
 
 	/**
+	 * @brief Square distance between points.
+	 */
+	double squareDistance(const Vect3d& p);
+
+	/**
 	*	@brief Dot product.
 	*/
 	double dot(const Vect3d& v);
@@ -80,7 +87,9 @@ public:
 	/**
 	*	@brief Returns a certain coordinate of the vector.
 	*/
-	double get(unsigned int index) { return _value[index]; }
+	double get(unsigned int index) {
+		return _value[index];
+	}
 
 	/**
 	*	@brief Returns the X coordinate.
@@ -127,7 +136,9 @@ public:
 	/**
 	*	@brief Modifies the value of a certain coordinate.
 	*/
-	void set(unsigned int index, double value) { _value[index] = value; }
+	void set(unsigned int index, double value) {
+		_value[index] = value;
+	}
 
 	/**
 	*	@brief Modifies the X coordinate.

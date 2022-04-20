@@ -39,6 +39,10 @@ double Vect3d::distance(Vect3d& p) {
 	return std::sqrt(std::pow(p._value[X] - _value[X], 2) + std::pow(p._value[Y] - _value[Y], 2) + std::pow(p._value[Z] - _value[Z], 2));
 }
 
+double Vect3d::squareDistance(const Vect3d& p) {
+	return std::pow(p._value[X] - _value[X], 2) + std::pow(p._value[Y] - _value[Y], 2) + std::pow(p._value[Z] - _value[Z], 2);
+}
+
 double Vect3d::dot(const Vect3d& v) {
 	return (getX() * v.getX() + getY() * v.getY() + getZ() * v.getZ());
 }

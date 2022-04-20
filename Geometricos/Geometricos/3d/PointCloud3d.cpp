@@ -151,13 +151,25 @@ void PointCloud3d::save(const std::string& filename) {
 void PointCloud3d::updateMaxMin(int index) {
 	Vect3d point = _points[index];
 
-	if (point.getX() < _minPoint.getX()) { _minPoint.setX(point.getX()); _minPointIndex.setX(index); }
-	if (point.getY() < _minPoint.getY()) { _minPoint.setY(point.getY()); _minPointIndex.setY(index); }
-	if (point.getZ() < _minPoint.getZ()) { _minPoint.setZ(point.getZ()); _minPointIndex.setZ(index); }
+	if (point.getX() < _minPoint.getX()) {
+		_minPoint.setX(point.getX()); _minPointIndex.setX(index);
+	}
+	if (point.getY() < _minPoint.getY()) {
+		_minPoint.setY(point.getY()); _minPointIndex.setY(index);
+	}
+	if (point.getZ() < _minPoint.getZ()) {
+		_minPoint.setZ(point.getZ()); _minPointIndex.setZ(index);
+	}
 
-	if (point.getX() > _maxPoint.getX()) { _maxPoint.setX(point.getX()); _maxPointIndex.setX(index); }
-	if (point.getY() > _maxPoint.getY()) { _maxPoint.setY(point.getY()); _maxPointIndex.setY(index); }
-	if (point.getZ() > _maxPoint.getZ()) { _maxPoint.setZ(point.getZ()); _maxPointIndex.setZ(index); }
+	if (point.getX() > _maxPoint.getX()) {
+		_maxPoint.setX(point.getX()); _maxPointIndex.setX(index);
+	}
+	if (point.getY() > _maxPoint.getY()) {
+		_maxPoint.setY(point.getY()); _maxPointIndex.setY(index);
+	}
+	if (point.getZ() > _maxPoint.getZ()) {
+		_maxPoint.setZ(point.getZ()); _maxPointIndex.setZ(index);
+	}
 }
 
 
@@ -174,4 +186,66 @@ void PointCloud3d::getMostDistanced(int& a, int& b) {
 			}
 		}
 	}
+}
+
+std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_naive(const int k, const int maxIterations) {
+	std::vector<std::vector<Vect3d>> result(k);
+	std::vector<std::vector<float>> distances(k);
+	std::vector<float> meanDistances(k);
+	std::vector<Vect3d> centroids(k);
+	const int nAux = _points.size() / k;
+	const int pointsNumber = _points.size();
+	for (int i = 0; i < k; i++) {
+		centroids[i] = _points[i * nAux];
+	}
+	float sumSquareError = INFINITY;
+	float prevSumSquareError = 0;
+	int currentIt = 0;
+	while (!BasicGeometry::equal(sumSquareError, prevSumSquareError) && currentIt < maxIterations) {
+		currentIt++;
+		prevSumSquareError = sumSquareError;
+		for (int i = 0; i < k; i++) {
+			result[i].clear();
+			distances[i].clear();
+			meanDistances[i] = .0f;
+		}
+#pragma omp parallel for
+		for (int i = 0; i < pointsNumber; i++) {
+			float minDistance = INFINITY;
+			int clusterIndex = -1;
+			for (int j = 0; j < k; j++) {
+				float distance = _points[i].squareDistance(centroids[j]);
+				if (distance < minDistance) {
+					minDistance = distance;
+					clusterIndex = j;
+				}
+			}
+#pragma omp critical
+			result[clusterIndex].push_back(_points[i]);
+#pragma omp critical
+			distances[clusterIndex].push_back(minDistance);
+#pragma omp critical
+			meanDistances[clusterIndex] += minDistance;
+
+		}
+		sumSquareError = .0f;
+		for (int i = 0; i < k; i++) {
+			int clusterSize = result[i].size();
+			meanDistances[i] /= (float)clusterSize;
+
+			Vect3d newCentroid;
+			for (int j = 0; j < clusterSize; j++) {
+				newCentroid = newCentroid.add(result[i][j]);
+				sumSquareError += pow((distances[i][j] - meanDistances[i]), 2);
+			}
+			newCentroid = newCentroid.scalarMul(1 / (float)clusterSize);
+			centroids[i] = newCentroid;
+			std::cout << "Cluster " + std::to_string(i) + ": " << clusterSize << std::endl;
+		}
+
+		sumSquareError /= (float)k;
+		std::cout << "Sum of Squares error: " << sumSquareError << std::endl;
+	}
+
+	return result;
 }

@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   PontCloud3d.h
  * Author: lidia
  *
@@ -12,21 +12,20 @@
 
 #include <string>
 #include "AABB.h"
-//#include "TriangleMesh.h"
+ //#include "TriangleMesh.h"
 #include "Vect3d.h"
 
 /**
 *	@brief This class represents a set of points distributed in the space.
 *	@author Lidia Mª Ortega Alvarado.
 */
-class PointCloud3d
-{
+class PointCloud3d {
 protected:
 	std::vector<Vect3d> _points;
 	Vect3d _maxPoint, _minPoint;						// AABB.
 	Vect3d _maxPointIndex, _minPointIndex;				// Indices of those vertices which have the boundary coordinates of the mesh.
 
-	
+
 protected:
 	/**
 	*	@brief Updates the new maximum and minimum points taking into account a new point.
@@ -44,11 +43,11 @@ public:
 	*/
 	PointCloud3d(const std::string& filename);
 
-        /**
-	*	@brief Construct the point cloud from a vector of points
-	*/
+	/**
+*	@brief Construct the point cloud from a vector of points
+*/
 	PointCloud3d(std::vector<Vect3d>& pointCloud);
-        
+
 	/**
 	*	@brief Constructor.
 	*/
@@ -82,7 +81,9 @@ public:
 	/**
 	*	@brief Removes all the points.
 	*/
-	void clear() { _points.clear(); }
+	void clear() {
+		_points.clear();
+	}
 
 	/**
 	*	@brief Deletes the data saved from the convex hull step by step process.
@@ -112,7 +113,9 @@ public:
 	/**
 	*	@brief Returns all the cloud points.
 	*/
-	std::vector<Vect3d> getPoints() { return _points; }
+	std::vector<Vect3d> getPoints() {
+		return _points;
+	}
 
 	/**
 	*	@brief Assigment operator.
@@ -127,15 +130,26 @@ public:
 	/**
 	*	@brief Returns the number of points that this cloud contains.
 	*/
-	int size() { return _points.size(); }
-    
-    /**
-    *    @brief get the index of the most distanced points in the cloud.
-    */
-    
-    void getMostDistanced (int &a, int &b);
-    
-    
+	int size() {
+		return _points.size();
+	}
+
+	/**
+	*    @brief get the index of the most distanced points in the cloud.
+	*/
+
+	void getMostDistanced(int& a, int& b);
+
+	/**
+	 * Elige k puntos de forma aleatoria considerándolos potenciales centroides de las k clusters y que itera hasta encontrar los centroides adecuados.
+	 *
+	 * \param k nº de clusters
+	 * \return Vector donde cada posicion es uno de los clusters
+	 */
+	std::vector<std::vector<Vect3d>> kmeans_naive(const int k, const int maxIterations);
+
+
+	std::vector<std::vector<Vect3d>> kmeans_grid(const int k, const int maxIterations);
 };
 
 

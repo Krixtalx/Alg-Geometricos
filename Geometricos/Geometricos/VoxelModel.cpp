@@ -75,7 +75,7 @@ VoxelModel::VoxelModel(const std::string& filename, int numSubdivs) : deleteTM(t
 void VoxelModel::computeTriangleModel() {
 	auto triangles = tm->getFaces();
 	int numVoxelBlancos = 0, numVoxelGrises = 0, numVoxelNegros = 0;
-#pragma omp parallel for
+	#pragma omp parallel for
 	for (int x = 0; x < subdivisions[0]; x++) {
 		for (int y = 0; y < subdivisions[1]; y++) {
 			for (int z = 0; z < subdivisions[2]; z++) {
