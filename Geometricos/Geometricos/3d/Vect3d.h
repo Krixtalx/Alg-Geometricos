@@ -121,6 +121,8 @@ public:
 	*/
 	virtual bool operator==(const Vect3d& vector);
 
+	virtual bool operator<(const Vect3d& vector);
+
 	/**
 	*	@brief Checks if two vectors are distinct.
 	*/

@@ -40,7 +40,7 @@ VoxelModel::VoxelModel(const std::string& filename, int numSubdivs) : deleteTM(t
 	aabb = tm->getAABB();
 	Vect3d intervals = aabb.getExtent().scalarMul((float)2 / numSubdivs);
 	voxelSize = -INFINITY;
-	int coord = -1;;
+	int coord = -1;
 	for (size_t i = 0; i < 3; i++) {
 		if (voxelSize < intervals[i]) {
 			voxelSize = intervals[i];

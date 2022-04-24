@@ -14,6 +14,8 @@
 #include "AABB.h"
  //#include "TriangleMesh.h"
 #include "Vect3d.h"
+#include "../Draw.h"
+#include <GLFW/glfw3.h>
 
 /**
 *	@brief This class represents a set of points distributed in the space.
@@ -148,8 +150,13 @@ public:
 	 */
 	std::vector<std::vector<Vect3d>> kmeans_naive(const int k, const int maxIterations);
 
+	void kmeans_naive_auto_update(const int k, const int maxIterations, GLFWwindow* ventana);
 
-	std::vector<std::vector<Vect3d>> kmeans_grid(const int k, const int maxIterations);
+	std::vector<std::vector<Vect3d>> kmeans_grid(const int k, const int maxIterations, const int subdivisions);
+
+	void kmeans_grid_auto_update(const int k, const int maxIterations, const int subdivisions, GLFWwindow* ventana);
+
+	static TypeColor getClusterColor(int index, int k);
 };
 
 

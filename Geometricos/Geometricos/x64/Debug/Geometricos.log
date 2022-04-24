@@ -1,3 +1,4 @@
-﻿  PointCloud3d.cpp
-  main.cpp
+﻿  main.cpp
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\main.cpp(235,26): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\main.cpp(237,38): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
   Geometricos.vcxproj -> C:\Github\Alg-Geometricos\Geometricos\x64\Debug\Geometricos.exe

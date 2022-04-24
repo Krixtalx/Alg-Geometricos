@@ -55,7 +55,7 @@ void mostrarAyuda() {
 }
 
 
-void refresWindow(GLFWwindow* ventana) {
+void refreshWindow(GLFWwindow* ventana) {
 	try {
 		Scene::getInstance()->refresh();
 	} catch (std::runtime_error& e) {
@@ -111,7 +111,7 @@ void callbackMouseMovevent(GLFWwindow* ventana, double posX, double posY) {
 
 			ratonX = posX;
 			ratonY = posY;
-			refresWindow(ventana);
+			refreshWindow(ventana);
 			ultimaEjecucion = clock();
 			movimientoActivo = Movements::NONE;
 		}
@@ -121,7 +121,7 @@ void callbackMouseMovevent(GLFWwindow* ventana, double posX, double posY) {
 void callbackMouseWheel(GLFWwindow* ventana, double incX, double incY) {
 	movimientoActivo = Movements::ZOOM;
 	Scene::getInstance()->moveCamera(movimientoActivo, -incY);
-	refresWindow(ventana);
+	refreshWindow(ventana);
 	movimientoActivo = Movements::NONE;
 }
 
@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
 		<< glGetString(GL_VERSION) << std::endl
 		<< glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
-	glfwSetWindowRefreshCallback(miVentana, refresWindow);
+	glfwSetWindowRefreshCallback(miVentana, refreshWindow);
 	glfwSetFramebufferSizeCallback(miVentana, callbackTamFB);
 	glfwSetKeyCallback(miVentana, callbackKey);
 	glfwSetMouseButtonCallback(miVentana, callbackMouseButton);
@@ -222,55 +222,50 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 					<< e.what() << std::endl;
 			}
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 
 	case GLFW_KEY_S:
 		if (accion == GLFW_PRESS) {
 			try {
-				//Crear una nube de puntos aleatoria de tamaño 50
-				PointCloud3d cloud(1200000, 10);
-				DrawCloud3d* drawCloud;
-				drawCloud = new DrawCloud3d(cloud);
-				drawCloud->drawIt({ 0, 0, 1 , 1 });
-				int k = 87;
-				auto clusters(cloud.kmeans_naive(k, 40));
-				float increment = 1;
-				if (k > 7)
-					increment = (float)7 / k;
-				float r, g, b, offset, mod;
-				int id = 0;
-				Scene::getInstance()->clearScene();
-				for (auto& cluster : clusters) {
-					r = 0, g = 0, b = 0;
-					PointCloud3d c(cluster);
-					drawCloud = new DrawCloud3d(c);
-					offset = increment * id;
-					if (offset <= 1.0f) {
-						r = offset;
-					} else if (offset <= 2.0f) {
-						g = offset - 1.0f;
-					} else if (offset <= 3.0f) {
-						b = offset - 2.0f;
-					} else if (offset <= 4.0f) {
-						r = 1;
-						b = offset - 3.0f;
-					} else if (offset <= 5.0f) {
-						b = 1;
-						g = offset - 4.0f;
-					} else if (offset <= 6.0f) {
-						r = 1;
-						g = offset - 5.0f;
-					} else if (offset <= 7.0f) {
-						r = 1;
-						b = 1;
-						g = offset - 6.0f;
-					}
-					drawCloud->drawIt({ r, g, b , 1 });
-					std::cout << "Color " + std::to_string(id) + ": " << std::to_string(r) + " - " << std::to_string(g) + " - " << std::to_string(b) + " - " << std::endl;
-					id++;
+				int k = 20;
+				int maxIteration = 500;
+				int cloudSize = 10000;
+				int gridSubdivisions = std::cbrt(cloudSize) / 5;
+				if (std::pow(gridSubdivisions, 3) < k) {
+					gridSubdivisions = std::cbrt(k) + 1;
 				}
+
+				std::cout << "Grid subdivisions = " << gridSubdivisions << std::endl;
+				PointCloud3d cloud(cloudSize, 8);
+				DrawCloud3d* drawCloud;
+				//drawCloud = new DrawCloud3d(cloud);
+				//drawCloud->drawIt({ 0, 0, 1 , 1 });
+				//std::thread hilo(&PointCloud3d::kmeans_naive_auto_update, cloud, k, maxIteration);
+				//hilo.detach();
+
+				auto start = std::chrono::high_resolution_clock::now();
+
+				//auto result = cloud.kmeans_naive(k, maxIteration);
+				cloud.kmeans_naive_auto_update(k, maxIteration, ventana);
+
+				auto end = std::chrono::high_resolution_clock::now();
+
+				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+				std::cout << "Naive: " << int_s.count() << " ms" << std::endl << std::endl;
+
+				start = std::chrono::high_resolution_clock::now();
+				//auto result2 = cloud.kmeans_grid(k, maxIteration, gridSubdivisions);
+				cloud.kmeans_grid_auto_update(k, maxIteration, gridSubdivisions, ventana);
+
+				end = std::chrono::high_resolution_clock::now();
+
+				int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+				std::cout << "Grid: " << int_s.count() << " ms" << std::endl << std::endl;
+
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
 					<< std::endl
@@ -279,7 +274,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 					<< e.what() << std::endl;
 			}
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 
@@ -303,7 +298,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 					<< e.what() << std::endl;
 			}
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 
@@ -375,7 +370,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 					<< e.what() << std::endl;
 			}
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 
@@ -392,41 +387,41 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 					<< e.what() << std::endl;
 			}
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 
 	case GLFW_KEY_R:
 		Scene::getInstance()->clearScene();
-		refresWindow(ventana);
+		refreshWindow(ventana);
 		break;
 
 	case GLFW_KEY_1:
 		if (accion == GLFW_PRESS) {
 			Scene::getInstance()->setView(TypeView::PLANT);
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 	case GLFW_KEY_2:
 		if (accion == GLFW_PRESS) {
 			Scene::getInstance()->setView(TypeView::ELEVATION);
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 	case GLFW_KEY_3:
 		if (accion == GLFW_PRESS) {
 			Scene::getInstance()->setView(TypeView::PROFILE);
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 	case GLFW_KEY_4:
 		if (accion == GLFW_PRESS) {
 			Scene::getInstance()->setView(TypeView::ISOMETRIC);
 
-			refresWindow(ventana);
+			refreshWindow(ventana);
 		}
 		break;
 	case GLFW_KEY_H:
@@ -458,7 +453,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 			}
 		}
 
-		refresWindow(ventana);
+		refreshWindow(ventana);
 		break;
 	case GLFW_KEY_UP:
 		f = 1;
@@ -483,7 +478,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				break;
 			}
 		}
-		refresWindow(ventana);
+		refreshWindow(ventana);
 		break;
 
 

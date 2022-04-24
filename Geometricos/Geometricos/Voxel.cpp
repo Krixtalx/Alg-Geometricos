@@ -35,6 +35,10 @@ void Voxel::setSize(Vect3d& min, Vect3d& max) {
 	setMax(max);
 }
 
+std::vector<int>& Voxel::getReferences() {
+	return triangleReferences;
+}
+
 bool Voxel::isProcessed() const {
 	return processed;
 }

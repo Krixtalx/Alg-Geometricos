@@ -22,6 +22,8 @@ public:
 	void setType(type_voxel type);
 	void setSize(Vect3d& min, Vect3d& max);
 
+	std::vector<int>& getReferences();
+
 	bool isProcessed() const;
 	type_voxel getType() const;
 };

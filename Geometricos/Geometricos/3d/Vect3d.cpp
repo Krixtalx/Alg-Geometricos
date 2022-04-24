@@ -79,6 +79,10 @@ bool Vect3d::operator==(const Vect3d& vector) {
 	return BasicGeometry::equal(getX(), vector._value[X]) && BasicGeometry::equal(getY(), vector._value[Y]) && BasicGeometry::equal(getZ(), vector._value[Z]);
 }
 
+bool Vect3d::operator<(const Vect3d& vector) {
+	return _value[X] < vector._value[X];
+}
+
 bool Vect3d::operator!=(const Vect3d& vector) {
 	return !(this->operator==(vector));
 }

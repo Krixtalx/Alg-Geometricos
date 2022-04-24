@@ -10,9 +10,11 @@
 #include <string>
 #include <stdexcept>
 #include "Scene.h"
+#include "3d/DrawCloud3d.h"
 
 
 Scene* Scene::_instance = nullptr;
+
 
 /**
  * Destructor.
@@ -81,6 +83,7 @@ Scene* Scene::getInstance() {
  * @throw std::runtime_error Si hay algún error
  */
 void Scene::refresh() {
+	renderingMutex.lock();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -109,6 +112,7 @@ void Scene::refresh() {
 			throw std::runtime_error(mensaje + e.what());
 		}
 	}
+	renderingMutex.unlock();
 }
 
 
@@ -235,7 +239,7 @@ void Scene::deleteModel(int cual) {
 }
 
 void Scene::clearScene() {
-	for (auto model : _models) {
+	for (auto& model : _models) {
 		delete model;
 	}
 	_models.clear();
@@ -365,3 +369,4 @@ void Scene::setDrawMode(int modelo, TypeDraw modo) {
 void Scene::addLight(Light& nueva) {
 	_lights.push_back(nueva);
 }
+

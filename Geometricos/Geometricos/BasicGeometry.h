@@ -8,6 +8,12 @@ namespace BasicGeometry {
 	const double ZERO = 0.000000f;
 	const double INFINITO = DBL_MAX;
 
+	struct int3 {
+		int x;
+		int y;
+		int z;
+	};
+
 	/**
 	*	@brief Checks if two values are equal.
 	*/
