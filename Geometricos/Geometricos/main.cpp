@@ -232,12 +232,6 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				int k = 20;
 				int maxIteration = 500;
 				int cloudSize = 10000;
-				int gridSubdivisions = std::cbrt(cloudSize) / 5;
-				if (std::pow(gridSubdivisions, 3) < k) {
-					gridSubdivisions = std::cbrt(k) + 1;
-				}
-
-				std::cout << "Grid subdivisions = " << gridSubdivisions << std::endl;
 				PointCloud3d cloud(cloudSize, 8);
 				DrawCloud3d* drawCloud;
 				//drawCloud = new DrawCloud3d(cloud);
@@ -258,7 +252,7 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 				start = std::chrono::high_resolution_clock::now();
 				//auto result2 = cloud.kmeans_grid(k, maxIteration, gridSubdivisions);
-				cloud.kmeans_grid_auto_update(k, maxIteration, gridSubdivisions, ventana);
+				cloud.kmeans_grid_auto_update(k, maxIteration, ventana);
 
 				end = std::chrono::high_resolution_clock::now();
 
@@ -282,13 +276,41 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_P:
 		if (accion == GLFW_PRESS) {
 			try {
-				Scene::getInstance()->clearScene();
-				TriangleModel model("vaca.obj");
-				VoxelModel voxelModel(model, 30);
-				DrawVoxelModel* drawVoxelModel;
+				int k = 87;
+				int maxIteration = 100;
+				std::cout << "Comenzando lectura del fichero" << std::endl;
+				//PointCloud3d cloud("olivosModified.ply");
+				PointCloud3d cloud("olivosSubsample.ply");
 
-				drawVoxelModel = new DrawVoxelModel(voxelModel, type_voxel::grey);
-				drawVoxelModel->drawIt();
+				int cloudSize = cloud.size();
+				DrawCloud3d* drawCloud;
+				drawCloud = new DrawCloud3d(cloud);
+				drawCloud->drawIt({ 0, 0, 1 , 1 });
+				////std::thread hilo(&PointCloud3d::kmeans_naive_auto_update, cloud, k, maxIteration);
+				////hilo.detach();
+
+				auto start = std::chrono::high_resolution_clock::now();
+
+				//auto result = cloud.kmeans_naive(k, maxIteration);
+				cloud.kmeans_naive_auto_update(k, maxIteration, ventana);
+
+				auto end = std::chrono::high_resolution_clock::now();
+
+				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+				std::cout << "Naive: " << int_s.count() << " ms" << std::endl << std::endl;
+
+				std::this_thread::sleep_for(std::chrono::seconds(2));
+
+				start = std::chrono::high_resolution_clock::now();
+				//auto result2 = cloud.kmeans_grid(k, maxIteration, gridSubdivisions);
+				cloud.kmeans_grid_auto_update(k, maxIteration, ventana);
+
+				end = std::chrono::high_resolution_clock::now();
+
+				int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+				std::cout << "Grid: " << int_s.count() << " ms" << std::endl << std::endl;
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"

@@ -287,6 +287,10 @@ void Scene::setView(TypeView v) {
 	_camera.setView(v);
 }
 
+void Scene::setCameraPos(Vect3d v) {
+	_camera.setPos(v.toGLM());
+}
+
 
 /**
  * Método para mover la cámara virtual

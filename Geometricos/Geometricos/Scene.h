@@ -18,6 +18,7 @@
 #include "Draw.h"
 #include "RenderSettings.h"
 #include <mutex>
+#include "3d/Vect3d.h"
 
  /**
 	 * @brief Clase encargada de encapsular toda la gestión del área de dibujo
@@ -56,6 +57,7 @@ public:
 	Draw* getModel(int cual);
 	int getNumModels();
 	void setView(TypeView v);
+	void setCameraPos(Vect3d v);
 	void moveCamera(Movements m, GLfloat factor);
 	void moveCamera(Movements m, GLfloat factor1, GLfloat factor2);
 	void setDrawMode(int model, TypeDraw mode);

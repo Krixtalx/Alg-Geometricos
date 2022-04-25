@@ -31,7 +31,7 @@ PointCloud3d::PointCloud3d(const std::string& filename)
 
 		while (ss.good()) {
 			std::string substr;
-			getline(ss, substr, ',');
+			getline(ss, substr, ' ');
 			result.push_back(substr);
 		}
 
@@ -41,11 +41,13 @@ PointCloud3d::PointCloud3d(const std::string& filename)
 	std::string currentLine; 				// Línea actual del fichero.
 	std::ifstream inputStream;				// Flujo de entrada.
 	inputStream.open(filename.c_str());
-
+	while (currentLine != "end_header") {
+		std::getline(inputStream, currentLine);
+	}
 	while (std::getline(inputStream, currentLine)) {
 		std::vector<std::string> coord = splitByComma(currentLine);
 
-		if (coord.size() == 3) {
+		if (coord.size() >= 3) {
 			try {
 				Vect3d point(std::stof(coord[0].c_str(), nullptr), std::stof(coord[1].c_str(), nullptr), (std::stof(coord[2].c_str(), nullptr)));
 				this->addPoint(point);
@@ -216,7 +218,7 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_naive(const int k, const i
 	float sumSquareError = INFINITY;
 	float prevSumSquareError = 0;
 	int currentIt = 0;
-	while (!BasicGeometry::equal(sumSquareError, prevSumSquareError) && currentIt < maxIterations) {
+	while (!BasicGeometry::equal(sumSquareError / prevSumSquareError, 1) && currentIt < maxIterations) {
 		currentIt++;
 		prevSumSquareError = sumSquareError;
 		for (int i = 0; i < k; i++) {
@@ -279,7 +281,7 @@ void PointCloud3d::kmeans_naive_auto_update(const int k, const int maxIterations
 	float sumSquareError = INFINITY;
 	float prevSumSquareError = 0;
 	int currentIt = 0;
-	while (!BasicGeometry::equal(sumSquareError, prevSumSquareError) && currentIt < maxIterations) {
+	while (!BasicGeometry::equal(sumSquareError / prevSumSquareError, 1) && currentIt < maxIterations) {
 		currentIt++;
 		prevSumSquareError = sumSquareError;
 		for (int i = 0; i < k; i++) {
@@ -322,7 +324,7 @@ void PointCloud3d::kmeans_naive_auto_update(const int k, const int maxIterations
 		}
 
 		sumSquareError /= (float)k;
-		//std::cout << "Sum of Squares error: " << std::to_string(sumSquareError) << std::endl;
+		std::cout << "Sum of Squares error: " << std::to_string(sumSquareError) << std::endl;
 
 		int id = 0;
 		Scene::getInstance()->clearScene();
@@ -342,23 +344,31 @@ bool compareFunction(std::pair<int, BasicGeometry::int3> left, std::pair<int, Ba
 	return left.first > right.first;
 }
 
-std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const int maxIterations, const int subdivisions) {
+std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const int maxIterations) {
 	std::vector<std::vector<Vect3d>> result(k);
 	std::vector<std::vector<float>> distances(k);
 	std::vector<float> meanDistances(k);
 	std::vector<Vect3d> centroids(k);
-	std::vector<std::vector<std::vector<Voxel>>> malla(subdivisions);
+	AABB aabb(_minPoint, _maxPoint);
+	Vect3d voxelSize = aabb.getExtent().scalarMul(2);
+	BasicGeometry::int3 subdivisions;
+	subdivisions.x = voxelSize[0] / 5;
+	subdivisions.y = voxelSize[1] / 5;
+	subdivisions.z = voxelSize[2] / 5;
+	std::cout << "Grid subdivision: " << subdivisions.x << "-" << subdivisions.y << "-" << subdivisions.z << std::endl;
+	std::vector<std::vector<std::vector<Voxel>>> malla(subdivisions.x);
 	DrawCloud3d* drawCloud;
 	const int pointsNumber = _points.size();
-	AABB aabb(_minPoint, _maxPoint);
-	Vect3d voxelSize = aabb.getExtent().scalarMul((float)2 / subdivisions);
+	voxelSize[0] /= subdivisions.x;
+	voxelSize[1] /= subdivisions.y;
+	voxelSize[2] /= subdivisions.z;
 	Vect3d aabbMin(_minPoint);
 	std::vector<std::pair<int, BasicGeometry::int3>> centroidsCandidates;
-	for (size_t x = 0; x < subdivisions; x++) {
-		malla[x].resize(subdivisions);
-		for (size_t y = 0; y < subdivisions; y++) {
-			malla[x][y].resize(subdivisions);
-			for (size_t z = 0; z < subdivisions; z++) {
+	for (size_t x = 0; x < subdivisions.x; x++) {
+		malla[x].resize(subdivisions.y);
+		for (size_t y = 0; y < subdivisions.y; y++) {
+			malla[x][y].resize(subdivisions.z);
+			for (size_t z = 0; z < subdivisions.z; z++) {
 				Vect3d min(aabbMin[0] + voxelSize[0] * x, aabbMin[1] + voxelSize[1] * y, aabbMin[2] + voxelSize[2] * z);
 				Vect3d max(aabbMin[0] + voxelSize[0] * (x + 1), aabbMin[1] + voxelSize[1] * (y + 1), aabbMin[2] + voxelSize[2] * (z + 1));
 				malla[x][y][z].setSize(min, max);
@@ -373,28 +383,28 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 		int z = normalized[2] / voxelSize[2];
 		if (x < 0)
 			x = 0;
-		else if (x >= subdivisions)
-			x = subdivisions - 1;
+		else if (x >= subdivisions.x)
+			x = subdivisions.x - 1;
 		if (y < 0)
 			y = 0;
-		else if (y >= subdivisions)
-			y = subdivisions - 1;
+		else if (y >= subdivisions.y)
+			y = subdivisions.y - 1;
 		if (z < 0)
 			z = 0;
-		else if (z >= subdivisions)
-			z = subdivisions - 1;
+		else if (z >= subdivisions.z)
+			z = subdivisions.z - 1;
 #pragma omp critical
 		malla[x][y][z].setTriangle(i);
 	}
 #pragma omp parallel for
-	for (int x = 0; x < subdivisions; x++) {
-		for (int y = 0; y < subdivisions; y++) {
-			for (int z = 0; z < subdivisions; z++) {
+	for (int x = 0; x < subdivisions.x; x++) {
+		for (int y = 0; y < subdivisions.y; y++) {
+			for (int z = 0; z < subdivisions.z; z++) {
 				int num = 0;
 				/*for (int subX = x - 1; subX < x + 2; subX++) {
 					for (int subY = y - 1; subY < y + 2; subY++) {
 						for (int subZ = z - 1; subZ < z + 2; subZ++) {
-							if (!(subX < 0 || subY < 0 || subZ < 0 || subX >= subdivisions || subY >= subdivisions || subZ >= subdivisions)) {
+							if (!(subX < 0 || subY < 0 || subZ < 0 || subX >= subdivisions.x || subY >= subdivisions.y || subZ >= subdivisions)) {
 								auto& references = malla[subX][subY][subZ].getReferences();
 								num += references.size();
 							}
@@ -414,13 +424,13 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 		centroids[i] = malla[pos.x][pos.y][pos.z].getCenter();
 	}
 	float sumSquareError = INFINITY;
-	float prevSumSquareError = 0;
+	float prevSumSquareError = 1;
 	int currentIt = 0;
 	std::vector < std::vector<float>> distanceToGrid(k);
 	for (int i = 0; i < k; i++) {
-		distanceToGrid[i].resize(subdivisions * subdivisions * subdivisions);
+		distanceToGrid[i].resize(subdivisions.x * subdivisions.y * subdivisions.z);
 	}
-	while (!BasicGeometry::equal(sumSquareError, prevSumSquareError) && currentIt < maxIterations) {
+	while (!BasicGeometry::equal(sumSquareError / prevSumSquareError, 1) && currentIt < maxIterations) {
 		currentIt++;
 		prevSumSquareError = sumSquareError;
 #pragma omp parallel for
@@ -428,10 +438,10 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 			result[i].clear();
 			distances[i].clear();
 			meanDistances[i] = .0f;
-			for (int x = 0; x < subdivisions; x++) {
-				for (int y = 0; y < subdivisions; y++) {
-					for (int z = 0; z < subdivisions; z++) {
-						distanceToGrid[i][x * subdivisions * subdivisions + y * subdivisions + z] = centroids[i].squareDistance(malla[x][y][z].getCenter());
+			for (int x = 0; x < subdivisions.x; x++) {
+				for (int y = 0; y < subdivisions.y; y++) {
+					for (int z = 0; z < subdivisions.z; z++) {
+						distanceToGrid[i][x * subdivisions.y * subdivisions.z + y * subdivisions.z + z] = centroids[i].squareDistance(malla[x][y][z].getCenter());
 					}
 				}
 			}
@@ -443,10 +453,22 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 			int x = normalized[0] / voxelSize[0];
 			int y = normalized[1] / voxelSize[1];
 			int z = normalized[2] / voxelSize[2];
+			if (x < 0)
+				x = 0;
+			else if (x >= subdivisions.x)
+				x = subdivisions.x - 1;
+			if (y < 0)
+				y = 0;
+			else if (y >= subdivisions.y)
+				y = subdivisions.y - 1;
+			if (z < 0)
+				z = 0;
+			else if (z >= subdivisions.z)
+				z = subdivisions.z - 1;
 			float minDistance = INFINITY;
 			int clusterIndex = -1;
 			for (int j = 0; j < k; j++) {
-				float distance = distanceToGrid[j][x * subdivisions * subdivisions + y * subdivisions + z];
+				float distance = distanceToGrid[j][x * subdivisions.y * subdivisions.z + y * subdivisions.z + z];
 				if (distance < minDistance) {
 					minDistance = distance;
 					clusterIndex = j;
@@ -483,29 +505,37 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 		}
 
 		sumSquareError /= (float)k;
-		//std::cout << "Sum of Squares error: " << std::to_string(sumSquareError) << std::endl;
+		std::cout << "Sum of Squares error: " << std::to_string(sumSquareError) << std::endl;
 	}
 	std::cout << "Clustering grid finalizado en " << currentIt << " iteraciones." << std::endl;
 	return result;
 }
 
-void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations, const int subdivisions, GLFWwindow* ventana) {
+void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations, GLFWwindow* ventana) {
 	std::vector<std::vector<Vect3d>> result(k);
 	std::vector<std::vector<float>> distances(k);
 	std::vector<float> meanDistances(k);
 	std::vector<Vect3d> centroids(k);
-	std::vector<std::vector<std::vector<Voxel>>> malla(subdivisions);
+	AABB aabb(_minPoint, _maxPoint);
+	Vect3d voxelSize = aabb.getExtent().scalarMul(2);
+	BasicGeometry::int3 subdivisions;
+	subdivisions.x = voxelSize[0] / 5;
+	subdivisions.y = voxelSize[1] / 5;
+	subdivisions.z = voxelSize[2] / 5;
+	std::cout << "Grid subdivision: " << subdivisions.x << "-" << subdivisions.y << "-" << subdivisions.z << std::endl;
+	std::vector<std::vector<std::vector<Voxel>>> malla(subdivisions.x);
 	DrawCloud3d* drawCloud;
 	const int pointsNumber = _points.size();
-	AABB aabb(_minPoint, _maxPoint);
-	Vect3d voxelSize = aabb.getExtent().scalarMul((float)2 / subdivisions);
+	voxelSize[0] /= subdivisions.x;
+	voxelSize[1] /= subdivisions.y;
+	voxelSize[2] /= subdivisions.z;
 	Vect3d aabbMin(_minPoint);
 	std::vector<std::pair<int, BasicGeometry::int3>> centroidsCandidates;
-	for (size_t x = 0; x < subdivisions; x++) {
-		malla[x].resize(subdivisions);
-		for (size_t y = 0; y < subdivisions; y++) {
-			malla[x][y].resize(subdivisions);
-			for (size_t z = 0; z < subdivisions; z++) {
+	for (size_t x = 0; x < subdivisions.x; x++) {
+		malla[x].resize(subdivisions.y);
+		for (size_t y = 0; y < subdivisions.y; y++) {
+			malla[x][y].resize(subdivisions.z);
+			for (size_t z = 0; z < subdivisions.z; z++) {
 				Vect3d min(aabbMin[0] + voxelSize[0] * x, aabbMin[1] + voxelSize[1] * y, aabbMin[2] + voxelSize[2] * z);
 				Vect3d max(aabbMin[0] + voxelSize[0] * (x + 1), aabbMin[1] + voxelSize[1] * (y + 1), aabbMin[2] + voxelSize[2] * (z + 1));
 				malla[x][y][z].setSize(min, max);
@@ -520,28 +550,28 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 		int z = normalized[2] / voxelSize[2];
 		if (x < 0)
 			x = 0;
-		else if (x >= subdivisions)
-			x = subdivisions - 1;
+		else if (x >= subdivisions.x)
+			x = subdivisions.x - 1;
 		if (y < 0)
 			y = 0;
-		else if (y >= subdivisions)
-			y = subdivisions - 1;
+		else if (y >= subdivisions.y)
+			y = subdivisions.y - 1;
 		if (z < 0)
 			z = 0;
-		else if (z >= subdivisions)
-			z = subdivisions - 1;
+		else if (z >= subdivisions.z)
+			z = subdivisions.z - 1;
 #pragma omp critical
 		malla[x][y][z].setTriangle(i);
 	}
 #pragma omp parallel for
-	for (int x = 0; x < subdivisions; x++) {
-		for (int y = 0; y < subdivisions; y++) {
-			for (int z = 0; z < subdivisions; z++) {
+	for (int x = 0; x < subdivisions.x; x++) {
+		for (int y = 0; y < subdivisions.y; y++) {
+			for (int z = 0; z < subdivisions.z; z++) {
 				int num = 0;
 				/*for (int subX = x - 1; subX < x + 2; subX++) {
 					for (int subY = y - 1; subY < y + 2; subY++) {
 						for (int subZ = z - 1; subZ < z + 2; subZ++) {
-							if (!(subX < 0 || subY < 0 || subZ < 0 || subX >= subdivisions || subY >= subdivisions || subZ >= subdivisions)) {
+							if (!(subX < 0 || subY < 0 || subZ < 0 || subX >= subdivisions.x || subY >= subdivisions.y || subZ >= subdivisions)) {
 								auto& references = malla[subX][subY][subZ].getReferences();
 								num += references.size();
 							}
@@ -561,13 +591,13 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 		centroids[i] = malla[pos.x][pos.y][pos.z].getCenter();
 	}
 	float sumSquareError = INFINITY;
-	float prevSumSquareError = 0;
+	float prevSumSquareError = 1;
 	int currentIt = 0;
 	std::vector < std::vector<float>> distanceToGrid(k);
 	for (int i = 0; i < k; i++) {
-		distanceToGrid[i].resize(subdivisions * subdivisions * subdivisions);
+		distanceToGrid[i].resize(subdivisions.x * subdivisions.y * subdivisions.z);
 	}
-	while (!BasicGeometry::equal(sumSquareError, prevSumSquareError) && currentIt < maxIterations) {
+	while (!BasicGeometry::equal(sumSquareError / prevSumSquareError, 1) && currentIt < maxIterations) {
 		currentIt++;
 		prevSumSquareError = sumSquareError;
 #pragma omp parallel for
@@ -575,10 +605,10 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 			result[i].clear();
 			distances[i].clear();
 			meanDistances[i] = .0f;
-			for (int x = 0; x < subdivisions; x++) {
-				for (int y = 0; y < subdivisions; y++) {
-					for (int z = 0; z < subdivisions; z++) {
-						distanceToGrid[i][x * subdivisions * subdivisions + y * subdivisions + z] = centroids[i].squareDistance(malla[x][y][z].getCenter());
+			for (int x = 0; x < subdivisions.x; x++) {
+				for (int y = 0; y < subdivisions.y; y++) {
+					for (int z = 0; z < subdivisions.z; z++) {
+						distanceToGrid[i][x * subdivisions.y * subdivisions.z + y * subdivisions.z + z] = centroids[i].squareDistance(malla[x][y][z].getCenter());
 					}
 				}
 			}
@@ -590,10 +620,22 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 			int x = normalized[0] / voxelSize[0];
 			int y = normalized[1] / voxelSize[1];
 			int z = normalized[2] / voxelSize[2];
+			if (x < 0)
+				x = 0;
+			else if (x >= subdivisions.x)
+				x = subdivisions.x - 1;
+			if (y < 0)
+				y = 0;
+			else if (y >= subdivisions.y)
+				y = subdivisions.y - 1;
+			if (z < 0)
+				z = 0;
+			else if (z >= subdivisions.z)
+				z = subdivisions.z - 1;
 			float minDistance = INFINITY;
 			int clusterIndex = -1;
 			for (int j = 0; j < k; j++) {
-				float distance = distanceToGrid[j][x * subdivisions * subdivisions + y * subdivisions + z];
+				float distance = distanceToGrid[j][x * subdivisions.y * subdivisions.z + y * subdivisions.z + z];
 				if (distance < minDistance) {
 					minDistance = distance;
 					clusterIndex = j;
@@ -630,7 +672,7 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 		}
 
 		sumSquareError /= (float)k;
-		//std::cout << "Sum of Squares error: " << std::to_string(sumSquareError) << std::endl;
+		std::cout << "Sum of Squares error: " << std::to_string(sumSquareError) << std::endl;
 
 		int id = 0;
 		Scene::getInstance()->clearScene();
@@ -642,6 +684,7 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 		}
 		Scene::getInstance()->refresh();
 		glfwSwapBuffers(ventana);
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	}
 	std::cout << "Clustering grid finalizado en " << currentIt << " iteraciones." << std::endl;
 }

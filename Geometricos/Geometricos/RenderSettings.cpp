@@ -825,7 +825,7 @@ Camera& Camera::setView ( TypeView v )
    switch (v)
    {
       case TypeView::ELEVATION:
-         _posicion = glm::vec3 ( 0, 0, 10 );
+         _posicion = glm::vec3 ( 0, 0, 140 );
          _lookAt = glm::vec3 ( 0, 0, 0 );
          break;
       case TypeView::PLANT:

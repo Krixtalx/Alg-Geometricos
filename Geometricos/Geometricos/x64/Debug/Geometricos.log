@@ -1,4 +1,58 @@
-﻿  main.cpp
-C:\Github\Alg-Geometricos\Geometricos\Geometricos\main.cpp(235,26): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-C:\Github\Alg-Geometricos\Geometricos\Geometricos\main.cpp(237,38): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+﻿  AABB.cpp
+  DrawAABB.cpp
+  DrawCloud3d.cpp
+  DrawLine3d.cpp
+  DrawPlane.cpp
+  DrawRay3d.cpp
+  DrawSegment3d.cpp
+  DrawTriangle3d.cpp
+  DrawTriangleModel.cpp
+  DrawVect3d.cpp
+  Plane.cpp
+  PointCloud3d.cpp
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(373,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(374,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(375,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(445,10): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(446,10): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(447,10): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(502,32): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(503,32): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(504,32): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(528,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(529,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(530,9): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(600,10): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(601,10): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\PointCloud3d.cpp(602,10): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+  Triangle3d.cpp
+  TriangleModel.cpp
+  Vect3d.cpp
+  Draw.cpp
+  DrawBezier.cpp
+  DrawLine.cpp
+  DrawPoint.cpp
+  DrawPointCloud.cpp
+  DrawPolygon.cpp
+  DrawRay.cpp
+  DrawSegment.cpp
+  DrawTriangle.cpp
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\3d\Triangle3d.cpp(97,33): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+  DrawVoxelModel.cpp
+  RenderSettings.cpp
+  Scene.cpp
+  VoxelModel.cpp
+  main.cpp
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\DrawVoxelModel.cpp(57,45): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\RenderSettings.cpp(416,36): warning C4305: 'inicializando': truncamiento de 'double' a 'GLfloat'
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\Scene.cpp(126,29): warning C4244: 'argumento': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\Scene.cpp(126,22): warning C4244: 'argumento': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\Scene.cpp(199,31): warning C4305: 'argumento': truncamiento de 'double' a 'GLfloat'
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(18,59): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(52,48): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(116,8): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(117,8): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(118,8): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Github\Alg-Geometricos\Geometricos\Geometricos\VoxelModel.cpp(131): warning C4715: 'VoxelModel::pointIntoMesh': no todas las rutas de acceso de control devuelven un valor
+LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
   Geometricos.vcxproj -> C:\Github\Alg-Geometricos\Geometricos\x64\Debug\Geometricos.exe

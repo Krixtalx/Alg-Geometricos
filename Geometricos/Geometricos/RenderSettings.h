@@ -131,7 +131,7 @@
          glm::vec3 _lookAt = {0, 0, 0};   ///< Punto al que mira
          GLfloat _fovX = 40;   ///< Ángulo de visión en X (en grados sexagesimales)
          GLfloat _zNear = 1;   ///< Distancia del plano zNear
-         GLfloat _zFar = 20;   ///< Distancia del plano zFar
+         GLfloat _zFar = 200;   ///< Distancia del plano zFar
          GLfloat _width = 0;   ///< Ancho del viewport
          GLfloat _height = 1;   ///< Alto del viewport
          

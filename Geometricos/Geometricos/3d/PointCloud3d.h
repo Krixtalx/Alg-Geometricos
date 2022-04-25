@@ -152,9 +152,9 @@ public:
 
 	void kmeans_naive_auto_update(const int k, const int maxIterations, GLFWwindow* ventana);
 
-	std::vector<std::vector<Vect3d>> kmeans_grid(const int k, const int maxIterations, const int subdivisions);
+	std::vector<std::vector<Vect3d>> kmeans_grid(const int k, const int maxIterations);
 
-	void kmeans_grid_auto_update(const int k, const int maxIterations, const int subdivisions, GLFWwindow* ventana);
+	void kmeans_grid_auto_update(const int k, const int maxIterations, GLFWwindow* ventana);
 
 	static TypeColor getClusterColor(int index, int k);
 };
