@@ -34,6 +34,18 @@
 #include "3d/DrawTriangle3d.h"
 #include "VoxelModel.h"
 #include "DrawVoxelModel.h"
+#include <pcl/ModelCoefficients.h>
+#include <pcl/point_types.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/filters/extract_indices.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/features/normal_3d.h>
+#include <pcl/search/kdtree.h>
+#include <pcl/sample_consensus/method_types.h>
+#include <pcl/sample_consensus/model_types.h>
+#include <pcl/segmentation/sac_segmentation.h>
+#include <pcl/segmentation/extract_clusters.h>
 
 
 Movements movimientoActivo = Movements::NONE;
@@ -41,17 +53,30 @@ bool botonPulsado = false;
 double ratonX = 0;
 double ratonY = 0;
 int modeloActivo = -1;
-
+PointCloud3d* loadedCloud;
 
 void mostrarAyuda() {
 	std::cout << "Ayuda" << std::endl
 		<< "================" << std::endl
-		<< "P -> Modelo voxelizado solo gris" << std::endl
-		<< "L -> Modelo voxelizado gris+negro y apartado 2, 3, 4" << std::endl
+		<< "S -> Esfera benchmark" << std::endl
+		<< "M -> Esfera naive" << std::endl
+		<< "N -> Esfera grid" << std::endl
+		<< "P -> Olivos benchmark" << std::endl
+		<< "K -> Olivos naive" << std::endl
+		<< "L -> Olivos grid" << std::endl
+		<< "Y -> PCL clustering" << std::endl
 		<< "r -> Resetea la escena" << std::endl
 		<< "Cursores y rueda ratón -> Rotación" << std::endl
 		<< "h -> Muestra esta ayuda" << std::endl
 		<< "q -> Cierra la aplicación" << std::endl;
+}
+
+
+void loadPointCloud() {
+	Scene::getInstance()->clearScene();
+	if (!loadedCloud) {
+		loadedCloud = new PointCloud3d("olivosSubsample.ply");
+	}
 }
 
 
@@ -205,15 +230,53 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_M:
 		if (accion == GLFW_PRESS) {
 			try {
-				Vect2d a(3.0, 2.0);
-				Vect2d b(0.0, 0.0);
-				Vect2d c(-2.0, 1.0);
+				int k = 27;
+				int maxIteration = 500;
+				int cloudSize = 5000;
+				PointCloud3d cloud(cloudSize, 8);
 
-				Triangle t1(a, b, c);
-				DrawTriangle* dt1 = new DrawTriangle(t1);
-				TypeColor magenta(1.0, 0.0, 1.0, 1.0);
-				dt1->drawIt(magenta);
-				dt1 = nullptr;
+				//----------------------Naive---------------------------------
+
+				auto start = std::chrono::high_resolution_clock::now();
+
+				cloud.kmeans_naive_auto_update(k, maxIteration, ventana);
+
+				auto end = std::chrono::high_resolution_clock::now();
+
+				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+				std::cout << "Naive: " << int_s.count() << " ms" << std::endl << std::endl;
+			} catch (std::exception& e) {
+				std::cout << "Exception captured in callbackKey"
+					<< std::endl
+					<< "===================================="
+					<< std::endl
+					<< e.what() << std::endl;
+			}
+
+			refreshWindow(ventana);
+		}
+		break;
+
+	case GLFW_KEY_N:
+		if (accion == GLFW_PRESS) {
+			try {
+				int k = 27;
+				int maxIteration = 500;
+				int cloudSize = 5000;
+				PointCloud3d cloud(cloudSize, 8);
+
+				//----------------------Grid---------------------------------
+
+				auto start = std::chrono::high_resolution_clock::now();
+
+				cloud.kmeans_grid_auto_update(k, maxIteration, ventana);
+
+				auto end = std::chrono::high_resolution_clock::now();
+
+				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+				std::cout << "Grid: " << int_s.count() << " ms" << std::endl << std::endl;
 			} catch (std::exception& e) {
 				std::cout << "Exception captured in callbackKey"
 					<< std::endl
@@ -229,20 +292,23 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_S:
 		if (accion == GLFW_PRESS) {
 			try {
-				int k = 20;
+				int k = 27;
 				int maxIteration = 500;
-				int cloudSize = 10000;
+				int cloudSize = 5000;
 				PointCloud3d cloud(cloudSize, 8);
 				DrawCloud3d* drawCloud;
-				//drawCloud = new DrawCloud3d(cloud);
-				//drawCloud->drawIt({ 0, 0, 1 , 1 });
-				//std::thread hilo(&PointCloud3d::kmeans_naive_auto_update, cloud, k, maxIteration);
-				//hilo.detach();
+
+				//----------------------Naive---------------------------------
 
 				auto start = std::chrono::high_resolution_clock::now();
 
-				//auto result = cloud.kmeans_naive(k, maxIteration);
-				cloud.kmeans_naive_auto_update(k, maxIteration, ventana);
+				auto result = cloud.kmeans_naive(k, maxIteration);
+				int id = 0;
+				for (auto& cluster : result) {
+					PointCloud3d c(cluster);
+					drawCloud = new DrawCloud3d(c);
+					drawCloud->drawIt(PointCloud3d::getClusterColor(id++, k));
+				}
 
 				auto end = std::chrono::high_resolution_clock::now();
 
@@ -250,9 +316,18 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 				std::cout << "Naive: " << int_s.count() << " ms" << std::endl << std::endl;
 
+				refreshWindow(ventana);
+
+				//----------------------Grid---------------------------------
+
 				start = std::chrono::high_resolution_clock::now();
-				//auto result2 = cloud.kmeans_grid(k, maxIteration, gridSubdivisions);
-				cloud.kmeans_grid_auto_update(k, maxIteration, ventana);
+				auto result2 = cloud.kmeans_grid(k, maxIteration);
+				id = 0;
+				for (auto& cluster : result2) {
+					PointCloud3d c(cluster);
+					drawCloud = new DrawCloud3d(c);
+					drawCloud->drawIt(PointCloud3d::getClusterColor(id++, k));
+				}
 
 				end = std::chrono::high_resolution_clock::now();
 
@@ -279,20 +354,23 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 				int k = 87;
 				int maxIteration = 100;
 				std::cout << "Comenzando lectura del fichero" << std::endl;
-				//PointCloud3d cloud("olivosModified.ply");
-				PointCloud3d cloud("olivosSubsample.ply");
+				loadPointCloud();
 
-				int cloudSize = cloud.size();
+				int cloudSize = loadedCloud->size();
+
 				DrawCloud3d* drawCloud;
-				drawCloud = new DrawCloud3d(cloud);
-				drawCloud->drawIt({ 0, 0, 1 , 1 });
-				////std::thread hilo(&PointCloud3d::kmeans_naive_auto_update, cloud, k, maxIteration);
-				////hilo.detach();
+
+				//----------------------Naive---------------------------------
 
 				auto start = std::chrono::high_resolution_clock::now();
 
-				//auto result = cloud.kmeans_naive(k, maxIteration);
-				cloud.kmeans_naive_auto_update(k, maxIteration, ventana);
+				auto result = loadedCloud->kmeans_naive(k, maxIteration);
+				int id = 0;
+				for (auto& cluster : result) {
+					PointCloud3d c(cluster);
+					drawCloud = new DrawCloud3d(c);
+					drawCloud->drawIt(PointCloud3d::getClusterColor(id++, k));
+				}
 
 				auto end = std::chrono::high_resolution_clock::now();
 
@@ -300,11 +378,18 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 
 				std::cout << "Naive: " << int_s.count() << " ms" << std::endl << std::endl;
 
-				std::this_thread::sleep_for(std::chrono::seconds(2));
+				refreshWindow(ventana);
+
+				//----------------------Grid---------------------------------
 
 				start = std::chrono::high_resolution_clock::now();
-				//auto result2 = cloud.kmeans_grid(k, maxIteration, gridSubdivisions);
-				cloud.kmeans_grid_auto_update(k, maxIteration, ventana);
+				auto result2 = loadedCloud->kmeans_grid(k, maxIteration);
+				id = 0;
+				for (auto& cluster : result2) {
+					PointCloud3d c(cluster);
+					drawCloud = new DrawCloud3d(c);
+					drawCloud->drawIt(PointCloud3d::getClusterColor(id++, k));
+				}
 
 				end = std::chrono::high_resolution_clock::now();
 
@@ -323,66 +408,61 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 			refreshWindow(ventana);
 		}
 		break;
-
-	case GLFW_KEY_L:
+	case GLFW_KEY_K:
 		if (accion == GLFW_PRESS) {
 			try {
-				Vect3d a[3];
-				Scene::getInstance()->clearScene();
-				TriangleModel model("vaca.obj");
-				VoxelModel voxelModel(model, 30);
-				DrawVoxelModel* drawVoxelModel;
+				int k = 87;
+				int maxIteration = 100;
+				std::cout << "Comenzando lectura del fichero" << std::endl;
+				loadPointCloud();
 
-				drawVoxelModel = new DrawVoxelModel(voxelModel, type_voxel::black);
-				drawVoxelModel->drawIt();
+				int cloudSize = loadedCloud->size();
 
-				drawVoxelModel = new DrawVoxelModel(voxelModel, type_voxel::grey);
-				drawVoxelModel->drawIt();
+				//----------------------Naive---------------------------------
 
-				AABB aabb(model.getAABB());
-				//Crear una nube de puntos aleatoria de tamaño 1000
-				PointCloud3d cloud(1000, aabb.getMin(), aabb.getMax());
-
-				auto points = cloud.getPoints();
-				std::vector<Vect3d> pointsIntoMesh(points.size());
-				//-------------------------------TEST 1---------------------------------------------------
 				auto start = std::chrono::high_resolution_clock::now();
-				for (auto& point : points) {
-					if (model.pointIntoMesh(point))
-						pointsIntoMesh.push_back(point);
-				}
+
+				loadedCloud->kmeans_naive_auto_update(k, maxIteration, ventana);
 
 				auto end = std::chrono::high_resolution_clock::now();
 
 				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-				std::cout << std::endl << "Triangle::pointIntoMesh: " << int_s.count() << " ms" << std::endl;
+				std::cout << "Naive: " << int_s.count() << " ms" << std::endl << std::endl;
 
-				//-------------------------------TEST 2---------------------------------------------------
-				std::vector<Vect3d> pointsIntoMeshOptimized(points.size());
+			} catch (std::exception& e) {
+				std::cout << "Exception captured on callbackKey"
+					<< std::endl
+					<< "===================================="
+					<< std::endl
+					<< e.what() << std::endl;
+			}
 
-				start = std::chrono::high_resolution_clock::now();
-				for (auto& point : points) {
-					if (voxelModel.pointIntoMesh(point))
-						pointsIntoMeshOptimized.push_back(point);
-				}
+			refreshWindow(ventana);
+		}
+		break;
 
-				end = std::chrono::high_resolution_clock::now();
+	case GLFW_KEY_L:
+		if (accion == GLFW_PRESS) {
+			try {
+				int k = 87;
+				int maxIteration = 100;
+				std::cout << "Comenzando lectura del fichero" << std::endl;
+				loadPointCloud();
 
-				int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+				int cloudSize = loadedCloud->size();
 
-				std::cout << std::endl << "VoxelModel::pointIntoMesh: " << int_s.count() << " ms" << std::endl;
+				//----------------------Grid---------------------------------
 
-				//-------------------------------Check---------------------------------------------------
+				auto start = std::chrono::high_resolution_clock::now();
 
-				if (pointsIntoMesh.size() == pointsIntoMeshOptimized.size()) {
-					unsigned equals = 0;
-					for (size_t i = 0; i < pointsIntoMesh.size(); i++) {
-						if (pointsIntoMesh[i] == pointsIntoMeshOptimized[i])
-							equals++;
-					}
-					std::cout << "Result: " << (float)equals / pointsIntoMesh.size() * 100 << "% equal" << std::endl;
-				}
+				loadedCloud->kmeans_grid_auto_update(k, maxIteration, ventana);
+
+				auto end = std::chrono::high_resolution_clock::now();
+
+				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+				std::cout << "Grid: " << int_s.count() << " ms" << std::endl << std::endl;
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"
@@ -399,7 +479,43 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_Y:
 		if (accion == GLFW_PRESS) {
 			try {
+				std::cout << "Comienzo lectura fichero PCL" << std::endl;
+				// Read in the cloud data
+				pcl::PLYReader reader;
+				pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>), cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
+				reader.read("olivosSubsample.ply", *cloud);
+				std::cout << "Cloud points number:" << cloud->size() << std::endl;
+				// Creating the KdTree object for the search method of the extraction
+				pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
+				tree->setInputCloud(cloud);
 
+				std::vector<pcl::PointIndices> cluster_indices;
+				pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
+				ec.setClusterTolerance(1.0f);
+				ec.setMinClusterSize(50);
+				ec.setMaxClusterSize(1000);
+				ec.setSearchMethod(tree);
+				ec.setInputCloud(cloud);
+
+				std::cout << "Comienzo clustering PCL" << std::endl;
+				ec.extract(cluster_indices);
+
+				std::cout << "Clustering PCL: " << cluster_indices.size() << " clusters" << std::endl;
+				int j = 0;
+				for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it) {
+					pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster(new pcl::PointCloud<pcl::PointXYZ>);
+					for (const auto& idx : it->indices)
+						cloud_cluster->push_back((*cloud)[idx]);
+					cloud_cluster->width = cloud_cluster->size();
+					cloud_cluster->height = 1;
+					cloud_cluster->is_dense = true;
+
+					std::cout << "PointCloud representing the Cluster: " << cloud_cluster->size() << " data points." << std::endl;
+					std::stringstream ss;
+					ss << "cloud_cluster_" << j << ".ply";
+					pcl::io::savePLYFileBinary(ss.str(), *cloud_cluster);
+					j++;
+				}
 
 			} catch (std::exception& e) {
 				std::cout << "Exception captured on callbackKey"

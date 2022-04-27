@@ -157,6 +157,8 @@ public:
 	void kmeans_grid_auto_update(const int k, const int maxIterations, GLFWwindow* ventana);
 
 	static TypeColor getClusterColor(int index, int k);
+
+	void goToCenter();
 };
 
 

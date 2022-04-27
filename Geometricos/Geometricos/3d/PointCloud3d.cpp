@@ -10,6 +10,8 @@
 #include "../Draw.h"
 #include "DrawCloud3d.h"
 #include "../Voxel.h"
+#include "../DrawPoint.h"
+#include "DrawVect3d.h"
 
 
 PointCloud3d::PointCloud3d()
@@ -212,12 +214,16 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_naive(const int k, const i
 	std::vector<Vect3d> centroids(k);
 	const int nAux = _points.size() / k;
 	const int pointsNumber = _points.size();
+
+	//Se calculan los centroides iniciales
 	for (int i = 0; i < k; i++) {
 		centroids[i] = _points[i * nAux];
 	}
 	float sumSquareError = INFINITY;
 	float prevSumSquareError = 0;
 	int currentIt = 0;
+
+	//Comienzo del proceso iterativo
 	while (!BasicGeometry::equal(sumSquareError / prevSumSquareError, 1) && currentIt < maxIterations) {
 		currentIt++;
 		prevSumSquareError = sumSquareError;
@@ -226,6 +232,7 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_naive(const int k, const i
 			distances[i].clear();
 			meanDistances[i] = .0f;
 		}
+		//Asignacion de cada punto al centroide más cercano
 #pragma omp parallel for
 		for (int i = 0; i < pointsNumber; i++) {
 			float minDistance = INFINITY;
@@ -246,6 +253,7 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_naive(const int k, const i
 
 		}
 		sumSquareError = .0f;
+		//Calculo de los nuevos centroides
 		for (int i = 0; i < k; i++) {
 			int clusterSize = result[i].size();
 			meanDistances[i] /= (float)clusterSize;
@@ -275,12 +283,14 @@ void PointCloud3d::kmeans_naive_auto_update(const int k, const int maxIterations
 	DrawCloud3d* drawCloud;
 	const int nAux = _points.size() / k;
 	const int pointsNumber = _points.size();
+	//Calculo de los centroides iniciales
 	for (int i = 0; i < k; i++) {
 		centroids[i] = _points[i * nAux];
 	}
 	float sumSquareError = INFINITY;
 	float prevSumSquareError = 0;
 	int currentIt = 0;
+	//Comienzo del proceso iterativo
 	while (!BasicGeometry::equal(sumSquareError / prevSumSquareError, 1) && currentIt < maxIterations) {
 		currentIt++;
 		prevSumSquareError = sumSquareError;
@@ -289,6 +299,7 @@ void PointCloud3d::kmeans_naive_auto_update(const int k, const int maxIterations
 			distances[i].clear();
 			meanDistances[i] = .0f;
 		}
+		//Asignación de cada punto al centroide más cercano
 #pragma omp parallel for
 		for (int i = 0; i < pointsNumber; i++) {
 			float minDistance = INFINITY;
@@ -309,6 +320,7 @@ void PointCloud3d::kmeans_naive_auto_update(const int k, const int maxIterations
 
 		}
 		sumSquareError = .0f;
+		//Calculo de los nuevos centroides
 		for (int i = 0; i < k; i++) {
 			int clusterSize = result[i].size();
 			meanDistances[i] /= (float)clusterSize;
@@ -326,12 +338,20 @@ void PointCloud3d::kmeans_naive_auto_update(const int k, const int maxIterations
 		sumSquareError /= (float)k;
 		std::cout << "Sum of Squares error: " << std::to_string(sumSquareError) << std::endl;
 
+
+		//Se muestran los clusters en pantalla
 		int id = 0;
 		Scene::getInstance()->clearScene();
+		DrawVect3d* point;
 		for (auto& cluster : result) {
 			PointCloud3d cloud(cluster);
+			auto color = PointCloud3d::getClusterColor(id, k);
+			point = new DrawVect3d(centroids[id]);
+			point->drawIt(color);
+
+			color.A = .2f;
 			drawCloud = new DrawCloud3d(cloud);
-			drawCloud->drawIt(PointCloud3d::getClusterColor(id, k));
+			drawCloud->drawIt(color);
 			id++;
 		}
 		Scene::getInstance()->refresh();
@@ -364,6 +384,8 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 	voxelSize[2] /= subdivisions.z;
 	Vect3d aabbMin(_minPoint);
 	std::vector<std::pair<int, BasicGeometry::int3>> centroidsCandidates;
+
+	//Se calculan los voxels de la malla
 	for (size_t x = 0; x < subdivisions.x; x++) {
 		malla[x].resize(subdivisions.y);
 		for (size_t y = 0; y < subdivisions.y; y++) {
@@ -375,6 +397,8 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 			}
 		}
 	}
+
+	//Se asigna cada punto a su voxel correspondiente
 #pragma omp parallel for
 	for (int i = 0; i < pointsNumber; i++) {
 		Vect3d normalized = _points[i].sub(aabbMin);
@@ -396,29 +420,33 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 #pragma omp critical
 		malla[x][y][z].setTriangle(i);
 	}
+
+	//Se calcula cuantos puntos hay en el vecindario de cada voxel
 #pragma omp parallel for
 	for (int x = 0; x < subdivisions.x; x++) {
 		for (int y = 0; y < subdivisions.y; y++) {
 			for (int z = 0; z < subdivisions.z; z++) {
 				int num = 0;
-				/*for (int subX = x - 1; subX < x + 2; subX++) {
+				for (int subX = x - 1; subX < x + 2; subX++) {
 					for (int subY = y - 1; subY < y + 2; subY++) {
 						for (int subZ = z - 1; subZ < z + 2; subZ++) {
-							if (!(subX < 0 || subY < 0 || subZ < 0 || subX >= subdivisions.x || subY >= subdivisions.y || subZ >= subdivisions)) {
+							if (!(subX < 0 || subY < 0 || subZ < 0 || subX >= subdivisions.x || subY >= subdivisions.y || subZ >= subdivisions.z)) {
 								auto& references = malla[subX][subY][subZ].getReferences();
 								num += references.size();
 							}
 						}
 					}
-				}*/
-				auto& references = malla[x][y][z].getReferences();
-				num += references.size();
+				}
+				/*auto& references = malla[x][y][z].getReferences();
+				num += references.size();*/
 #pragma omp critical
 				centroidsCandidates.push_back(std::make_pair(num, BasicGeometry::int3{ x,y,z }));
 			}
 		}
 	}
+	//Se ordenan los centroides usando "compareFunction"
 	std::sort(centroidsCandidates.begin(), centroidsCandidates.end(), compareFunction);
+	//Se asignan como centroides iniciales el centro de aquellos voxels que tengan más puntos en su vecindario
 	for (int i = 0; i < k; i++) {
 		BasicGeometry::int3 pos(centroidsCandidates[i].second);
 		centroids[i] = malla[pos.x][pos.y][pos.z].getCenter();
@@ -430,9 +458,13 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 	for (int i = 0; i < k; i++) {
 		distanceToGrid[i].resize(subdivisions.x * subdivisions.y * subdivisions.z);
 	}
+
+	//Comienzo del proceso iterativo
 	while (!BasicGeometry::equal(sumSquareError / prevSumSquareError, 1) && currentIt < maxIterations) {
 		currentIt++;
 		prevSumSquareError = sumSquareError;
+
+		//Se precalcula la distancia entre los centroides y el centro de cada voxel
 #pragma omp parallel for
 		for (int i = 0; i < k; i++) {
 			result[i].clear();
@@ -467,11 +499,14 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 				z = subdivisions.z - 1;
 			float minDistance = INFINITY;
 			int clusterIndex = -1;
+
 			for (int j = 0; j < k; j++) {
+				//Se pone como distancia la distancia entre el centroide y el centro del voxel en la que se encuentra el punto. Esto se encuentra precalculado.
 				float distance = distanceToGrid[j][x * subdivisions.y * subdivisions.z + y * subdivisions.z + z];
 				if (distance < minDistance) {
 					minDistance = distance;
 					clusterIndex = j;
+					//Si la distancia minima y la distancia nueva son iguales, se utiliza la distancia entre el punto y los centroides que "causan conflicto".
 				} else if (BasicGeometry::equal(distance, minDistance)) {
 					distance = _points[i].squareDistance(centroids[j]);
 					float distance2 = _points[i].squareDistance(centroids[clusterIndex]);
@@ -490,6 +525,7 @@ std::vector<std::vector<Vect3d>> PointCloud3d::kmeans_grid(const int k, const in
 
 		}
 		sumSquareError = .0f;
+		//Se calculan los nuevos centroides
 		for (int i = 0; i < k; i++) {
 			int clusterSize = result[i].size();
 			meanDistances[i] /= (float)clusterSize;
@@ -531,6 +567,7 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 	voxelSize[2] /= subdivisions.z;
 	Vect3d aabbMin(_minPoint);
 	std::vector<std::pair<int, BasicGeometry::int3>> centroidsCandidates;
+	//Se calculan los voxels de la malla
 	for (size_t x = 0; x < subdivisions.x; x++) {
 		malla[x].resize(subdivisions.y);
 		for (size_t y = 0; y < subdivisions.y; y++) {
@@ -542,6 +579,8 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 			}
 		}
 	}
+
+	//Se asigna cada punto a su voxel correspondiente
 #pragma omp parallel for
 	for (int i = 0; i < pointsNumber; i++) {
 		Vect3d normalized = _points[i].sub(aabbMin);
@@ -563,29 +602,33 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 #pragma omp critical
 		malla[x][y][z].setTriangle(i);
 	}
+
+	//Se calcula cuantos puntos hay en el vecindario de cada voxel
 #pragma omp parallel for
 	for (int x = 0; x < subdivisions.x; x++) {
 		for (int y = 0; y < subdivisions.y; y++) {
 			for (int z = 0; z < subdivisions.z; z++) {
 				int num = 0;
-				/*for (int subX = x - 1; subX < x + 2; subX++) {
+				for (int subX = x - 1; subX < x + 2; subX++) {
 					for (int subY = y - 1; subY < y + 2; subY++) {
 						for (int subZ = z - 1; subZ < z + 2; subZ++) {
-							if (!(subX < 0 || subY < 0 || subZ < 0 || subX >= subdivisions.x || subY >= subdivisions.y || subZ >= subdivisions)) {
+							if (!(subX < 0 || subY < 0 || subZ < 0 || subX >= subdivisions.x || subY >= subdivisions.y || subZ >= subdivisions.z)) {
 								auto& references = malla[subX][subY][subZ].getReferences();
 								num += references.size();
 							}
 						}
 					}
-				}*/
-				auto& references = malla[x][y][z].getReferences();
-				num += references.size();
+				}
+				/*auto& references = malla[x][y][z].getReferences();
+				num += references.size();*/
 #pragma omp critical
 				centroidsCandidates.push_back(std::make_pair(num, BasicGeometry::int3{ x,y,z }));
 			}
 		}
 	}
+	//Se ordenan los centroides usando "compareFunction"
 	std::sort(centroidsCandidates.begin(), centroidsCandidates.end(), compareFunction);
+	//Se asignan como centroides iniciales el centro de aquellos voxels que tengan más puntos en su vecindario
 	for (int i = 0; i < k; i++) {
 		BasicGeometry::int3 pos(centroidsCandidates[i].second);
 		centroids[i] = malla[pos.x][pos.y][pos.z].getCenter();
@@ -597,9 +640,13 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 	for (int i = 0; i < k; i++) {
 		distanceToGrid[i].resize(subdivisions.x * subdivisions.y * subdivisions.z);
 	}
+
+	//Comienzo del proceso iterativo
 	while (!BasicGeometry::equal(sumSquareError / prevSumSquareError, 1) && currentIt < maxIterations) {
 		currentIt++;
 		prevSumSquareError = sumSquareError;
+
+		//Se precalcula la distancia entre los centroides y el centro de cada voxel
 #pragma omp parallel for
 		for (int i = 0; i < k; i++) {
 			result[i].clear();
@@ -634,11 +681,14 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 				z = subdivisions.z - 1;
 			float minDistance = INFINITY;
 			int clusterIndex = -1;
+
 			for (int j = 0; j < k; j++) {
+				//Se pone como distancia la distancia entre el centroide y el centro del voxel en la que se encuentra el punto. Esto se encuentra precalculado.
 				float distance = distanceToGrid[j][x * subdivisions.y * subdivisions.z + y * subdivisions.z + z];
 				if (distance < minDistance) {
 					minDistance = distance;
 					clusterIndex = j;
+					//Si la distancia minima y la distancia nueva son iguales, se utiliza la distancia entre el punto y los centroides que "causan conflicto".
 				} else if (BasicGeometry::equal(distance, minDistance)) {
 					distance = _points[i].squareDistance(centroids[j]);
 					float distance2 = _points[i].squareDistance(centroids[clusterIndex]);
@@ -657,6 +707,7 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 
 		}
 		sumSquareError = .0f;
+		//Se calculan los nuevos centroides
 		for (int i = 0; i < k; i++) {
 			int clusterSize = result[i].size();
 			meanDistances[i] /= (float)clusterSize;
@@ -676,10 +727,16 @@ void PointCloud3d::kmeans_grid_auto_update(const int k, const int maxIterations,
 
 		int id = 0;
 		Scene::getInstance()->clearScene();
+		DrawVect3d* point;
 		for (auto& cluster : result) {
 			PointCloud3d cloud(cluster);
+			auto color = PointCloud3d::getClusterColor(id, k);
+			point = new DrawVect3d(centroids[id]);
+			point->drawIt(color);
+
+			color.A = .2f;
 			drawCloud = new DrawCloud3d(cloud);
-			drawCloud->drawIt(PointCloud3d::getClusterColor(id, k));
+			drawCloud->drawIt(color);
 			id++;
 		}
 		Scene::getInstance()->refresh();
@@ -718,5 +775,5 @@ TypeColor PointCloud3d::getClusterColor(int index, int k) {
 	}
 
 	//std::cout << "Color " + std::to_string(index) + ": " << std::to_string(r) + " - " << std::to_string(g) + " - " << std::to_string(b) + " - " << std::endl;
-	return TypeColor(r, g, b, 1);
+	return TypeColor(r, g, b, 1.0f);
 }
