@@ -43,6 +43,7 @@
     <ClInclude Include="BasicGeometry.h" />
     <ClInclude Include="Bezier.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="ConvexHull3D.h" />
     <ClInclude Include="Draw.h" />
     <ClInclude Include="DrawBezier.h" />
     <ClInclude Include="DrawLine.h" />
@@ -51,6 +52,7 @@
     <ClInclude Include="DrawPolygon.h" />
     <ClInclude Include="DrawRay.h" />
     <ClInclude Include="DrawSegment.h" />
+    <ClInclude Include="DrawTDelaunay.h" />
     <ClInclude Include="DrawTriangle.h" />
     <ClInclude Include="DrawVoxelModel.h" />
     <ClInclude Include="InclDraw2D.h" />
@@ -64,6 +66,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SegmentLine.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="TDelaunay.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vect2d.h" />
     <ClInclude Include="Vertex.h" />
@@ -92,6 +95,7 @@
     <ClCompile Include="3d\Vect3d.cpp" />
     <ClCompile Include="Bezier.cpp" />
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="ConvexHull3D.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="DrawBezier.cpp" />
     <ClCompile Include="DrawLine.cpp" />
@@ -100,6 +104,7 @@
     <ClCompile Include="DrawPolygon.cpp" />
     <ClCompile Include="DrawRay.cpp" />
     <ClCompile Include="DrawSegment.cpp" />
+    <ClCompile Include="DrawTDelaunay.cpp" />
     <ClCompile Include="DrawTriangle.cpp" />
     <ClCompile Include="DrawVoxelModel.cpp" />
     <ClCompile Include="Line.cpp" />
@@ -112,6 +117,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SegmentLine.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="TDelaunay.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Vect2d.cpp" />
     <ClCompile Include="Vertex.cpp" />
