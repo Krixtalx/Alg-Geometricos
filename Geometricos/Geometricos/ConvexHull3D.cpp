@@ -2,7 +2,7 @@
 
 ConvexHull3D::ConvexHull3D(TriangleModel& triangleModel) {
 	auto faces(triangleModel.getFaces());
-	std::vector<Point_3> points(faces.size() * 3);
+	std::vector<Point_3> points;
 	for (auto face : faces) {
 		Vect3d v(face.getA());
 		Point_3 p(v.getX(), v.getY(), v.getZ());

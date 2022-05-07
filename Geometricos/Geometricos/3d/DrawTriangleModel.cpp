@@ -62,8 +62,8 @@ void DrawTriangleModel::drawItPlain() {
 		.setAmbient(glm::vec3(.1, .3, .7))
 		.setDiffuse(glm::vec3(.1, .3, .7))
 		.setEspecular(glm::vec3(1, 1, 1))
-		.setExpBright(100)
-		.apply(glm::rotate(glm::radians(-90.0f), glm::vec3(1.0f, .0f, .0f)));
+		.setExpBright(100);
+		//.apply(glm::rotate(glm::radians(-90.0f), glm::vec3(1.0f, .0f, .0f)));
 	setDrawMode(TypeDraw::PLAIN);
 	Scene::getInstance()->addModel(this);
 

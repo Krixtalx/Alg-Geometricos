@@ -1,3 +1,3 @@
-﻿  DrawConvexHull3D.cpp
-  main.cpp
+﻿  ConvexHull3D.cpp
+LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
   Geometricos.vcxproj -> C:\Github\Alg-Geometricos\Geometricos\x64\Debug\Geometricos.exe
