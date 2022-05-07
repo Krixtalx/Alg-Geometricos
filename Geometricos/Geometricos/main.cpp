@@ -46,6 +46,10 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/segmentation/extract_clusters.h>
+#include "TDelaunay.h"
+#include "DrawTDelaunay.h"
+#include "ConvexHull3D.h"
+#include "DrawConvexHull3D.h"
 
 
 Movements movimientoActivo = Movements::NONE;
@@ -230,22 +234,13 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_M:
 		if (accion == GLFW_PRESS) {
 			try {
-				int k = 27;
-				int maxIteration = 500;
-				int cloudSize = 5000;
-				PointCloud3d cloud(cloudSize, 8);
-
-				//----------------------Naive---------------------------------
-
-				auto start = std::chrono::high_resolution_clock::now();
-
-				cloud.kmeans_naive_auto_update(k, maxIteration, ventana);
-
-				auto end = std::chrono::high_resolution_clock::now();
-
-				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
-				std::cout << "Naive: " << int_s.count() << " ms" << std::endl << std::endl;
+				/*PointCloud p(1000, 20, 20);
+				DrawPointCloud* cloud = new DrawPointCloud(p);
+				cloud->drawIt({ 1, 0, 0, 1 });
+				TDelaunay dt(p);*/
+				TDelaunay dt("olivosSubsample.ply");
+				DrawTDelaunay* draw = new DrawTDelaunay(dt);
+				draw->drawIt({ 0, 0, 0, 1 });
 			} catch (std::exception& e) {
 				std::cout << "Exception captured in callbackKey"
 					<< std::endl
@@ -261,22 +256,12 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_N:
 		if (accion == GLFW_PRESS) {
 			try {
-				int k = 27;
-				int maxIteration = 500;
-				int cloudSize = 5000;
-				PointCloud3d cloud(cloudSize, 8);
-
-				//----------------------Grid---------------------------------
-
-				auto start = std::chrono::high_resolution_clock::now();
-
-				cloud.kmeans_grid_auto_update(k, maxIteration, ventana);
-
-				auto end = std::chrono::high_resolution_clock::now();
-
-				auto int_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
-				std::cout << "Grid: " << int_s.count() << " ms" << std::endl << std::endl;
+				TriangleModel tri("vaca.obj");
+				DrawTriangleModel* drawTM = new DrawTriangleModel(tri);
+				drawTM->drawItPlain();
+				ConvexHull3D convexHull(tri);
+				DrawConvexHull3D* draw = new DrawConvexHull3D(convexHull);
+				draw->drawIt({ 1,0,0,1 });
 			} catch (std::exception& e) {
 				std::cout << "Exception captured in callbackKey"
 					<< std::endl

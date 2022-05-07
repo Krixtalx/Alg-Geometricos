@@ -2,6 +2,7 @@
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Projection_traits_xy_3.h>
 #include <CGAL/Delaunay_triangulation_2.h>
+#include <fstream>
 #include "PointCloud.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
