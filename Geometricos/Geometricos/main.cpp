@@ -62,13 +62,8 @@ PointCloud3d* loadedCloud;
 void mostrarAyuda() {
 	std::cout << "Ayuda" << std::endl
 		<< "================" << std::endl
-		<< "S -> Esfera benchmark" << std::endl
-		<< "M -> Esfera naive" << std::endl
-		<< "N -> Esfera grid" << std::endl
-		<< "P -> Olivos benchmark" << std::endl
-		<< "K -> Olivos naive" << std::endl
-		<< "L -> Olivos grid" << std::endl
-		<< "Y -> PCL clustering" << std::endl
+		<< "M -> Delaunay" << std::endl
+		<< "N -> Convex Hull" << std::endl
 		<< "r -> Resetea la escena" << std::endl
 		<< "Cursores y rueda ratón -> Rotación" << std::endl
 		<< "h -> Muestra esta ayuda" << std::endl
@@ -234,11 +229,12 @@ void callbackKey(GLFWwindow* ventana, int tecla, int scancode, int accion,
 	case GLFW_KEY_M:
 		if (accion == GLFW_PRESS) {
 			try {
-				/*PointCloud p(1000, 20, 20);
+				PointCloud p(1000, 20, 20);
 				DrawPointCloud* cloud = new DrawPointCloud(p);
 				cloud->drawIt({ 1, 0, 0, 1 });
-				TDelaunay dt(p);*/
-				TDelaunay dt("olivosSubsample.ply");
+				/*p.save("test.cloud");
+				TDelaunay dt("test.cloud");*/
+				TDelaunay dt(p);
 				DrawTDelaunay* draw = new DrawTDelaunay(dt);
 				draw->drawIt({ 0, 0, 0, 1 });
 			} catch (std::exception& e) {
